@@ -44,6 +44,10 @@ spec:
   path: ./infrastructure/kube-prometheus-stack
   prune: true
   timeout: 5m
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -60,3 +64,7 @@ spec:
   path: ./infrastructure/kube-prometheus-stack/monitors
   prune: true
   timeout: 5m
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
