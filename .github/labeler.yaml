@@ -1,0 +1,10 @@
+---
+area/github:
+  - changed-files:
+      - any-glob-to-any-file: .github/**/*
+area/infrastructure:
+  - changed-files:
+      - any-glob-to-any-file: infrastructure/**/*
+area/apps:
+  - changed-files:
+      - any-glob-to-any-file: apps/**/*

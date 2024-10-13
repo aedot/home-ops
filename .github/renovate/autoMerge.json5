@@ -1,0 +1,22 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
+    {
+      "description": ["Auto-merge container digests updates for trusted containers"],
+      "matchDatasources": ["docker"],
+      "automerge": true,
+      "automergeType": "branch",
+      "schedule": [ "before 4am on Sunday" ],
+      "matchUpdateTypes": ["digest"]
+    },
+    {
+      "description": ["Auto-merge GitHub Actions for minor and patch"],
+      "automerge": true,
+      "automergeType": "branch",
+      "schedule": [ "before 4am on Sunday" ],
+      "matchUpdateTypes": ["minor", "patch"]
+    }
+  ]
+}
+
+
