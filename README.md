@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/aedot/home-ops/main/docs/src/assets/icon.png" align="center" width="144px" height="144px"/>
+  <img src="[https://raw.githubusercontent.com/aedot/home-ops/main/docs/src/assets/icon.png](https://raw.githubusercontent.com/aedot/home-ops/refs/heads/main/docs/src/assets/logo.png)" align="center" width="144px" height="144px"/>
   <h3> My home operations repository </h3>
   <i>managed with Flux, Renovate and GitHub Actions</i> 🤖
 </div>
