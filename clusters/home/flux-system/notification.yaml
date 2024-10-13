@@ -1,0 +1,27 @@
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Provider
+metadata:
+  name: slack-bot-provider
+  namespace: flux-system
+spec:
+  type: slack
+  channel: home
+  secretRef:
+    name: slack-bot-url
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Alert
+metadata:
+  name: slack-bot-alert
+  namespace: flux-system
+spec:
+  providerRef:
+    name: slack-bot-provider
+  eventSeverity: error
+  eventSources:
+    - kind: GitRepository
+      name: '*'
+    - kind: Kustomization
+      name: '*'
+    - kind: HelmRelease
+      name: "*"
