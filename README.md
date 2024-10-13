@@ -7,7 +7,20 @@
 ---
 <div align="center">
 
-[![NixOS](https://img.shields.io/badge/NIXOS-5277C3.svg?style=for-the-badge&logo=NixOS&logoColor=white)](https://nixos.org)
 [![NixOS](https://img.shields.io/badge/NixOS-23.11-blue?style=for-the-badge&logo=nixos&logoColor=white)](https://nixos.org)
 
+[![renovate](https://img.shields.io/badge/renovate-enabled-%231A1F6C?logo=renovatebot)](https://developer.mend.io/github/aedot/home-ops)
+![Code Comprehension](https://img.shields.io/badge/Code%20comprehension-2%25-red)
+
 </div>
+
+---
+## 📖 Overview
+Homelab infrastructure automation in IaC. GitOps practices using `Kubernetes`, `FluxCD`, `Renovate` and `GitHub Actions`.
+
+### Directories
+
+```sh
+📁 cluster  #hold FluxCD config
+managing infrastructure outside of K8S
+```
