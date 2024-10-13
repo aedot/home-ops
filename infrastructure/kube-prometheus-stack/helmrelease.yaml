@@ -1,0 +1,107 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+    name: kube-prometheus-stack
+spec:
+    chart:
+        spec:
+            chart: kube-prometheus-stack
+            sourceRef:
+                kind: HelmRepository
+                name: prometheus
+            version: 65.2.0
+    interval: 1h0m0s
+    values:
+        crds:
+            enabled: false
+        prometheus:
+            prometheusSpec:
+                serviceMonitorSelector:
+                    matchLabels: null
+                podMonitorSelector:
+                    matchLabels: null
+                externalUrl: ENC[AES256_GCM,data:ZPIOMd4l7TLkOBzT7J+XCiMwCEtcTtW7Yo8t4FdwjOfyojbKjMIH,iv:oRWXO5M9cofZoPPjkDrqZnbmqWaKFgAVUvxPmRgticE=,tag:0nOlwANFTZ/25Bgp9LPCbA==,type:str]
+                retention: 7d
+                storageSpec:
+                    volumeClaimTemplate:
+                        spec:
+                            storageClassName: longhorn
+                            accessModes:
+                                - ReadWriteOnce
+                            resources:
+                                requests:
+                                    storage: 20Gi
+        alertmanager:
+            alertmanagerSpec:
+                externalUrl: ENC[AES256_GCM,data:5lUGfW12kUqcqXaIchOU1IaNVZg0fjhZzHPx9cNJ/3JFbKJPlyfQP1s=,iv:TNxOD7zBOj+dEL6s9mEF4mPZNb06DYqjFEbmamgj9Z0=,tag:IHPKxeSVHLS6JW8+8aUSVg==,type:str]
+                retention: 120h
+                storage:
+                    volumeClaimTemplate:
+                        spec:
+                            storageClassName: longhorn
+                            accessModes:
+                                - ReadWriteOnce
+                            resources:
+                                requests:
+                                    storage: 5Gi
+        grafana:
+            plugins:
+                - grafana-piechart-panel
+            dashboardProviders:
+                dashboardproviders.yaml:
+                    apiVersion: 1
+                    providers:
+                        - name: default
+                          orgId: 1
+                          folder: ""
+                          type: file
+                          disableDeletion: false
+                          editable: true
+                          options:
+                            path: /var/lib/grafana/dashboards/default
+            dashboards:
+                default:
+                    node-exporter:
+                        gnetId: 11074
+                        revision: 9
+                        datasource: Prometheus
+                    node-exporter-full:
+                        gnetId: 1860
+                        revision: 37
+                        datasource: Prometheus
+                    traefik:
+                        gnetId: 17347
+                        revision: 9
+                        datasource: Prometheus
+                    flux:
+                        gnetId: 16714
+                        revision: 1
+                        datasource: Prometheus
+                    cert-manager:
+                        gnetId: 20842
+                        revision: 2
+                        datasource: Prometheus
+                    metallb:
+                        gnetId: 20162
+                        revision: 5
+                        datasource: Prometheus
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA5RlI2TUpWcWIwK0g0SVlT
+            TlJVYVYvYWM3WDdiQ2FkOS9rNXNMK1l6SFY0ClphREVyajVldWQyb2Q1N05Ldy9L
+            K2xCa0E2eE8xOGp1VG5IQnl5emYzK0EKLS0tICsyN2RqejgwOFFid1J5aDlleElC
+            S2hYdTBmdCtYL3VoUW1iNUFmaHNwNFUK3BIEgWOVN2SW9KaeKUkoKocJzihagsxX
+            1O0PhuP5Hib2IifJUoUVxUr3PJ1ZKf+fgkWKwRpmB+VnBPv5DFq6UQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-13T21:16:39Z"
+    mac: ENC[AES256_GCM,data:JR6mclK98rtijg3oc6XHy0Cwb5xw35LH1pCfpGVFOWI4cTX77jEbvn/bhmHcsw3GZfsJRBBRWJdhgRHGPmOSDm+j4BKx7AMsoJo351jlmerxmxbPheYjd242N82YDPA1K1RMDcPtDWuRTqjE3cS4nv+SOyg0pPfbJTtejYN5/WI=,iv:XiKLq7K8HY42jKn7hn1t36cGID++VZu9lRkLUNYIno8=,tag:PNg9+4kOKKINi5iHEEkF4g==,type:str]
+    pgp: []
+    encrypted_regex: ^(externalUrl)$
+    version: 3.9.1
