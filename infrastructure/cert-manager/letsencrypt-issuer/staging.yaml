@@ -14,7 +14,7 @@ spec:
                     email: ENC[AES256_GCM,data:uJeV9hZIesMBM7w//ZFVPgT32L0P,iv:fMil87IT/8iYQWCt+6lL/rIII9mwQm9vbBnok7BhuEE=,tag:MnW9Qq23PnSs2B5FfFX7EQ==,type:str]
                     apiKeySecretRef:
                         name: cloudflare-secret
-                        key: CLOUDFLARE_API_KEY
+                        key: cloudflare-token
               selector:
                 dnsZones:
                     - ENC[AES256_GCM,data:svF9F6i4H0k7KhY=,iv:ZFkj2xLokSzWL2ALh9KoBZJcGh942vcPBq7q1tOXCNk=,tag:Oz39RK+v/KPSQ4xeuX1P9g==,type:str]
@@ -33,8 +33,8 @@ sops:
             ZHdFMUFEZW1pNGU3SUlhOUV4NzNlejQKuxSHUrNDR9I+J29T2boQF+eDCMR5d79b
             WfHIe+quq6w23LvXRBowdwD6OQVrchdvHGaTUGblJb3VRaXWTVEzAQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-14T00:46:06Z"
-    mac: ENC[AES256_GCM,data:1T8ShcvMcBY09hxY+SYp+xcHm8tRo6RqAjrOljQJ8SEQqczdhuwOyIfT7CGo14130I2kMu8dsFJ8dhnwo5R2MYjfI9SzANfhtyEyBBN8Z94g5MP8n7KkqWZ6SoMR2OqwIIJttn8h9oF1hI1vEknIhtyWcxIUlKTHH4oVZDyzro8=,iv:8fyLidczHkSDR4x1M7UEcidZwhND3JvCnsCaoXNpc/A=,tag:TFgqimP8AA6mnrFQDHV3Sw==,type:str]
+    lastmodified: "2024-10-14T06:18:25Z"
+    mac: ENC[AES256_GCM,data:3D1Hgan7GQZ+/jhkneIoT49Q3BaskMtQkBI9uL43gsIO5dBcH9q/6brKP2tmbTU0Kv6uqAVdmpDqYzjDUZwvDvTmvk26mMDR+qetMcSMeOAqIXaAQkx+hcqy5x0TOWmsfYA2rxUawZxFzxdbGNrNy4+4w8/nQ/x3ynHaMFhv0VM=,iv:BOtvLzFrQkS6PSMaS2/53yxVFsUGwDEWEQ10pPszXnA=,tag:XSgeNsWkG6gjZ9rB++LrbQ==,type:str]
     pgp: []
     encrypted_regex: ^(email|dnsZones)$
     version: 3.9.1
