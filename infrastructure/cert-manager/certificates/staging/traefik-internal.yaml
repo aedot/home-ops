@@ -1,0 +1,33 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+    name: traefik
+    namespace: networking
+spec:
+    secretName: traefik-tls-staging-tls
+    issuerRef:
+        name: letsencrypt-staging
+        kind: ClusterIssuer
+    commonName: ENC[AES256_GCM,data:8uEg5YRLF1/AtGDuUoLBa0+KwUYAoJ7I3CnUGA==,iv:Rp0ncJ9Be4BFEYoUj7CGBHEX4dLYAjIOy/LaVoiozMU=,tag:gx+xLVvWOsZK8/FpKtpccQ==,type:str]
+    dnsNames:
+        - ENC[AES256_GCM,data:RJ6SpUYKuDMrmDfsArREJQc6IYelbR3kSSgRig==,iv:LZLDnBwsEatnnNsZ96gBvIlj4Y7XkCKdyr+oNUFs+wE=,tag:lGssdImfDsiyXnOC450daA==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBKMDdsSVZaV2pvL3IyQXlz
+            NnR5Q2pQVnQ0OENnbm94b0xieFhsZm1LcDNvCllaMHRUd0R2cUM0a0FFK0FyeTQ4
+            a3V3SUR2bDg0cHlYL1NZQTJ6SDVLM0EKLS0tIG5qdmljRHZUL3RxOCtIenUvSHJl
+            YXM0bWFpaFRweEl1REcvVmJMbW9ob1kKTsA8JBrORqSYzg8mutMEkT1h5KTw784V
+            mPfv6G+JEnHZEtPIxISylA13ra5j2hFDT0/mdRiMbXMSuiBtJlZd3A==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-14T07:17:31Z"
+    mac: ENC[AES256_GCM,data:B9iooAE4QPv9/8VbDrchjyCozmnoof/mZPfwMX2vLYSeOyIIA5oBzSNXMhyCPhtD6tuXzZVLEP4jsiRuTB5S0qH8IQadoqNtIJhTyCcI18aJcHSYFqjTUcDLTw4XwMheK6LQuTMZh25cBaEwdvjy8wojfWLFj0+x/21g37Sbrxg=,iv:xxjkrlw7wAw2QMeCtyIpC3UCVUXldJf0lSfo0jnMl5I=,tag:BgQE4w7Iju+ohc87Iy9M3g==,type:str]
+    pgp: []
+    encrypted_regex: ^(commonName|dnsNames)$
+    version: 3.9.1

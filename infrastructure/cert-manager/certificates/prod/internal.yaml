@@ -1,0 +1,34 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+    name: wild-internal
+    namespace: networking
+spec:
+    secretName: internal-prod-tls
+    issuerRef:
+        name: letsencrypt-production
+        kind: ClusterIssuer
+    commonName: ENC[AES256_GCM,data:WbToeFZoAr5E6Czy1u3sqwV+k2TcXg==,iv:IyXN9/FGdIO3jrlp+3KlfKwE+YKHg+cJ9run3mh2hNo=,tag:kJEFgmCOUt32RO1+csk2YA==,type:str]
+    dnsNames:
+        - ENC[AES256_GCM,data:RtGdRDqqNBqDwDNWloZbLzsZDVM=,iv:QpoF9aoBs3hwBTnXegVUsK2shM/2d7AucU8Be9KFyXI=,tag:xtnEsNNUxlti6uPiNYiqTQ==,type:str]
+        - ENC[AES256_GCM,data:+WMSqRdBnxHCwPeovbkq8hwUq/h0Yw==,iv:21ZCqU8N7ayS/c+y9CJodnlNwdxr/s6hCksbSh/v3cU=,tag:KGrE4PQ3zVPk5cUFKib/2g==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBBZWY5ekVhZTJUQ0RLdWd5
+            eko1ZFBNS2hTcmNqdUw1bDV6bEtJQXkzaG1JCjVTT3FJNDIrNnpxanJkbVlxQVk3
+            WGNKYjFraXluWVB4L2F1U1lJL1d6eHMKLS0tIFBKa1Q0eVgzb3R4c1locVZvRXBj
+            R2lGUDAyVldDWFc2MFMyUXFXUnU1K0EKLVTepd0ibFF7Zmwgc2KNyXDQ30WvTw3O
+            7IWd2/AIZrKzjr7itqSv9MrabOXgXuqW7WHbFOfAwLGqR18srbuk3g==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-14T07:18:06Z"
+    mac: ENC[AES256_GCM,data:3mxyX+8IuDwRPF8xvRj27WoWW6RSFauc3D8QSy1M8bVTeGByGnJJQozgXOl6iv8LPjpDkJaJt5HCeB33Xv5pR11qzQhtr73+HT73kW3hXYtXF0nJBWQSHM08Le/AO2lxit2gD//BwprF26czu9l/LFIe/deWbl3PCpbaNlLitFI=,iv:lZ2JBRt6znbC4XU8743z5AA3wFWBE2fo7JSWKPRzvZc=,tag:8vaN/ODRZpJatkaa9jNpzQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(commonName|dnsNames)$
+    version: 3.9.1

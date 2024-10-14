@@ -1,0 +1,37 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+    name: traefik-dashboard
+    annotations:
+        kubernetes.io/ingress.class: traefik-internal
+spec:
+    entryPoints:
+        - websecure
+    routes:
+        - match: ENC[AES256_GCM,data:xbXhoyQXXtJETVkPyxKTX7XshQZpP1N3nJr5/fPzMimeNcfn,iv:VkI60JeQ4ASP2yUsrslWI2LNI6CL2gMEOz2IDBypjUE=,tag:Mxpq6WJ63kZdXpJJ3rhEqQ==,type:str]
+          kind: Rule
+          services:
+            - name: api@internal
+              kind: TraefikService
+    tls:
+        secretName: internal-prod-tls
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA1RG1mYmkwY3YwZjFQa0tQ
+            L1dUQWRBMnRmOVdXTlUvb2Y0MzdCWnNwVlNvCk1Cc3N6VW4yWjdCR0loN05FYis5
+            VmFwckltd1ZEeDltRFk0MHdQZmdaMlUKLS0tIHBXMHVnWUFBNU1aQWk5K2xjeGh1
+            amNSaU5QVks4MW9abVdvcFE0RkdvQ1UKVr3O3n7B0j0KcSaviKd87Lrf6QfoBeJG
+            vIIdgvl0AtsfhHdxY6Cb+MI1TU10gX+QHrpID4fXAj+C0tcedcT5nw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-14T07:15:32Z"
+    mac: ENC[AES256_GCM,data:q5x+CGeqFnAUia1u2LzaoGGumyinzD8a/BSApV0DRyyJaG5HcM86OZz2XQw4SiUn3XYvYEatURhrj19N+GnQVTL/NcLFQ+j9LKSheBBnCDiLnGas77vA7XlCe/LPbnpO9JD3vlKk6V717Fdwh22nn97a5CZDpye77SduoQslrXw=,iv:9g3+/+qujFBnq4CTm6kjgJJwpMWfZaGBO2TliTbK3vw=,tag:PYDgmoETe2POsX9JICfFAQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(match)$
+    version: 3.9.1
