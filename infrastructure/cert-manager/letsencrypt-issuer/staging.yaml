@@ -33,8 +33,8 @@ sops:
             ZHdFMUFEZW1pNGU3SUlhOUV4NzNlejQKuxSHUrNDR9I+J29T2boQF+eDCMR5d79b
             WfHIe+quq6w23LvXRBowdwD6OQVrchdvHGaTUGblJb3VRaXWTVEzAQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-14T06:18:25Z"
-    mac: ENC[AES256_GCM,data:3D1Hgan7GQZ+/jhkneIoT49Q3BaskMtQkBI9uL43gsIO5dBcH9q/6brKP2tmbTU0Kv6uqAVdmpDqYzjDUZwvDvTmvk26mMDR+qetMcSMeOAqIXaAQkx+hcqy5x0TOWmsfYA2rxUawZxFzxdbGNrNy4+4w8/nQ/x3ynHaMFhv0VM=,iv:BOtvLzFrQkS6PSMaS2/53yxVFsUGwDEWEQ10pPszXnA=,tag:XSgeNsWkG6gjZ9rB++LrbQ==,type:str]
+    lastmodified: "2024-10-14T06:50:58Z"
+    mac: ENC[AES256_GCM,data:PhCEHsqHDXO/DdtTv56gPUmLwqvp9T9AGFkI96oBlD2mbq14QCuBZVGZqtTjgEFUzQWnrdG0ixeOhvrmH0yqx1Cpj7O7ihKZIyZbQeZvawTKw3VlT6mlshTUCjEXguYptHlalFhhvMg7bxOC7crhPw2RRR1OJwPkjulnjBs3VI4=,iv:AGxyhFodljLpI9lGa8B1K7QSP1en/O1q50BXn5H90/U=,tag:wlN93OXrn3HdLn6/KGtOSg==,type:str]
     pgp: []
     encrypted_regex: ^(email|dnsZones)$
     version: 3.9.1
