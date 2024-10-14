@@ -5,3 +5,4 @@ resources:
   - pvc.yaml
   - helmrepo.yaml
   - helmrelease.yaml
+  - ingress.yaml
