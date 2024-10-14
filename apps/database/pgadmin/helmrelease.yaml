@@ -1,0 +1,40 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+    name: pgadmin
+spec:
+    chart:
+        spec:
+            chart: pgadmin4
+            sourceRef:
+                kind: HelmRepository
+                name: runix
+            version: 1.31.0
+    interval: 1h0m
+    values:
+        env:
+            email: ENC[AES256_GCM,data:dihSTbb2mvnJ9oXhpqPaNa2hLY0=,iv:UEG83QLUykwfjG3eIADCP0HxgDn/F3Op9lKxcPanwck=,tag:PlHe8MsjPiDIfXwNJD4jRA==,type:str]
+            password: ENC[AES256_GCM,data:rOstW+rI/0yn7xaUBefg4w3i7pFQLavpkkr92iOIyYK/nKg+,iv:aiGDctSG3OT7MexjshHuuBGP9p8BqeVWCEgOvLzrFIs=,tag:uhEcgo8IcNvTohZpqEFBfA==,type:str]
+        persistentVolume:
+            enabled: true
+            existingClaim: pgadmin-pvc
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBoQjJMSFBSSjkrb3N2SEhL
+            S3hocWZCQkxPb0Z2aTRPUDRQQVZ4eEM0bG1nCmpsMExRVERDcG1CL2laUFlNWTNN
+            ZHN4OEFscUJ3N1dzVFU1TWRCclJCMFkKLS0tIFgweXFFTVVzY0RsUWlOTXhGcUVw
+            dm1rMy9CcWlnVHllZ1Y2eEhPOVcwQk0KHJmnQEbKL4SQ3A+b5+ErVzc8ZOIEdtZd
+            3dXKU9lILy/d3O19vMki0iJH6mJ3ixc4X8hBvgkQzkrUCf7qLNDTAg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-14T03:55:32Z"
+    mac: ENC[AES256_GCM,data:AdWcewCI1wS93GED9oS3HGKauNZx7y9yN4AGwCpHdBFKdtkCgUKQ2LbTDsG3g0flhOXIhneCQzvdEYpJswyKmmBJPB8A555pJb73hjhUAfX074q+4tPqESmty89yQpToPUGkwja2Zkq6brz8pzi7uspr/1Z0/k5fL1duS3s/k8o=,iv:J3JfE7knUmiK58xD0E+hbB6JGZ5mb/c2iYKLwwKHlrk=,tag:L6GXM/J5doYEetkUaz2ZiQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(env)$
+    version: 3.9.1

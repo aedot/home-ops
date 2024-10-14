@@ -1,0 +1,45 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres16
+spec:
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.4
+  instances: 3
+  primaryUpdateStrategy: unsupervised
+
+  postgresql:
+    parameters:
+      max_connections: "300"
+      shared_buffers: 256MB
+
+  enableSuperuserAccess: true
+
+  superuserSecret:
+    name: cloudnative-pg-secret
+
+  storage:
+    size: 15Gi
+    storageClass: longhorn
+
+
+  resources:
+    requests:
+      cpu: 500m
+    limits:
+      memory: 1Gi
+
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+  
+  monitoring:
+    enablePodMonitor: true
+
+  # # for inital startup
+  # bootstrap:
+  #   initdb:
+  #     database: default
+  #     owner: default
+  #     secret:
+  #       name: postgres16-user
