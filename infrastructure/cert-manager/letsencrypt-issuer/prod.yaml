@@ -12,7 +12,7 @@ spec:
             - dns01:
                 cloudflare:
                     email: ENC[AES256_GCM,data:1Uh85nY1YCP/W117KPmklkpfN5QM,iv:Pbxp3tXiNX3w36B7UDjNnv+bC6xT7P0JeBmDLYBS+Fs=,tag:j/UnZ0DOAM5OsLfH2Z/w2Q==,type:str]
-                    apiKeySecretRef:
+                    apiTokenSecretRef:
                         name: cloudflare-secret
                         key: cloudflare-token
               selector:
