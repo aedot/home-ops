@@ -1,0 +1,40 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+    name: letsencrypt-staging
+spec:
+    acme:
+        email: ENC[AES256_GCM,data:D+TL8SMKQb9XjFtnqPh/drk=,iv:nS/C57o925/nh5G/dK/ouOoU6j7F3ezFxbnQihJ585c=,tag:q8+F/gS1S+nvvSlNPRxcwg==,type:str]
+        server: https://acme-staging-v02.api.letsencrypt.org/directory
+        privateKeySecretRef:
+            name: letsencrypt-staging
+        solvers:
+            - dns01:
+                cloudflare:
+                    email: ENC[AES256_GCM,data:uJeV9hZIesMBM7w//ZFVPgT32L0P,iv:fMil87IT/8iYQWCt+6lL/rIII9mwQm9vbBnok7BhuEE=,tag:MnW9Qq23PnSs2B5FfFX7EQ==,type:str]
+                    apiKeySecretRef:
+                        name: cloudflare-secret
+                        key: CLOUDFLARE_API_KEY
+              selector:
+                dnsZones:
+                    - ENC[AES256_GCM,data:svF9F6i4H0k7KhY=,iv:ZFkj2xLokSzWL2ALh9KoBZJcGh942vcPBq7q1tOXCNk=,tag:Oz39RK+v/KPSQ4xeuX1P9g==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB4VkJLZnIwL0QwRjlPU1o4
+            cnptdnExWHBVN0JhMExFMnVpcGprQzZMV1RFCnpaeG91U3FaNmRRbHNVTEhYK1h6
+            NkpXVFYxdzY4V2JVNFVKT1hXVEw0UEEKLS0tIHlxNDBTVUFUb1oyUnBMeHFyTTEx
+            ZHdFMUFEZW1pNGU3SUlhOUV4NzNlejQKuxSHUrNDR9I+J29T2boQF+eDCMR5d79b
+            WfHIe+quq6w23LvXRBowdwD6OQVrchdvHGaTUGblJb3VRaXWTVEzAQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-14T00:46:06Z"
+    mac: ENC[AES256_GCM,data:1T8ShcvMcBY09hxY+SYp+xcHm8tRo6RqAjrOljQJ8SEQqczdhuwOyIfT7CGo14130I2kMu8dsFJ8dhnwo5R2MYjfI9SzANfhtyEyBBN8Z94g5MP8n7KkqWZ6SoMR2OqwIIJttn8h9oF1hI1vEknIhtyWcxIUlKTHH4oVZDyzro8=,iv:8fyLidczHkSDR4x1M7UEcidZwhND3JvCnsCaoXNpc/A=,tag:TFgqimP8AA6mnrFQDHV3Sw==,type:str]
+    pgp: []
+    encrypted_regex: ^(email|dnsZones)$
+    version: 3.9.1

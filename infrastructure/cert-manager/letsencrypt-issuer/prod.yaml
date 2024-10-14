@@ -1,0 +1,40 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+    name: letsencrypt-production
+spec:
+    acme:
+        email: ENC[AES256_GCM,data:wUn7b+rfne7lGyEAm4xsMaU=,iv:xsOupXVVRy5nKPEXCQRS+RbFDmgdZ9oeOVdEeSEcfTU=,tag:wk3BYsIhj0MfEsd3BnauWQ==,type:str]
+        server: https://acme-v02.api.letsencrypt.org/directory
+        privateKeySecretRef:
+            name: letsencrypt-production
+        solvers:
+            - dns01:
+                cloudflare:
+                    email: ENC[AES256_GCM,data:1Uh85nY1YCP/W117KPmklkpfN5QM,iv:Pbxp3tXiNX3w36B7UDjNnv+bC6xT7P0JeBmDLYBS+Fs=,tag:j/UnZ0DOAM5OsLfH2Z/w2Q==,type:str]
+                    apiKeySecretRef:
+                        name: cloudflare-secret
+                        key: CLOUDFLARE_API_KEY
+              selector:
+                dnsZones:
+                    - ENC[AES256_GCM,data:hihD71AcGSF+XXA=,iv:dVMDUGv8+f3ZXEqG+aInqRYKmBA0rQ+Zjn6PDnFu9e8=,tag:dwt2jGyHdGztq2VE61X9pg==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBncG12RkhCcmtEUnhLM3kz
+            Z0haenFZeklrc1NsNmRZTXlxa3lHSExVbmtzCjltV1A3SFVzd1I1Z0pnc0VaUkFw
+            T0ZYZUpSamZEV1ZDbUhlZFdBbVhYbk0KLS0tIFJyY0xiQmpuVkpWM0N4OG96VlJl
+            ZmZWQXBYd2VIT2JDTjhlT25ZMVltWGMK1gcM89qln1ffBSuKQEhHP8ESu5+uV5lW
+            MuNGS6OwBCp+RC1Ll4hMP+UjCFTIG3OdJf5ME8xK381NyBZZBiNCUg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-14T00:46:44Z"
+    mac: ENC[AES256_GCM,data:5+Oh6OHGWqJGu16gBLpc/jMuBNY24OMMCIQJdO96eU8Keg/kagGD5xUDAH2skchc96rcqd8aEpg49dzQUNRLnEpRN0XdfAY9Aac7fNPEZWPICyrW+rSd8GUBdvjR1tnqumUWWGBP3eluGsJiV8aFCaY2waQEJSsTzLGWakZjBK8=,iv:1kmRZH6uGg1vP7hhWyFYp3u9jDft5Z2lwr8fC7FdrEE=,tag:hdmT9+E9l7HzRSYcPJp73w==,type:str]
+    pgp: []
+    encrypted_regex: ^(email|dnsZones)$
+    version: 3.9.1
