@@ -1,0 +1,6 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: lldap
+spec:
+  url: https://djjudas21.github.io/charts/
