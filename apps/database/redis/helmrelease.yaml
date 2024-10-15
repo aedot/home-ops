@@ -1,0 +1,117 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: redis
+spec:
+  chart:
+    spec:
+      chart: redis
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami
+      version: 20.2.0  
+  interval: 1h0m
+  values:
+    master: 
+      pdb: 
+        create: true
+      args: []
+      kind: StatefulSet
+      count: 1
+      command: []
+      service: 
+        type: ClusterIP
+        ports: 
+          redis: 6379
+        clusterIP: ""
+        nodePorts: 
+          redis: ""
+        portNames: 
+          redis: "tcp-redis"
+        extraPorts: []
+        annotations: {}
+        externalIPs: []
+        loadBalancerIP: ""
+        sessionAffinity: None
+        loadBalancerClass: ""
+        externalTrafficPolicy: Cluster
+        internalTrafficPolicy: Cluster
+        sessionAffinityConfig: {}
+        loadBalancerSourceRanges: []
+        
+      persistence:
+        path: /data
+        size: 2Gi
+        labels: {}
+        medium: ""
+        enabled: true
+        subPath: ""
+        selector: {}
+        sizeLimit: ""
+        dataSource: {}
+        accessModes: 
+          - ReadWriteOnce
+        annotations: {}
+        subPathExpr: ""
+        storageClass: longhorn
+        existingClaim: ""
+    
+    metrics:
+      enabled: true
+      prometheusRule:
+        enabled: true
+        namespace: monitoring
+
+    replica:
+      pdb: 
+        create: true
+      args: []
+      kind: StatefulSet
+      command: []
+      service: 
+        type: ClusterIP
+        ports: 
+          redis: 6379
+        clusterIP: ""
+        nodePorts: 
+          redis: ""
+        extraPorts: []
+        annotations: {}
+        loadBalancerIP: ""
+        sessionAffinity: None
+        loadBalancerClass: ""
+        externalTrafficPolicy: Cluster
+        internalTrafficPolicy: Cluster
+        sessionAffinityConfig: {}
+        loadBalancerSourceRanges: []
+      affinity: {}
+      sidecars: []
+      dnsConfig: {}
+      dnsPolicy: ""
+      podLabels: {}
+      resources: {}
+      extraFlags: []
+      autoscaling: 
+        enabled: false
+        targetCPU: ""
+        maxReplicas: 3
+        minReplicas: 1
+        targetMemory: ""
+      hostAliases: []
+      
+      persistence:
+        path: /data
+        size: 2Gi
+        labels: {}
+        medium: ""
+        enabled: true
+        subPath: ""
+        selector: {}
+        sizeLimit: ""
+        dataSource: {}
+        accessModes: 
+          - ReadWriteOnce
+        annotations: {}
+        subPathExpr: ""
+        storageClass: longhorn
+        existingClaim: ""
