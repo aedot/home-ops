@@ -1,0 +1,25 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+    name: nfs-provisioner
+spec:
+    chart:
+        spec:
+            chart: nfs-subdir-external-provisioner
+            sourceRef:
+                kind: HelmRepository
+                name: nfs-subdir-external-provisioner
+            version: 4.0.18
+    interval: 1h0m
+    values:
+      nfs:
+        server: 172.16.10.12
+        path: /volume1/k3scluster
+        mountOptions:
+          - hard
+          - nfsvers=4.1
+        volumeName: nfs-storage
+
+      storageClass:
+        create: true
+        name: nfs-storage

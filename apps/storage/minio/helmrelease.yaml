@@ -1,0 +1,42 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+    name: minio
+spec:
+  chart:
+    spec:
+      chart: minio
+      sourceRef:
+          kind: HelmRepository
+          name: bitnami
+      version: 14.7.15
+  interval: 1h0m
+  values:
+    auth:
+      rootUser: 
+        name: minio-auth
+        key: USERNAME
+      rootPassword:
+        name: minio-auth
+        key: PASSWORD
+    
+    statefulset:
+      replicaCount: 3
+
+    ingress:
+      enabled: true
+      ingressClassName: traefik-internal
+      hostname: 
+        name: minio-auth
+        key: HOST
+
+    persistence:
+      enabled: true
+      storageClassName: nfs-storage
+      size: 120Gi
+      existingClaim: minio-pvc
+
+    metrics:
+      enabled: true
+      prometheusRule:
+        enabled: true

@@ -35,6 +35,28 @@ spec:
   
   monitoring:
     enablePodMonitor: true
+  
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore:
+      serverName: &current_db postgres16-v1
+      endpointURL: http://minio.storage.svc.cluster.local:9000
+      destinationPath: s3://postgres/
+      s3Credentials:
+        accessKeyId: 
+          name: postgres-s3
+          key: S3_ACCESS_KEY
+        secretAccessKey:
+          name: postgres-s3
+          key: S3_SECRET_KEY
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      data: 
+        compression: bzip2
+        immediateCheckpoint: false
+        jobs: 4
+
 
   # # for inital startup
   # bootstrap:
