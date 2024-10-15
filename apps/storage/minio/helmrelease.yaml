@@ -3,40 +3,54 @@ kind: HelmRelease
 metadata:
     name: minio
 spec:
-  chart:
-    spec:
-      chart: minio
-      sourceRef:
-          kind: HelmRepository
-          name: bitnami
-      version: 14.7.15
-  interval: 1h0m
-  values:
-    auth:
-      rootUser: 
-        name: minio-auth
-        key: USERNAME
-      rootPassword:
-        name: minio-auth
-        key: PASSWORD
-    
-    statefulset:
-      replicaCount: 3
-
-    ingress:
-      enabled: true
-      ingressClassName: traefik-internal
-      hostname: 
-        name: minio-auth
-        key: HOST
-
-    persistence:
-      enabled: true
-      storageClassName: nfs-storage
-      size: 120Gi
-      existingClaim: minio-pvc
-
-    metrics:
-      enabled: true
-      prometheusRule:
-        enabled: true
+    chart:
+        spec:
+            chart: minio
+            sourceRef:
+                kind: HelmRepository
+                name: bitnami
+            version: 14.7.15
+    interval: 1h0m
+    values:
+        auth:
+            rootUser:
+                name: minio-auth
+                key: USERNAME
+            rootPassword:
+                name: minio-auth
+                key: PASSWORD
+        statefulset:
+            replicaCount: 3
+        ingress:
+            enabled: true
+            ingressClassName: traefik-internal
+            hostname: ENC[AES256_GCM,data:Uz6NE/pRRZbJHEp+06Gadw2rH7eBoN7NFVE=,iv:CgLNucAzPeQaKV+JcjOD+pQDFdtn/rjv4komcNHZcW4=,tag:k/dQD+E6BdvDaQBznrIciA==,type:str]
+        persistence:
+            enabled: true
+            storageClassName: nfs-storage
+            size: 120Gi
+            existingClaim: minio-pvc
+        metrics:
+            enabled: true
+            prometheusRule:
+                enabled: true
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBrbHNPWnU5bUFDT3NGTjly
+            V09YYlhGZERQVDcvNHVSZUtwRHBKcGVJcG5JCjJUSitYa05xYnBmZVdyeURzT3dk
+            Smg1YUIyUjB4UHV4UzA4MVV6SUthREUKLS0tIHNMVlNYc0h2OVNSUkJWRTBmamg3
+            cHIzSmp1TWhlc0lRbS9YdlpRTDFQVEUK49LEbtKfT/SNwNFxzE+23lPHjmQvorPw
+            5kRR+thP3T+n+HV6Tv88mucap9lmvxIf5tH7NB50eCSvFiOaAg+ZFA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-15T04:44:04Z"
+    mac: ENC[AES256_GCM,data:nC+GWH9Bt81L0ioKClWwRmCHIQioRyYr4a9DiOHGGZXAkHdV1VvfAIHHyQQTGropgAywpbGEMTu08ggUvxffqVaWl7r4XTApNM7roB9XhtqsRM+Z+Qflgctl94cyRID5BE0mLmVZO/Xrv3P6w4M8uRqIlr8h6eMF2rIhd2u3IW4=,iv:y8nIN02eJrfK7Ly8rDR/s9Ii3CtBzWGpI8faDbjYB6Y=,tag:Y3mTsrpckwJJUuIupnOwTA==,type:str]
+    pgp: []
+    encrypted_regex: ^(hostname)$
+    version: 3.9.1
