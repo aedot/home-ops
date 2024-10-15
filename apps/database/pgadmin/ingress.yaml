@@ -3,7 +3,6 @@ apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
     name: db-headers
-    namespace: database
 spec:
     headers:
         browserXssFilter: true
@@ -32,8 +31,8 @@ sops:
             VTEyblYyQXV2VTk1cXRVd1JsbElWb2cK4kNeGZP5Vg6RWDKgfCBNoE0ynJV3Pnct
             j+q9l4m/Ox3FLnFi6sAIP+hNNmibHoNgD9UgH200m70MDn2MMXSkRA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-14T17:06:06Z"
-    mac: ENC[AES256_GCM,data:m5rwCv48fKyhyHSY+K+RS3JhXI/ChTMBMDU/3u5rJsD9qIwp9fP3cmSZDsiDzkwWnVpYMbs7ubdTdPS2Uqp03O6qWXnhbp1LPN6Sj+X2bzu7CCdE1SZ2N6w+sc/ZR3tn0tNNjPlcFDshIBt/dhnpZtjw2oFxn3lnMcYrNXO+Y8g=,iv:6AABTUyrBeQrR0jtSs8C5hE7qvrcvsBEzQEhKpaYsZY=,tag:muLVf65sDDajZz7VSISBoQ==,type:str]
+    lastmodified: "2024-10-15T22:20:01Z"
+    mac: ENC[AES256_GCM,data:HYPLOYylLVHDVEw5XogcntD8VMRk3sNIqxNd+RH5KCIOxGlslIEPy06mIMF55n98sjlmwlQIkJbnknoyW5EmYyPa4CclomZ/tNIJMD/DSvMKABzPnx5C3lmQM8fFycV6AEfCzVBL/QrelM82uahlZF0wjZGJVy0kaNZT6R9w8sI=,iv:Rbvag80veTyJRt7LRzIJ9TCvVPnYxFMWEgF/DrhT01M=,tag:RLz040V9/928dCy3i71bAQ==,type:str]
     pgp: []
     encrypted_regex: ^(match)$
     version: 3.9.1
@@ -42,7 +41,6 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
     name: pgadmin-dashboard
-    namespace: database
     annotations:
         kubernetes.io/ingress.class: traefik-internal
 spec:
@@ -54,8 +52,8 @@ spec:
           services:
             - name: pgadmin-pgadmin4
               port: 80
-          # middlewares:
-          #   - name: db-headers
+              # middlewares:
+              #   - name: db-headers
 sops:
     kms: []
     gcp_kms: []
@@ -71,8 +69,8 @@ sops:
             VTEyblYyQXV2VTk1cXRVd1JsbElWb2cK4kNeGZP5Vg6RWDKgfCBNoE0ynJV3Pnct
             j+q9l4m/Ox3FLnFi6sAIP+hNNmibHoNgD9UgH200m70MDn2MMXSkRA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-14T17:06:06Z"
-    mac: ENC[AES256_GCM,data:m5rwCv48fKyhyHSY+K+RS3JhXI/ChTMBMDU/3u5rJsD9qIwp9fP3cmSZDsiDzkwWnVpYMbs7ubdTdPS2Uqp03O6qWXnhbp1LPN6Sj+X2bzu7CCdE1SZ2N6w+sc/ZR3tn0tNNjPlcFDshIBt/dhnpZtjw2oFxn3lnMcYrNXO+Y8g=,iv:6AABTUyrBeQrR0jtSs8C5hE7qvrcvsBEzQEhKpaYsZY=,tag:muLVf65sDDajZz7VSISBoQ==,type:str]
+    lastmodified: "2024-10-15T22:20:01Z"
+    mac: ENC[AES256_GCM,data:HYPLOYylLVHDVEw5XogcntD8VMRk3sNIqxNd+RH5KCIOxGlslIEPy06mIMF55n98sjlmwlQIkJbnknoyW5EmYyPa4CclomZ/tNIJMD/DSvMKABzPnx5C3lmQM8fFycV6AEfCzVBL/QrelM82uahlZF0wjZGJVy0kaNZT6R9w8sI=,iv:Rbvag80veTyJRt7LRzIJ9TCvVPnYxFMWEgF/DrhT01M=,tag:RLz040V9/928dCy3i71bAQ==,type:str]
     pgp: []
     encrypted_regex: ^(match)$
     version: 3.9.1

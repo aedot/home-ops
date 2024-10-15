@@ -1,0 +1,35 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+    name: auth-dashboard
+    annotations:
+        kubernetes.io/ingress.class: traefik-internal
+spec:
+    entryPoints:
+        - websecure
+    routes:
+        - match: ENC[AES256_GCM,data:MJJLuiFKcr74LUDf3PmS/vup1FFRVqWaGyUpDRJHhcbe,iv:ZsHMbruaPW4vTheSp/L5Y8OO+EWeDKmRu2jsWKOFtNs=,tag:2CRCFRj5PmIGrZVRHmCceQ==,type:str]
+          kind: Rule
+          services:
+            - name: authelia-internal
+              port: 80
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBJZStCei9MaHFyRkhsZVlH
+            b1p6dEtXYnR4K2V6Q2didXNvVXRjVXlYajFJCndzTWFOSU1CTFNNdUIxNG9DK0px
+            NDdWOHZob0laYjNtZzFsTnVJTDFOU1UKLS0tIElUZFVqNjhZOTBIc2NGekNIRlFw
+            MlRlOHg2VFBKVWQzaTBXRkVJbFJ4RHcKufynPNdOzkeQxa6Gnrw70dFiBMxdoqIx
+            DzEB/yt31y2j+hjbjXL4NNWDQbmqKj6o72CrhMK1nzubZvMi6EGt5A==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-15T22:33:57Z"
+    mac: ENC[AES256_GCM,data:QjEc9/K4E09pZcgu2nRWwNGTlLTBtwb034cnuipaomCj/lEsaAU7GRXnsSDtSg1vvhtrzvZiR4gexK24pv1LrvVl45dOSfHzzXI/H8fkrJjbu/uGTSQS1RcdukoaPUbpd9udM2UrLeWu7+hWI/nLcFNNjUj7c/IOHiqv9jAo7yA=,iv:39w1r6KJLL1EuJtKBMz1ZkK5AlAx2a7xSQ9hXidWum0=,tag:oWLprDWDZwhnRNukWRdV6g==,type:str]
+    pgp: []
+    encrypted_regex: ^(match)$
+    version: 3.9.1
