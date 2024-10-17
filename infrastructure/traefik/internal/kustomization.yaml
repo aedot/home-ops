@@ -6,4 +6,3 @@ namespace: networking
 resources:
   - helmrepo.yaml
   - helmrelease.yaml
-  - middlewares.yaml
