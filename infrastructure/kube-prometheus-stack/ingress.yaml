@@ -1,0 +1,107 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+    name: grafana-ui
+    annotations:
+        kubernetes.io/ingress.class: traefik-internal
+spec:
+    entryPoints:
+        - websecure
+    routes:
+        - match: ENC[AES256_GCM,data:WHApOedAS4TN2Y3UiGAl8+hT6ZgkLRp1m3BDH0eG2fUTCtiW,iv:3CqGWFXteVWup0cZuhd5QFHipc7NPtG3CQ+QzC94K5k=,tag:OZQOlKBh9P1yzgRveGdotQ==,type:str]
+          kind: Rule
+          services:
+            - name: kube-prometheus-stack-grafana
+              port: 80
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAzN2lqY0RwbHBnZDJ0RTV2
+            WjNzQmlZWjJHY2ZpOUhDVDZ0bVpzK3l0TG5FCjk5aVNzN2hjNllnYlo3R3poUkYw
+            QmtJK1BtZHBYREYyUVVEd0orWU5rNVkKLS0tIGdITGdlaWx4RStPYWtRd0pjYVpY
+            cmlUbDJKTk83dmV3Z3RFK2NJWDRUSjQK+GM9lyGm6VVAyiykTtUxs9Bz80F+AyAe
+            F9lSe9y96b4ZUNgSlvw+AqbnMy82J1X+4TNpLCOQsfUobDaGO3j8BA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-17T05:36:23Z"
+    mac: ENC[AES256_GCM,data:UTsVOT9V/D6V2Vou0fbeXlbviRvttLxq7ykIpTwA+LgR93++a6EHMHaDVgxzwM3w/ZwQ9O3PSDRiRv2i+1CHjAFsK6mUZ6TCg+8ccCWz7zDt8Oohz8+cEqB/vLq0ucZwG1HT0+TRTapnmJ2iTNqtvJdaw2exTIbfNRd6HMFfKf8=,iv:oaXUPIZZMoBBZnhLf8KDDbTP8UMQCbRclU6Nv6zfTLw=,tag:rlv2RmIEAuUjucTbTUl9oQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(match)$
+    version: 3.9.1
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+    name: prometheus-ui
+    annotations:
+        kubernetes.io/ingress.class: traefik-internal
+spec:
+    entryPoints:
+        - websecure
+    routes:
+        - match: ENC[AES256_GCM,data:uhzqLOiYfjJMi0r7YTJTylM7+q1+jEBNWzpoBlHw5I4+n405W55p,iv:rOoE6JiKKdjLrCIRqBwKX+Z0BuHeHUwdIBv1CwD5KCc=,tag:rsxCg42ZPFn8rI5PmFSGhg==,type:str]
+          kind: Rule
+          services:
+            - name: kube-prometheus-stack-prometheus
+              port: 9090
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAzN2lqY0RwbHBnZDJ0RTV2
+            WjNzQmlZWjJHY2ZpOUhDVDZ0bVpzK3l0TG5FCjk5aVNzN2hjNllnYlo3R3poUkYw
+            QmtJK1BtZHBYREYyUVVEd0orWU5rNVkKLS0tIGdITGdlaWx4RStPYWtRd0pjYVpY
+            cmlUbDJKTk83dmV3Z3RFK2NJWDRUSjQK+GM9lyGm6VVAyiykTtUxs9Bz80F+AyAe
+            F9lSe9y96b4ZUNgSlvw+AqbnMy82J1X+4TNpLCOQsfUobDaGO3j8BA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-17T05:36:23Z"
+    mac: ENC[AES256_GCM,data:UTsVOT9V/D6V2Vou0fbeXlbviRvttLxq7ykIpTwA+LgR93++a6EHMHaDVgxzwM3w/ZwQ9O3PSDRiRv2i+1CHjAFsK6mUZ6TCg+8ccCWz7zDt8Oohz8+cEqB/vLq0ucZwG1HT0+TRTapnmJ2iTNqtvJdaw2exTIbfNRd6HMFfKf8=,iv:oaXUPIZZMoBBZnhLf8KDDbTP8UMQCbRclU6Nv6zfTLw=,tag:rlv2RmIEAuUjucTbTUl9oQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(match)$
+    version: 3.9.1
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+    name: alertmanager-ui
+    annotations:
+        kubernetes.io/ingress.class: traefik-internal
+spec:
+    entryPoints:
+        - websecure
+    routes:
+        - match: ENC[AES256_GCM,data:h9eqMkyA02/VLMW2xk7Lo9rXMePGN0DOafbcjJk90/CkTTPZdLZrUfM=,iv:GxSiTQmdLeDA803TMQRTUKyMOkMynIxEN1ZbxoPkp/k=,tag:inSCYl6/KC47KURoNnNuog==,type:str]
+          kind: Rule
+          services:
+            - name: kube-prometheus-stack-alertmanager
+              port: 9093
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAzN2lqY0RwbHBnZDJ0RTV2
+            WjNzQmlZWjJHY2ZpOUhDVDZ0bVpzK3l0TG5FCjk5aVNzN2hjNllnYlo3R3poUkYw
+            QmtJK1BtZHBYREYyUVVEd0orWU5rNVkKLS0tIGdITGdlaWx4RStPYWtRd0pjYVpY
+            cmlUbDJKTk83dmV3Z3RFK2NJWDRUSjQK+GM9lyGm6VVAyiykTtUxs9Bz80F+AyAe
+            F9lSe9y96b4ZUNgSlvw+AqbnMy82J1X+4TNpLCOQsfUobDaGO3j8BA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-17T05:36:23Z"
+    mac: ENC[AES256_GCM,data:UTsVOT9V/D6V2Vou0fbeXlbviRvttLxq7ykIpTwA+LgR93++a6EHMHaDVgxzwM3w/ZwQ9O3PSDRiRv2i+1CHjAFsK6mUZ6TCg+8ccCWz7zDt8Oohz8+cEqB/vLq0ucZwG1HT0+TRTapnmJ2iTNqtvJdaw2exTIbfNRd6HMFfKf8=,iv:oaXUPIZZMoBBZnhLf8KDDbTP8UMQCbRclU6Nv6zfTLw=,tag:rlv2RmIEAuUjucTbTUl9oQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(match)$
+    version: 3.9.1
