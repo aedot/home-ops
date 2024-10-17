@@ -116,7 +116,7 @@ spec:
                 cookies:
                     - domain: ENC[AES256_GCM,data:8ZaRdxXOCTIBzd3JeADEYNtLLpcOoWhv2Q==,iv:8sd0HF1XzXf5kJzbT1NH3gZx+hb0PklT/IcEaEADgao=,tag:QynE7FHSVztABOj+wG4bfg==,type:str]
                       authelia_url: ENC[AES256_GCM,data:KiHkTMivUbVnjhrSX4bcjvR6958i/UYerGSRw3W979yO,iv:AmqJxQ9tNsmPhb9KB9NgTwwrG8W4AwXsNBQlcgiQTHQ=,tag:DwJnaJIZlHl7obtTvygdsA==,type:str]
-                      default_redirection_url: ENC[AES256_GCM,data:BKOgD0ZfyqjyW3AC8RL0wL8qqreFGOqIZYXVBOxbgo4=,iv:96hMPdxAkfw2k5TD+kAl1fijeOdb5oCOvTh0/j8pnAM=,tag:o/eyw1GfOLoS29t/bWYQrw==,type:str]
+                      default_redirection_url: ENC[AES256_GCM,data:OsKN+RbHKfhLWva4UDuldpYoi+gCVPdq+LnMLVEoxIGdTH/KFw==,iv:Sbz023M5M3ar1FOZsTgsfJ7pGRqhvaWzp3w7vfgIaJw=,tag:2gNWxbswZsNS0EBIDCEoaA==,type:str]
                 redis:
                     enabled: ENC[AES256_GCM,data:ptHfoQ==,iv:5N1Tk772VkU7txLX8rFX4hSlBXtjvIACiZyqzJtY/o4=,tag:hU0XsKIwem7O3bhIe8MrxQ==,type:bool]
                     host: ENC[AES256_GCM,data:nMiUz56jhkS8UKCWtibitoxwLdIwRUv+QKJ9g9bsJ3OZKI9RXrJYdjb1XoBBPBr5P78Xu1B2ubU=,iv:LHB6bHvPLzF+9CLpuDJN+H8QWeDamJT7IZLUZBziLLU=,tag:z3qNbEK10jvUP0s+o6pw+g==,type:str]
@@ -164,8 +164,8 @@ sops:
             S09ROXF2aTBITGdEUFlpVkxZQ3BPcE0K0/p7B3WOtDYONShlgNbtWnoFV30RbfNW
             slzU+P8RlLbF9F/QXTzhC37bu/KoFqhDmbXpiQpAmBmUao+V7RoB+A==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-17T19:18:25Z"
-    mac: ENC[AES256_GCM,data:8vrSgzSpqUWVd8lfA7AomB0cMl7a8k4uDra1ZR4Y7XkGcI628xDtVWOjL8XJThCIRdKYXBAf6Tw7NlL/xeSs48QuPQb8nC9RjKcfanRhldw5eZT/tuKJDZpUJSyTpjqhApdo0SkybuTEXjXubZHZTvgnPsc7ET/BuWK/hDTP6tQ=,iv:hGWYZmEEcGg6DLAiAv9pQZaeyHvvcCj/Dw2ywm5m8Ew=,tag:JcNe+Z5JKC3+dXChsWN/pg==,type:str]
+    lastmodified: "2024-10-17T19:30:51Z"
+    mac: ENC[AES256_GCM,data:2n/uHHQtwY/nYyzBeQd3tH1YNa0JNeYynbMsLK+jNN2TQHhTZkYI7QSPJNUmMEvQib4cWzYn3gMc/I91dfFtGU3TDCHZ/eYOT5Xmr4+L8Fh0gGmKqbgXa9Ck0UM5FNTNo3aNOP8FrZuegkOIZ8JR01PGNQhPoo9nd6PyNQJt5Z8=,iv:4fD7r24jcOZpAyJrOEa5o6CnGEryjhEBOkREwEvFvzw=,tag:zTZtu9ngIaCT06R9NdGciA==,type:str]
     pgp: []
     encrypted_regex: ^(values)$
     version: 3.9.1
