@@ -1,0 +1,44 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+    name: longhorn-ui
+    namespace: longhorn-system
+    annotations:
+        kubernetes.io/ingress.class: traefik-internal
+spec:
+    entryPoints:
+        - websecure
+    routes:
+        - match: ENC[AES256_GCM,data:mmbvk+RblyXLqXHo9HDu0BP6GH5ARPri6GSlWpzIa6vIbfDPkw==,iv:EXjkXB7AewlAJsqFcDAiYcsXyzQYtELdR7DYLtFhuD4=,tag:UaFMh84WUISM60+Y9NohSA==,type:str]
+          kind: Rule
+          services:
+            - name: longhorn-frontend
+              port: 80
+          middlewares:
+            - name: forwardauth-authelia
+    # - match: Host(`longhorn.internal.xtmcore.com`) && PathPrefix(`/auth.internal.xtmcore.com/')
+    #   kind: Rule
+    #   services:
+    #     - kind: Service
+    #       name: auth-internal
+    #       namespace: auth
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBXN0htYWJENEFqN2VUblNO
+            amE1c2NYYmlwVmszcUw2TDNHa2xFdlR3Y0NjClFMbGlBOFIxUzRaK2JZVXNwK1Bj
+            dGVuSjRpdTNXVzgwMURCQlFyMC94QkUKLS0tIE5OTDh4Uk9MZ3N3T1NGVE5rczRw
+            N3duYnZMZ3l0dVFrNFFVcHAwb3lWYnMKjygmYW2Ya7I2h9Td4VpzMPS7FcQxp4eG
+            tTUcXpl+5YDUS+s75ooCIgg5h0XGAEe+ZAGuMXh7O5Ozvzi2XrLR9Q==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-17T19:19:43Z"
+    mac: ENC[AES256_GCM,data:pShmIrkJrmTHXzc67uRnkBGq+QThgr8+66OWO3qpDT9/2H4OhhXvgTo2YweDqlmWbqwPD9PiWgG7p3exZBmfbeymgc6bZuyPeHtINWCucdLZefMAX4V8vJ1SKIgxq4xvfv/FuHLhM42cb06GUyBEkfyrZSOKIP5pFCnlE8YgH48=,iv:C1oqkuAPKQwdEoctdhbdZjhewWQMYcwOaRPqrG4ILvY=,tag:RYM634qSTWo+LGpH5jyCMg==,type:str]
+    pgp: []
+    encrypted_regex: ^(match)$
+    version: 3.9.1
