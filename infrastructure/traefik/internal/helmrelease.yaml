@@ -36,11 +36,6 @@ spec:
         allowExternalNameServices: true
         publishedService:
           enabled: false
-    
-    metrics:
-      prometheus:
-        prometheusRule:
-          enabled: true
 
     globalArguments:
       - "--global.sendanonymoususage=false"
@@ -74,3 +69,25 @@ spec:
 
     rbac:
       enabled: true
+
+    affinity:
+     podAntiAffinity:
+       requiredDuringSchedulingIgnoredDuringExecution:
+         - labelSelector:
+             matchLabels:
+               app.kubernetes.io/name: traefik
+               app.kubernetes.io/instance: traefik-internal
+           topologyKey: kubernetes.io/hostname
+
+    priorityClassName: system-node-critical 
+
+    podDisruptionBudget:
+      enabled: true
+      minAvailable: 1
+
+    resources:
+      requests:
+        cpu: 100m
+        memory: 100Mi
+      limits:
+        memory: 300Mi
