@@ -16,7 +16,6 @@ spec:
               port: 17170
           middlewares:
             - name: forwardauth-authelia
-              namespace: networking
 sops:
     kms: []
     gcp_kms: []
@@ -32,8 +31,8 @@ sops:
             WTNyMzByMERjT3FYVyt2eTljM3NJcGsKJXZau5Ef5iNZqu28ztpieW/YJ4uIpdXO
             8eBBEoU+Y3vxIAcS02UxlPG2rBOLOjVufhvxdQrnCf0V07E54JS4bw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-17T18:43:14Z"
-    mac: ENC[AES256_GCM,data:ix36V5tENYRF5DzRhS/WJoqCO+GgXSYy08FgDwqAiRoI22O3XlkOWC3hsypXYEBUY5jKOBnuA36C5lU02C/suWrGczpNrztKGcUHY1PwJqSeRX5jpu7DGxc9XlwlmGCo3tVELMaWfsQE/XBZoYD2eN3Itf9SEgscbZ5b6VwYQbQ=,iv:YFLTDg66GZi6XolFGuux2qyd+ltg255t/r7xWmq+iQ8=,tag:j5Zj332Q3T3d1cfY2fqUvg==,type:str]
+    lastmodified: "2024-10-17T20:13:37Z"
+    mac: ENC[AES256_GCM,data:M85Gx/w7IfjaNm/pdHkacZunCFYsY3m3pdINYkj1lWjn/AQ5pma7fwl2xJgPNvZNJoQB/a3F5fH2q66BGomiaSN/rqmdLezMK0zXwTdY6l49jFMbRPunTh6b4gsDDphacOosH7y7R/Iq2+TezdFUXHSaCt9+SbgVZPI9Jp3Tb5o=,iv:phMD7Zngy9oMQMw7cIR2qZ37IuOOX88y/+yB2qpHzeQ=,tag:lEU12pBy1aGqqpu0v0xoMQ==,type:str]
     pgp: []
     encrypted_regex: ^(match)$
     version: 3.9.1

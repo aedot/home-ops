@@ -16,12 +16,6 @@ spec:
               port: 80
           middlewares:
             - name: forwardauth-authelia
-    # - match: Host(`longhorn.internal.xtmcore.com`) && PathPrefix(`/auth.internal.xtmcore.com/')
-    #   kind: Rule
-    #   services:
-    #     - kind: Service
-    #       name: auth-internal
-    #       namespace: auth
 sops:
     kms: []
     gcp_kms: []
@@ -37,8 +31,8 @@ sops:
             N3duYnZMZ3l0dVFrNFFVcHAwb3lWYnMKjygmYW2Ya7I2h9Td4VpzMPS7FcQxp4eG
             tTUcXpl+5YDUS+s75ooCIgg5h0XGAEe+ZAGuMXh7O5Ozvzi2XrLR9Q==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-17T19:19:43Z"
-    mac: ENC[AES256_GCM,data:pShmIrkJrmTHXzc67uRnkBGq+QThgr8+66OWO3qpDT9/2H4OhhXvgTo2YweDqlmWbqwPD9PiWgG7p3exZBmfbeymgc6bZuyPeHtINWCucdLZefMAX4V8vJ1SKIgxq4xvfv/FuHLhM42cb06GUyBEkfyrZSOKIP5pFCnlE8YgH48=,iv:C1oqkuAPKQwdEoctdhbdZjhewWQMYcwOaRPqrG4ILvY=,tag:RYM634qSTWo+LGpH5jyCMg==,type:str]
+    lastmodified: "2024-10-17T20:12:27Z"
+    mac: ENC[AES256_GCM,data:yV5yh8ipBS1/OG/16qlrZJulfOkhJ8lp2fi1c8oBLGUrBJaHW+ijhNrIPjZbSpiqy22L+ymiTTcVTC4ZGCa9aHTQ96Y/D4kh9roC6hiwCrFX8gA2+jwgngQhl2pENTV8CkVjwwPwLOBEPpaWAYOlbeBA/wPcbmT0KOg/EYz83AY=,iv:d4qIGsuPEogh/7Nz06pUqAJLBpOmxR5ADojJDUD/q3I=,tag:RmBcSo6gDLtNlMP9POvQjg==,type:str]
     pgp: []
     encrypted_regex: ^(match)$
     version: 3.9.1
