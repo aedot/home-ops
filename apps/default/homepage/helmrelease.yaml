@@ -38,7 +38,7 @@ spec:
                             type: ENC[AES256_GCM,data:3pV5MWtTAg==,iv:Us+iAjDiKUVERzkawRVxa2jBkOxuLUCvl48DTNgJlbs=,tag:15iO8xAFznnsK/LeltM+HA==,type:str]
                             url: ENC[AES256_GCM,data:lyf+pmBXqoDMhQ7p/yuzeHuAH4M6XdXIU93DtClGqmoiHZGyFqJSIoQUhm9ibs3Fk/hByCPyrm6fjM9Zgle1dMc=,iv:zcolXi7serKlY5OLx3MC5p3yIkIDYIDNO0+ZlMtS2/s=,tag:dqy4A1exFvKWkEQU5C+CUw==,type:str]
                             username: ENC[AES256_GCM,data:MWugeR8=,iv:tsKsJoNiE9btWpbI8/JVrudVh/lhL/WsV1ixGMez+mo=,tag:tkziZTj/u2FC6y/08PANOg==,type:str]
-                            password: ENC[AES256_GCM,data:OkyeFBGzL/SSPSKIlWnnJIDe8QKU9c80ZNa8Mn799Y/JQNHR+Oc=,iv:RxP123uKRnVM2yT5/2tTEZxL9A51Vs9UR1emVUzWCa4=,tag:KITF7NYfZv5oT7+Vx8vf5A==,type:str]
+                            password: ENC[AES256_GCM,data:p/xeEiuqx0x+t3otdw==,iv:ZasBdHBiKDtZuZ4HRwqE5Kj+mSIWyl4ESpfyMNmYxKI=,tag:lfoM/A16DSnoOx81bDSmMg==,type:str]
                     - Prometheus:
                         icon: ENC[AES256_GCM,data:B7A5pTSBGnooFeoKXK4=,iv:5YFeZPw3V2qayliaq16z3oE8zv855U/1mNt531PNs9Y=,tag:lwfXSf57vCA0Z3ZASaH8ag==,type:str]
                         href: ENC[AES256_GCM,data:9a5crYYGpavLvvKT8I2ZcYFTs5gf6CU5rPJ6k7QvyHWnDiZNGwrh,iv:pEGvNSn7nCoUYW16/qqSmNEiTvrMN40CkCZrkWIxj8w=,tag:WP+SJaWMa9JnsGx4eCS9Ng==,type:str]
@@ -184,8 +184,8 @@ sops:
             eDZiV0ZqUSt6UFc5cDJ3S0dYbHFlQkUKPeBRZI0Dpwg0F1DIlp1efg3APz5Ns14v
             t2fudJFA20ng3qM5jUpmOTeToWISLMGm6wFXy7NpFPaOoFpyZ+NOmg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-17T05:20:16Z"
-    mac: ENC[AES256_GCM,data:Zu0qZjDuhOn+hOchqa+MTcehXtngDt7Sd6+AI55sC6Y96cTk1+US2DMw/tLraKIk4S8I9GTYRBJEj6QatSky+wAaWEeeB3YcsBiO+DigHd37wpeLkdZW2v7yyRw0iO0zjeHD5O3eDxyYnRfheCma8YrzGIeSsMDd9QCvHJMSduQ=,iv:XKGC6YLT64CGPm2pz6fve5zPdckXyeIjSsp2yN4QHPI=,tag:GCS7m3E50SQQVIoZIlLZuA==,type:str]
+    lastmodified: "2024-10-17T05:30:00Z"
+    mac: ENC[AES256_GCM,data:eER7zYEJ9JtJNoggrxfOsqc4WHiPTC+7Cef/bnPQ397/PjW8sNoNWwGQtJZsNxNOhWABdC3UiPcZwXAWSU2IC5FACFLNXA8Uj7c9l1T/1ONg+gtk0fbKV73zIY+2CuwPWWfXUxWK4SmDJWxXnhP0iHiHmvCjZkQmNZ0ud9i9+m8=,iv:YrU8DEUdwDgqiEEY5a8NUE4cK8jWlfelVACFQTK5X6w=,tag:6RijWZ/K+B9kyYkfpmb6+g==,type:str]
     pgp: []
     encrypted_regex: ^(config)$
     version: 3.9.1
