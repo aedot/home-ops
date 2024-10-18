@@ -116,7 +116,7 @@ spec:
                 cookies:
                     - domain: ENC[AES256_GCM,data:n/dinx7rVazaXjw=,iv:ncr/WN/DIYAsjXuPl8S6+ycALUumnad1y15O99vJz8Y=,tag:nbiKrZhymFS0sZeJ5QGZxg==,type:str]
                       authelia_url: ENC[AES256_GCM,data:0OmZ/xLgxbX+Gu8vLdLL+7h+zZs7vXPg,iv:bveqtzYqtVdUC6vhmKXUk5cIYq7iIiyjfZDbBgUCboo=,tag:yC+IJN78pnugDtB7lMPV8A==,type:str]
-                      default_redirection_url: ENC[AES256_GCM,data:rv/OHtpniGcA3URGUaCAEUO3hufya4jk,iv:eJJx0xTTz9I2+IT0KUkiUcXrb+I3q1UIQOmvPp2WHtg=,tag:2g/LfeqGkCRHijroL5oYSA==,type:str]
+                      default_redirection_url: ENC[AES256_GCM,data:teRTA8xmBJbz187l/iUcllfaXg==,iv:b2ryU7moycQMAofb+KrX8N+igpilc3vU8iBHutiaWYQ=,tag:i5d+usSL8qb10JLUpCEYIQ==,type:str]
                 redis:
                     enabled: ENC[AES256_GCM,data:ptHfoQ==,iv:5N1Tk772VkU7txLX8rFX4hSlBXtjvIACiZyqzJtY/o4=,tag:hU0XsKIwem7O3bhIe8MrxQ==,type:bool]
                     host: ENC[AES256_GCM,data:nMiUz56jhkS8UKCWtibitoxwLdIwRUv+QKJ9g9bsJ3OZKI9RXrJYdjb1XoBBPBr5P78Xu1B2ubU=,iv:LHB6bHvPLzF+9CLpuDJN+H8QWeDamJT7IZLUZBziLLU=,tag:z3qNbEK10jvUP0s+o6pw+g==,type:str]
@@ -164,8 +164,8 @@ sops:
             S09ROXF2aTBITGdEUFlpVkxZQ3BPcE0K0/p7B3WOtDYONShlgNbtWnoFV30RbfNW
             slzU+P8RlLbF9F/QXTzhC37bu/KoFqhDmbXpiQpAmBmUao+V7RoB+A==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-18T04:53:09Z"
-    mac: ENC[AES256_GCM,data:fmBRkGf7kNlxYEZqkp85kh/lRKR3v+y4HY5vKPSfuWqPlgvMo2IzJJ4uSl1RXu6Zh6obs4f1u8+bSsZmMvueMYiZ5us6SkEr9WzOiDNruS83UAdG2qFlsA76TC03VaSQ/j6lHLaqT6GiFXw85bWxt6n1F2V0nrpEbc9JCdi41qw=,iv:hIaN5lLWvYQqiq2SeggsBcMjTvJhWShMPFLExn4gpnc=,tag:lx6vM5ktYxG/1e58KDe4hQ==,type:str]
+    lastmodified: "2024-10-18T04:59:30Z"
+    mac: ENC[AES256_GCM,data:xnrkPrNWU1posl4afyiQlQftrJfawNMhtguExnYOzF/N5sXKLIcl0jcSlU8cff+2lJ0MLiC5mabKeasoMHfAwgVz07juS16I1C6HNFkrQ0rOsINChOKtS9FOwrMtpJf+4S/BT6AUvXGHB8fuo4DOzGRIe63RwAFROqdTh1rtVgU=,iv:sPyq0OGHcyZfSjuxl6LqNRoMdtXBq54gRGOqgzrem9U=,tag:RFxy85nhsMQEi5MxyPzr3w==,type:str]
     pgp: []
     encrypted_regex: ^(values)$
     version: 3.9.1
