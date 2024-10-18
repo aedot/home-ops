@@ -1,18 +1,21 @@
+# traefik.containo.us/v1alpha1 depreciated in Traefik v3
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
     name: auth-ui
     annotations:
-        kubernetes.io/ingress.class: traefik-internal
+        kubernetes.io/ingress.class: traefik-external
 spec:
     entryPoints:
         - websecure
     routes:
-        - match: ENC[AES256_GCM,data:H6xtC1ENavFEpJTRLFjuTkjZ4A64zstX,iv:/Fz0NkWj/sP8tie5AxfORJSYz/s6t5ZKSknIhqKS5D4=,tag:q1o6HqDqqIbZeR4gf2yM4g==,type:str]
+        - match: ENC[AES256_GCM,data:uslhk2LlZe6vVZlqop7lA93RSRTVSnRX,iv:XEXzRHNfgXyWaGdeoP7AutDEuyPWFPS7drQKzYcJfe4=,tag:E+ix0w0TgI99le4K2IMWwQ==,type:str]
           kind: Rule
           services:
             - name: authelia
               port: 80
+          middlewares:
+            - name: forwardauth-authelia
 sops:
     kms: []
     gcp_kms: []
@@ -22,14 +25,14 @@ sops:
         - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBJZStCei9MaHFyRkhsZVlH
-            b1p6dEtXYnR4K2V6Q2didXNvVXRjVXlYajFJCndzTWFOSU1CTFNNdUIxNG9DK0px
-            NDdWOHZob0laYjNtZzFsTnVJTDFOU1UKLS0tIElUZFVqNjhZOTBIc2NGekNIRlFw
-            MlRlOHg2VFBKVWQzaTBXRkVJbFJ4RHcKufynPNdOzkeQxa6Gnrw70dFiBMxdoqIx
-            DzEB/yt31y2j+hjbjXL4NNWDQbmqKj6o72CrhMK1nzubZvMi6EGt5A==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBWUWpudHRnOGZUU0orVFQv
+            ZTZ0M1VtdkhNVDVqTU9qeWhhWVU4ZDBMOFRZCkF4ZGlzTnZPVXdZZVF5SU9tMXVi
+            dFQ4RFhLKzlvODVqYnBtcU1Bb1dNT0kKLS0tIHIrb2FUWTdzWUppRHRzWGd0MFMz
+            Q29NTTZaMEVySElyRnd1M0laVHVwMWMKTzziEHBdNlfEi3MijauNIB1u7D+VkNi+
+            ttNuPnb8soZEr8cb+Yyr2TkKgn8k6Q53b8ijSb2P0uym5CAO0/+rUw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-17T19:46:44Z"
-    mac: ENC[AES256_GCM,data:gfp6/NitckkrGNqGq6XEmC3gFR6vsk4fN0USlmqzbqmfYKc6zdRIQsgTXszGh0O0Tdvdl2lU50lq+gQ2PZ13zB0khZ/vjmiGSwuEE6t+THHzOaKlt9PcNtKUqLioSBsi4umbsixMduUoVDS2/k4Ip98AWnRn9v8Y3FuTeA95aT0=,iv:Acz55GglLdQwbNG0kp1h+ThIi95lLdbo9VcTjbLVEC4=,tag:HHG2e2l3ni6vaVAkvTzSHw==,type:str]
+    lastmodified: "2024-10-18T01:22:24Z"
+    mac: ENC[AES256_GCM,data:kg7lqGZS3hXvYCSJ1+3ZjxS49E2eqnslvV1pMlanYX3NljqXTxEE6S4dnaBQdhlkUPW3PHt/qG/pKC68yt3bYLHaVvSfoieqPdVf1vlYHNwbdb17mCRX2CJ5HCKC8Y+OuxrBbLKFQMdvlaIR9nvSC0hLE0ijpZhOlnLeUYzJVZ4=,iv:d9g0J7lLZyFhxvU3xvVqQavbs7rkmsK6qQYLpDLIyW0=,tag:eyfLpCno2ps6WyEZjmVS2A==,type:str]
     pgp: []
     encrypted_regex: ^(match)$
     version: 3.9.1

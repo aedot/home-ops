@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    labels:
+        app: cloudflared
+    name: cloudflared
+    namespace: networking
+spec:
+    replicas: 2
+    selector:
+        matchLabels:
+            pod: cloudflared
+    template:
+        metadata:
+            labels:
+                pod: cloudflared
+        spec:
+            containers:
+                - command:
+                    - cloudflared
+                    - tunnel
+                    - --metrics
+                    - 0.0.0.0:2000
+                    - run
+                  args:
+                    - ENC[AES256_GCM,data:OUl5OHKQvA==,iv:HxFg4vS8Epb9xn8724BgrPty867ihW9kLR2B/xahSPY=,tag:mEUNEz6uit7zzqh5MbS46Q==,type:str]
+                    - ENC[AES256_GCM,data:fD+fQ7FGjqUVXO6XInDEMaB3gutz3hQWv541Ies0+XbjHFFHQ/FlfRgUuwp9/0jXLWGJggRolYlQBFhMfnOHAUIuUzA3wHVu5tkWN4IQjws4hDT8ahKjtiYMqmLqQf71UldgWAfECL1RLz+OssFr0vYewE03E/DyytHIP0bKI+SBSiqRZVc49IxPaNFvGdnuhbx6bmN84SOnOuH6I4CkuNm8jaPhEz3Aj+53pARZGaWI8qmnlD/yOg==,iv:yXGwChGAULq7MIU5Fa9lqRg5rwGF8zzE+QgWpQhip8Q=,tag:phl5wr2WWCDJGp3bCDZYFA==,type:str]
+                  image: cloudflare/cloudflared:2024.10.0
+                  name: cloudflared
+                  livenessProbe:
+                    httpGet:
+                        path: /ready
+                        port: 2000
+                    failureThreshold: 1
+                    initialDelaySeconds: 10
+                    periodSeconds: 10
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB6enpwcVE0NnRMOXFqdlpM
+            VmRETkdCMzJGQXNMV2poSnRwOE5xcWpWdEVrClA4RHdYZnJDUkxUQmRBeGp6c1NY
+            UlpZbTZwWlVRSzdvaVZEQXRpY0FITTAKLS0tIG13d05obXM3T1dOMU9DbW5UZXd1
+            OC9zdlpNOCtaSmQ0SmJVVWVQclYwRnMKUC82gxUTvw2qhRfvxHMWIrABdimdD0Nd
+            BZ48KKUDFAvCDaHpWWCYVm8oHq42eV1fjx26AioPeqFN6zh7jo4UHg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-18T01:24:49Z"
+    mac: ENC[AES256_GCM,data:DdJFRxpTpvc3Mf86I7Gos4yD1lPrkd2ocy2smHfuKtAXPDHN3whRV73UT+maeHP7BT/mVelqs15xzlrfG2nZxNSWFK5k/Ov/c2sRMx/phU8o0o/TPVgPlAGbRtZkpwUQLAS0wMaCVyofpEI1AEK843AHofLpLoQYTBFxxA1Es9Q=,iv:gnFIg8a6hRMjf1huqwEeZXTAcRle4znofVbchQHX39g=,tag:yCBnzlB1uwi8Syqt5ssK6Q==,type:str]
+    pgp: []
+    encrypted_regex: ^(args)$
+    version: 3.9.1

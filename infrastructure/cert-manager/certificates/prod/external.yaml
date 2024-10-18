@@ -1,0 +1,33 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+    name: traefik-external-prod
+    namespace: networking
+spec:
+    secretName: external-prod-tls
+    issuerRef:
+        name: letsencrypt-production
+        kind: ClusterIssuer
+    dnsNames:
+        - ENC[AES256_GCM,data:DI6XuW3QRdcZ5/A=,iv:jbzkuofz73J8E6mOgYEiRUszuY4Exvcwxsl35zwagvI=,tag:XQSmQtHzSmqRhX/33ixcfA==,type:str]
+        - ENC[AES256_GCM,data:pAiNZGUrUoRdccTtZg==,iv:sxH2FYjZHI5gS4qmuoEj1ej+aS9dgfSB8cCjvyeAFWE=,tag:K3QeKRbRw8bkuBvKoHU0bQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA5VWh1MHkrWGZTZ3JmWmFR
+            cENpYzM5Nnora3BtMlRlTm5zTEIyZ2dvekQ4Cm9GRXp4Y1NZcCtVSE1CNWVRR2lG
+            QU0wOW5kZnBVV1NSTW1ybFp3VWdTTlEKLS0tIEV1aDF4Z3lXam9ia2dnSU9wQTBI
+            NVUzRDY1Q1k1blQ1cWpLZW51N2ZydkUKqcOhxZQmQmr+htwODphXjuZ8c7VL9dkY
+            80bbO92JwRvEsXd4qvbTcZtl/jTSdaHsSOtA3FBGw0jqhGF9jN3clA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-17T21:05:23Z"
+    mac: ENC[AES256_GCM,data:sBaLOQQ8W9fTJ+Lywy/G7vImWwC9qWRP+3CFZNYY6gQ4LLMW4BMtLlcmg8AieqvEb3I5LHhcIOgM9WgZgzGAxntcfWWBX/3m0ytjiQZKZ6s2tNLbo3AyHp0O+c5dftB/0IhPWoWciJvyiNguK6E1bxFakYKTFjlZDpMvWhtx/HM=,iv:+xbdikoa3+Je+A1HO1bOKSOXNFM0pts+r7I5ya9Pen4=,tag:OiJpL3CNDuVKU2GgS5gjXA==,type:str]
+    pgp: []
+    encrypted_regex: ^(dnsNames)$
+    version: 3.9.1

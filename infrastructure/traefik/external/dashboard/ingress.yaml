@@ -1,0 +1,65 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+    name: traefik-external-ui-auth
+spec:
+    basicAuth:
+        secret: traefik-auth
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBtazRsbXRzS1QrZEpuS25G
+            OURNeW1qY1ZKQnQ1UXduUHVYWEY4akYwdUVBClNxOGgrSG1MVE9iQkpsV2plUHhM
+            SVZtSnBhR08wenU4Z0tNTmxWWlg5bm8KLS0tIEZZT0R0aHozdXcvVE80Y1lybjgx
+            d2NDZitrWVYxLzFKY3lUK24yN21pbE0K2BzfclhtWRQmB46SV7Od1Zg/kmiEHpue
+            9NfX5zUChgp5pg3vz0v+9xyyQvfWHDUqORIn7AwD8bUNVhnS0WPlIQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-18T01:26:26Z"
+    mac: ENC[AES256_GCM,data:tu63wpWtOolDpE4ki0Eo+WYltQyPTB6RFlo4hkA/bUeGUEMKMtA6WWxmBvyHA/sSBAtlRBHVkknxXGFQXeJsRsPSUqlVTPsZt5rz5hMeuXEoVHj2kUap21m1up4VWDI1AY1tPurRTrR7oj5o2hOV9Sd4cdO8kLxl7dz01sCA1u4=,iv:vSSIlBkL85YFqVT4swRF9r0eggXig+F0LvyMEwzefTA=,tag:zuGdhiuZPk2vVtGqcpWZdA==,type:str]
+    pgp: []
+    encrypted_regex: ^(match)$
+    version: 3.9.1
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+    name: traefik-external-ui
+    annotations:
+        kubernetes.io/ingress.class: traefik-external
+spec:
+    entryPoints:
+        - websecure
+    routes:
+        - match: ENC[AES256_GCM,data:XGSVzkcw3VKsGqowJzzvcmpYZWPaVoiXKGP0,iv:osPsThtzAQXUskPnEBNLC6ItvmuiCsQ9hyl3rt7AqAg=,tag:NyVXCGv0zALV8TCuwUxSDg==,type:str]
+          kind: Rule
+          services:
+            - name: api@internal
+              kind: TraefikService
+          middlewares:
+            - name: traefik-external-ui-auth
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBtazRsbXRzS1QrZEpuS25G
+            OURNeW1qY1ZKQnQ1UXduUHVYWEY4akYwdUVBClNxOGgrSG1MVE9iQkpsV2plUHhM
+            SVZtSnBhR08wenU4Z0tNTmxWWlg5bm8KLS0tIEZZT0R0aHozdXcvVE80Y1lybjgx
+            d2NDZitrWVYxLzFKY3lUK24yN21pbE0K2BzfclhtWRQmB46SV7Od1Zg/kmiEHpue
+            9NfX5zUChgp5pg3vz0v+9xyyQvfWHDUqORIn7AwD8bUNVhnS0WPlIQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-18T01:26:26Z"
+    mac: ENC[AES256_GCM,data:tu63wpWtOolDpE4ki0Eo+WYltQyPTB6RFlo4hkA/bUeGUEMKMtA6WWxmBvyHA/sSBAtlRBHVkknxXGFQXeJsRsPSUqlVTPsZt5rz5hMeuXEoVHj2kUap21m1up4VWDI1AY1tPurRTrR7oj5o2hOV9Sd4cdO8kLxl7dz01sCA1u4=,iv:vSSIlBkL85YFqVT4swRF9r0eggXig+F0LvyMEwzefTA=,tag:zuGdhiuZPk2vVtGqcpWZdA==,type:str]
+    pgp: []
+    encrypted_regex: ^(match)$
+    version: 3.9.1
