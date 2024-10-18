@@ -9,7 +9,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: bitnami
-      version: 20.2.0  
+      version: 20.2.1  
   interval: 1h0m
   values:
     master: 
