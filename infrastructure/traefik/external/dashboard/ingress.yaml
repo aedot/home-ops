@@ -20,8 +20,8 @@ sops:
             d2NDZitrWVYxLzFKY3lUK24yN21pbE0K2BzfclhtWRQmB46SV7Od1Zg/kmiEHpue
             9NfX5zUChgp5pg3vz0v+9xyyQvfWHDUqORIn7AwD8bUNVhnS0WPlIQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-18T01:26:26Z"
-    mac: ENC[AES256_GCM,data:tu63wpWtOolDpE4ki0Eo+WYltQyPTB6RFlo4hkA/bUeGUEMKMtA6WWxmBvyHA/sSBAtlRBHVkknxXGFQXeJsRsPSUqlVTPsZt5rz5hMeuXEoVHj2kUap21m1up4VWDI1AY1tPurRTrR7oj5o2hOV9Sd4cdO8kLxl7dz01sCA1u4=,iv:vSSIlBkL85YFqVT4swRF9r0eggXig+F0LvyMEwzefTA=,tag:zuGdhiuZPk2vVtGqcpWZdA==,type:str]
+    lastmodified: "2024-10-18T02:50:50Z"
+    mac: ENC[AES256_GCM,data:xhF0NZVsdMuchfw2idKI+nAJjH9jIWFoZYQ/Vxn4OfHEw+03jaDHqC7m8Bg+MPTFSrMaw2xhobmI/4HgFNTWTiPxbtESOGamu+aybehi42NKEHzNj4rKbtmTchre6lTSOuG1ok7JxCXsxM0q24kIrzd9AdCgoeOIyZx0p8fNimM=,iv:767vyX703/39nar5HE8UtQqOqBCNzO4G4RgOd+LW+L0=,tag:rF1lnGWuSDgjnz7DyKXwBA==,type:str]
     pgp: []
     encrypted_regex: ^(match)$
     version: 3.9.1
@@ -43,6 +43,8 @@ spec:
               kind: TraefikService
           middlewares:
             - name: traefik-external-ui-auth
+    tls:
+        secretName: external-prod-tls
 sops:
     kms: []
     gcp_kms: []
@@ -58,8 +60,8 @@ sops:
             d2NDZitrWVYxLzFKY3lUK24yN21pbE0K2BzfclhtWRQmB46SV7Od1Zg/kmiEHpue
             9NfX5zUChgp5pg3vz0v+9xyyQvfWHDUqORIn7AwD8bUNVhnS0WPlIQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-18T01:26:26Z"
-    mac: ENC[AES256_GCM,data:tu63wpWtOolDpE4ki0Eo+WYltQyPTB6RFlo4hkA/bUeGUEMKMtA6WWxmBvyHA/sSBAtlRBHVkknxXGFQXeJsRsPSUqlVTPsZt5rz5hMeuXEoVHj2kUap21m1up4VWDI1AY1tPurRTrR7oj5o2hOV9Sd4cdO8kLxl7dz01sCA1u4=,iv:vSSIlBkL85YFqVT4swRF9r0eggXig+F0LvyMEwzefTA=,tag:zuGdhiuZPk2vVtGqcpWZdA==,type:str]
+    lastmodified: "2024-10-18T02:50:50Z"
+    mac: ENC[AES256_GCM,data:xhF0NZVsdMuchfw2idKI+nAJjH9jIWFoZYQ/Vxn4OfHEw+03jaDHqC7m8Bg+MPTFSrMaw2xhobmI/4HgFNTWTiPxbtESOGamu+aybehi42NKEHzNj4rKbtmTchre6lTSOuG1ok7JxCXsxM0q24kIrzd9AdCgoeOIyZx0p8fNimM=,iv:767vyX703/39nar5HE8UtQqOqBCNzO4G4RgOd+LW+L0=,tag:rF1lnGWuSDgjnz7DyKXwBA==,type:str]
     pgp: []
     encrypted_regex: ^(match)$
     version: 3.9.1

@@ -14,8 +14,6 @@ spec:
           services:
             - name: authelia
               port: 80
-          middlewares:
-            - name: forwardauth-authelia
 sops:
     kms: []
     gcp_kms: []
@@ -31,8 +29,8 @@ sops:
             Q29NTTZaMEVySElyRnd1M0laVHVwMWMKTzziEHBdNlfEi3MijauNIB1u7D+VkNi+
             ttNuPnb8soZEr8cb+Yyr2TkKgn8k6Q53b8ijSb2P0uym5CAO0/+rUw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-18T01:22:24Z"
-    mac: ENC[AES256_GCM,data:kg7lqGZS3hXvYCSJ1+3ZjxS49E2eqnslvV1pMlanYX3NljqXTxEE6S4dnaBQdhlkUPW3PHt/qG/pKC68yt3bYLHaVvSfoieqPdVf1vlYHNwbdb17mCRX2CJ5HCKC8Y+OuxrBbLKFQMdvlaIR9nvSC0hLE0ijpZhOlnLeUYzJVZ4=,iv:d9g0J7lLZyFhxvU3xvVqQavbs7rkmsK6qQYLpDLIyW0=,tag:eyfLpCno2ps6WyEZjmVS2A==,type:str]
+    lastmodified: "2024-10-18T02:49:14Z"
+    mac: ENC[AES256_GCM,data:IfQuitqoBt2kXt+tP2MmKtvf+jd3iWvMwPdhUW4v3wS/r4pk+oOSROTYhSWtqM43FQYWPTEip4uPGyFFCgB0MIfn1z7ZijmlsRHH9UEKYzDsZOEVSkKLgsJNgv6zImW8Uqfsqr0XIxkPTIH1DEZDtcvbMjqUi5JFDKmZVAAZms8=,iv:JQrf0ai27EdwMVZ3rSgXqICez2Wb5kSFRyl4Glu0kEE=,tag:PXhBIAzR0nXGv1IKHxl+Cw==,type:str]
     pgp: []
     encrypted_regex: ^(match)$
     version: 3.9.1
