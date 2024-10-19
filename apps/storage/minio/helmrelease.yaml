@@ -9,7 +9,7 @@ spec:
             sourceRef:
                 kind: HelmRepository
                 name: bitnami
-            version: 14.7.16
+            version: 14.8.0
     interval: 1h0m
     values:
         auth:
