@@ -1,0 +1,36 @@
+# traefik.containo.us/v1alpha1 depreciated in Traefik v3
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+    name: pgadmin-ui
+    annotations:
+        kubernetes.io/ingress.class: traefik-internal
+spec:
+    entryPoints:
+        - websecure
+    routes:
+        - match: ENC[AES256_GCM,data:j9ruozJAinhxQDM4zCJWLkPzrSSxO88qY0WH,iv:5eqOCH+U3LMXFrIx2KgwFNjQuzbfYsX8MlLabeGAyPk=,tag:9bjbHLIaO6lrU+7ZVWYLFA==,type:str]
+          kind: Rule
+          services:
+            - name: pgadmin-pgadmin4
+              port: 80
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBReGQ5Uy9WUXdwblhuemdH
+            MFVOMkVsYjF5NTNsbW1DdG50UXJBd3l1bUQwCnl1cnF5TDU2Qi9TQlVpOWtZSXVG
+            bmxtc0I5Q2hjU3NFMjlZTVZoYlM0VEEKLS0tIFAvRE9hTTlQVWEzT0EwY1V0dHF4
+            aExWQ0FyMlQvYjFoaG9MTWZrU1ZBeGMKoRROSD/KUvYE8KRjV3dpst1CzieRz2zd
+            hGMyfK1zzRtGrjSPv28LYp77eJEDyN1lJ4q0xNXtH+7ja3eMTdA6ug==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-20T07:09:21Z"
+    mac: ENC[AES256_GCM,data:S5ULAzaRgxLOtSzYpom7isjJsBcVND5wFgXDT7efIgirpAkoq5lIbo0nuWvHY39tGoUDHu5VcB2nvim0B54EgCjAnOK1O0BzRh6WQfWx5okGAR6l2G0w8Oe443Rew5hP+zeoMhPcOtHaVjdtqud6QYLJUBdXxCxxXS5zKmd+P6M=,iv:RZSAJi/FMGn6zbdMh+QOmSrTWlzvHDTyOWawkM5qfEk=,tag:7s5gSYVtFmWJ/S4Z7UWrpQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(match)$
+    version: 3.9.1
