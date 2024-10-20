@@ -13,7 +13,7 @@ spec:
           kind: Rule
           services:
             - name: minio
-              port: 9000
+              port: 9001
 sops:
     kms: []
     gcp_kms: []
@@ -29,8 +29,8 @@ sops:
             aExWQ0FyMlQvYjFoaG9MTWZrU1ZBeGMKoRROSD/KUvYE8KRjV3dpst1CzieRz2zd
             hGMyfK1zzRtGrjSPv28LYp77eJEDyN1lJ4q0xNXtH+7ja3eMTdA6ug==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-20T07:31:21Z"
-    mac: ENC[AES256_GCM,data:SlRJtwez2ssE0JDAC8ubXdZjtZoWNxOWvqNG1/OqFPftf7FbNzF8dVNpnQYIG6enr2gpqeoD1Gx2dl7LQMzQ5wvtPBOET0sr8Q3FAwRcWCVoBqcAkQd5+uwgJBfOumFQRejwx2y1r0qkHaCfPT+dVAl10u6pvJZNgw3n/wRCQd4=,iv:S8AnJNkjSnuooelzn0ONyW7X/27E7j1jddJ3d7NOC9g=,tag:DXv4jBJawYU2bDxPEyAcuA==,type:str]
+    lastmodified: "2024-10-20T07:52:09Z"
+    mac: ENC[AES256_GCM,data:hmJTqaZDrChH7wRZcTdp5b8f3x9Uw81UKq2Em7UyhtkKkRAH4fgIg6rD7N6z+bpzN1diZw7ruyxutABg8LEVoHDHnbPTV6yz84rkT6TP0IcZhOYVZIlxEc4SdX28QZHLiKOvxzcddE1U+1JJvpKfg8rz8JMsMwFVBd7TSEsX18E=,iv:vJpIt1isZO+nYp5zKF1OcxlPlDhpMclPJVBvt5aJYiE=,tag:LJjMhR3TKMgAElzBrLE+AQ==,type:str]
     pgp: []
     encrypted_regex: ^(match)$
     version: 3.9.1
