@@ -12,9 +12,18 @@ spec:
             version: 1.31.0
     interval: 1h0m
     values:
+        ingress:
+            enabled: true
+            annotations:
+                kubernetes.io/ingress.class: traefik-internal
+            hosts:
+                - host: ENC[AES256_GCM,data:VPG2imRlut9vb5jdL0Zz/xa+oQ==,iv:60yhKkLWq8QwJS3VvCgROj62zhHSRTvdhIhH+dSWjHA=,tag:3haoUbDB4Gd9lhwBoCbLMA==,type:str]
+                  paths:
+                    - path: /
+                      pathType: Prefix
         env:
-            email: ENC[AES256_GCM,data:dihSTbb2mvnJ9oXhpqPaNa2hLY0=,iv:UEG83QLUykwfjG3eIADCP0HxgDn/F3Op9lKxcPanwck=,tag:PlHe8MsjPiDIfXwNJD4jRA==,type:str]
-            password: ENC[AES256_GCM,data:rOstW+rI/0yn7xaUBefg4w3i7pFQLavpkkr92iOIyYK/nKg+,iv:aiGDctSG3OT7MexjshHuuBGP9p8BqeVWCEgOvLzrFIs=,tag:uhEcgo8IcNvTohZpqEFBfA==,type:str]
+            email: ENC[AES256_GCM,data:5fiiWFYzFyqLAkxRnNTWoh+s7bY=,iv:mpy6sKOfflWiHGOqqhLa54D3i6O2FuWAJizyGpy77eM=,tag:6aNCFvrx61ARfR4OpqcDWw==,type:str]
+            password: ENC[AES256_GCM,data:OAd1qy2ieMOp3y71L4Kbtn31TapNEHfrmxDhfgtZz5JmSH3R,iv:XbjlgZIfj3U2HoEMHSjvtcB5MzjeraeY0+8tLXI8Nmo=,tag:A+tq0t+B6Wr6FB8SvpAjbw==,type:str]
         persistentVolume:
             enabled: true
             existingClaim: pgadmin-pvc
@@ -27,14 +36,14 @@ sops:
         - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBoQjJMSFBSSjkrb3N2SEhL
-            S3hocWZCQkxPb0Z2aTRPUDRQQVZ4eEM0bG1nCmpsMExRVERDcG1CL2laUFlNWTNN
-            ZHN4OEFscUJ3N1dzVFU1TWRCclJCMFkKLS0tIFgweXFFTVVzY0RsUWlOTXhGcUVw
-            dm1rMy9CcWlnVHllZ1Y2eEhPOVcwQk0KHJmnQEbKL4SQ3A+b5+ErVzc8ZOIEdtZd
-            3dXKU9lILy/d3O19vMki0iJH6mJ3ixc4X8hBvgkQzkrUCf7qLNDTAg==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBRazNNWFJpU2VVVGpDTWpu
+            SU55eTQyK0NiRlJpM3phc2FGYlplU005bkRnCjFabDdEZ3YrS0VKa01TUHZHQTVn
+            dFZYRW1vb3hlUTVHWHNBMVdUc2pRcEkKLS0tIEpOT3p1MTd6UmphVmpsaC9iZ0oy
+            Y1JNUWFVNi9Pb0szY0tmNExUMHg5UnMKApSHYP/mSRmgjogwGXHmLIUiEeKJrALb
+            5tAYpVirEt8xag8B9qHRsCkXUYw7lu3EbfbU82CSY3f2v4dL0vwALw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-14T03:55:32Z"
-    mac: ENC[AES256_GCM,data:AdWcewCI1wS93GED9oS3HGKauNZx7y9yN4AGwCpHdBFKdtkCgUKQ2LbTDsG3g0flhOXIhneCQzvdEYpJswyKmmBJPB8A555pJb73hjhUAfX074q+4tPqESmty89yQpToPUGkwja2Zkq6brz8pzi7uspr/1Z0/k5fL1duS3s/k8o=,iv:J3JfE7knUmiK58xD0E+hbB6JGZ5mb/c2iYKLwwKHlrk=,tag:L6GXM/J5doYEetkUaz2ZiQ==,type:str]
+    lastmodified: "2024-10-20T05:15:21Z"
+    mac: ENC[AES256_GCM,data:3LOfUbp2mwI7v4TOoevP4NUAZYU6JVjYCf4ZnMrLA4pY/em+MKR58qZT7G6HgZjX4Q/k0DvXQypo4U8AE8uamUJjy2UxHeciX33pcLZ4PNJLwBdoGD/nxqQJhuOI69KPoX4SWa0ObHDPsZahdgWVzjvFDJIkHhNo1yg2yer+dgc=,iv:lgpzMJz9oPdHIWUgwNnBBU4ynToRk+ehWdGaH0yhKcU=,tag:ajs979xGkZ9/Hiho64UUVg==,type:str]
     pgp: []
-    encrypted_regex: ^(env)$
+    encrypted_regex: ^(host|env)$
     version: 3.9.1

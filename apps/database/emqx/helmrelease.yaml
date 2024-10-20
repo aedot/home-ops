@@ -1,0 +1,55 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+    name: emqx
+spec:
+    chart:
+        spec:
+            chart: emqx
+            sourceRef:
+                kind: HelmRepository
+                name: emqx-operator
+            version: 5.8.1
+    interval: 1h0m
+    values:
+        emqxConfig:
+            EMQX_CLUSTER_DISCOVERY_STRATEGY: dns
+            EMQX_DASHBOARD_DEFAULT_USERNAME: admin
+            EMQX_DASHBOARD_DEFAULT_PASSWORD: public
+            EMQX_ALLOW_ANONYMOUS: "false"
+            EMQX_LOADED_MODULES: emqx_mod_presence,emqx_mod_acl_internal,emqx_mod_topic_metrics
+            EMQX_LOADED_PLUGINS: emqx_management,emqx_recon,emqx_retainer,emqx_dashboard,emqx_rule_engine,emqx_auth_mnesia,emqx_prometheus
+            EMQX_AUTH__MNESIA__PASSWORD_HASH: plain
+            EMQX_AUTH__USER__1__USERNAME: mqtt
+        emqxAclConfig: |
+            {allow, {user, "dashboard"}, subscribe, ["$SYS/#"]}. {allow, {ipaddr, "127.0.0.1"}, pubsub, ["$SYS/#", "#"]}. {allow, all, subscribe, ["$SYS/#", {eq, "#"}]}. {allow, all}.
+        ingress:
+            dashboard:
+                enabled: true
+                ingressClassName: traefik-internal
+                path: /
+                hosts:
+                    - ENC[AES256_GCM,data:u8rT+a/LqL1+Hx3m9HIuvw==,iv:EJapVYBTg1yl+h++Y1iVNr9rSRrgJvdS4FWI6nD0NLY=,tag:6mvgNo6DoHdgG+9Cy5IbjA==,type:str]
+                tls:
+                    - hosts:
+                        - ENC[AES256_GCM,data:528FRbmFwhZhOKXNJTjMbw==,iv:261FWTWYvvidnc3XqObCP7Scq+WbTMTgEMb8zBPMSnw=,tag:DU7QR3k/+/3eaqWwKmmOHA==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB4M2xmVUt2ajZxS1BOWEJu
+            UUNmTDVJcTkzL09CVTd1bTUvOG50UEFCTkNZCnhRSUdMRVNMWncyLzBRbE52THUv
+            dkdLUHJlVWRzK2pIOGsydXd1RXh3YncKLS0tIDE1R2t4YjlyNTNOWVlvZ2UyU0t5
+            SHVndlk5NlRTajZDLzkvM3ZobWRLWkUKnDRJ5ajNzYKjo1uuz4oLqzjtmaq6Qmyz
+            rg5q99QY7fViIJs4bOZ8po/6tCtpsN5IJuBydz/C+jIfshjpk64OTw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-20T05:01:07Z"
+    mac: ENC[AES256_GCM,data:CZlYZY5B+TaA5kviwwXR9W+J6YctCS6fZ6Eks1Vtp/hbl3X6sEW4P3jw9WDBl08s1knqljoa9mYV+n/iIOrmBCvxaImv5GOB1K/SJbH2cKPvn+KSyfE9NYcKT8Q4rNKXZYcQSMJ9GQkN7wSg7mGlNVWCNdYyEW/Qz4x1bagP7X8=,iv:/PiX6MM5TzLbViU162brdf6RHQHvMgNQzoieVFP3v/4=,tag:/mgYuyaPnRBTsZ9+OzvP6g==,type:str]
+    pgp: []
+    encrypted_regex: ^(hosts)$
+    version: 3.9.1
