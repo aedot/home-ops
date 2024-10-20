@@ -1,32 +1,48 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minio
+    name: minio
 spec:
-  chart:
-    spec:
-      chart: minio
-      sourceRef:
-        kind: HelmRepository
-        name: bitnami
-      version: 14.8.0
-  interval: 1h0m
-  values:
-    auth:
-      rootUser:
-        name: minio-auth
-        key: USERNAME
-      rootPassword:
-        name: minio-auth
-        key: PASSWORD
-    statefulset:
-      replicaCount: 3
-    persistence:
-      enabled: true
-      storageClassName: nfs-storage
-      size: 120Gi
-      existingClaim: minio-pvc
-    metrics:
-      enabled: true
-      prometheusRule:
-        enabled: true
+    chart:
+        spec:
+            chart: minio
+            sourceRef:
+                kind: HelmRepository
+                name: bitnami
+            version: 14.8.0
+    interval: 1h0m
+    values:
+        auth:
+            rootUser: ENC[AES256_GCM,data:TuGq1Hg=,iv:68NgEYf5ENYLE4yUPY/1pg5OPDLf3QmEYkqqXGi8S4c=,tag:xYT1UZmakNnV9lNneL4nGQ==,type:str]
+            rootPassword: ENC[AES256_GCM,data:5Ia8Qjx7A4lgcjMP7D/6pMhZMhRSFHVFwkNLaS5zErci63B4g5idJMM=,iv:UHhw/mX7FlchCFfIDrcnxvMXdYi41uWmNnKsUVoMjdA=,tag:tLKlidyWlKUxXaASXgG1bg==,type:str]
+        statefulset:
+            replicaCount: 3
+        persistence:
+            enabled: true
+            storageClassName: nfs-storage
+            size: 120Gi
+            existingClaim: minio-pvc
+        metrics:
+            enabled: true
+            prometheusRule:
+                enabled: true
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBZU0hmaFZHamFYRUVsRGJX
+            VHhTT0xJZlNES1lIRTVQL0dVZ3ZiTTl4Z1JvCk5iWDJiclZOS2dBSTNKM2tJcll3
+            aDI1ZkVXd2E5WTVWKzdWZm9UTnZmV0kKLS0tIFhHNGJUd2dzTXVCaE9zZEdKM3Zk
+            LzYvd2NpQ24raGhrNk5nOWtTdWsxYnMKayPMJbZ7VuVhq7qoHk3jcA8qJsS5ZSv+
+            hqQimiz1Zztm6kZXczQgDwUttFIg1ocKl4hbcqrKvzmpNdjphbO9pA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-20T19:53:36Z"
+    mac: ENC[AES256_GCM,data:3YOyJBhytGXcLh+FDe29DcuU10kbIstzZc4cyviD8dgOpk/mqd7DaCvaJouVHLWrhS9I5OjaeQ4jWNkClQItyhKL4bcU98vlQcD8VJtM+xKnNHhtyjAz0R5gb8EbpWEB+4S5FmiCWwerJQ614rbeykSas+CB1rKnpqJfbPVlzgo=,iv:IlEDI5Hj9Clmm6rBHBzkLgWRuhUmS7D/f/S0K0Z9cMk=,tag:e9jgAzqbtrD+T7cJ+rIhSg==,type:str]
+    pgp: []
+    encrypted_regex: ^(auth)$
+    version: 3.9.1
