@@ -5,150 +5,155 @@ metadata:
 spec:
     chart:
         spec:
-            chart: authelia
+            chart: app-template
+            version: 3.5.1
             sourceRef:
                 kind: HelmRepository
-                name: authelia
-            version: 0.9.9
-    interval: 1h0m0s
+                name: bjw-s
+    interval: 1h0m
+    install:
+        remediation:
+            retries: 3
+    upgrade:
+        cleanupOnFail: true
+        remediation:
+            strategy: rollback
+            retries: 3
     values:
-        pod:
-            kind: ENC[AES256_GCM,data:YEIZfrPIscjJHQ==,iv:Ot1/3eWgJIdow8rDccpYvVXDvfkbxysgYbucXzXRohE=,tag:Qt78SmrBpGwPk11djjGrIA==,type:str]
-            replicas: ENC[AES256_GCM,data:cw==,iv:vlD8rVXhvsvcA3IkTcqamdBgTkKkTxCYZA2PgmRubt0=,tag:eUmixCbLifhruL8vOvSXIA==,type:int]
-            env:
-                - name: ENC[AES256_GCM,data:R+w=,iv:/Nzs+Me2yIGgrhOlxjlk+Urr7bcAz57I4ShV1zkZ+nc=,tag:wt62lYmPQVtH/DuxJvNWUQ==,type:str]
-                  value: ENC[AES256_GCM,data:MSxtXgjmGl0GqdXJ1Qd7HRHUsA==,iv:ukGo3jB1l/uquiEJvXlsDiX3KpBdNf6Lb+9Xt3bn5zc=,tag:mu7CuixzXnv6O84LdlhTbA==,type:str]
-                - name: ENC[AES256_GCM,data:YCQTb2+Z6iSL5aG7e4hEEvhHh7Lq2kDiwHCUjnflFiSfBOItbo5NflnkS5toNzJaMovPK2Hg,iv:hcCZOY77hs7OwATnZQeF4oMGGeyRFjDjg85IC8Czwy8=,tag:HcuA4WMJzGl08D+B3icJVQ==,type:str]
-                  valueFrom:
-                    secretKeyRef:
-                        name: ENC[AES256_GCM,data:Y4xoK5WoA3I=,iv:x/T6vBWJJk4nEYa9KP+ZE2EEbwlviWgSyccbcG6ZE3Q=,tag:+XQlx3s6ixpE2x7cs28awA==,type:str]
-                        key: ENC[AES256_GCM,data:+yQjKSMMWSUpOQ==,iv:r+LWadYShIwpWKxqWI2ofpQEnPqUM5sKQqSTZzV5EK4=,tag:gYD67cJLMGJ509lICACNoA==,type:str]
-                - name: ENC[AES256_GCM,data:mkp3smPdBoW9XtswZ70qrsOMboVtZK7MH9SrmM7qKGOJmRVJoLnmfi8q2HjY,iv:IlJaImNjxiK8BIPWtnHa3UADR0lOd7IncSIJHLq2TUY=,tag:yHmTmRPZ6QvmVAUmPLV1WQ==,type:str]
-                  valueFrom:
-                    secretKeyRef:
-                        name: ENC[AES256_GCM,data:Y4xoK5WoA3I=,iv:x/T6vBWJJk4nEYa9KP+ZE2EEbwlviWgSyccbcG6ZE3Q=,tag:+XQlx3s6ixpE2x7cs28awA==,type:str]
-                        key: ENC[AES256_GCM,data:OmzTl220b5QUNK6KhA==,iv:OHkPTEXEaXlRrY+AagTAIKUjmPwZgAR0ADxIyLNqFgk=,tag:hUHCMkYC3eXIZtdvXB06/w==,type:str]
-                - name: ENC[AES256_GCM,data:xraDvRHiaDH5GHlw6UZkyDCJo9JF2EivnMFgiZQR+Q==,iv:POh1/VSTD884WTGW2v3FT5goOaw935uAMwrGQTcRn4M=,tag:taZiFOxXPQdCsxEmOxaK6A==,type:str]
-                  valueFrom:
-                    secretKeyRef:
-                        name: ENC[AES256_GCM,data:Y4xoK5WoA3I=,iv:x/T6vBWJJk4nEYa9KP+ZE2EEbwlviWgSyccbcG6ZE3Q=,tag:+XQlx3s6ixpE2x7cs28awA==,type:str]
-                        key: ENC[AES256_GCM,data:aRVQv6DF+UBKNBNN9U8=,iv:8qWjjxq2UPtZ8YKSxZPvWDrNZHqWBylnjzOpYdsB6bY=,tag:fLea4r0iJBs/M7sNjuB40A==,type:str]
-                - name: ENC[AES256_GCM,data:wAuj4HOXetvwpaKNBHLF6th7ApPftc8=,iv:YRm8CZuN3y2N1LOwn0VdiC7AdtYOFXVnWX0J/PGJ7xs=,tag:kATx/c/M2Ie4UORSm2U37g==,type:str]
-                  valueFrom:
-                    secretKeyRef:
-                        name: ENC[AES256_GCM,data:Y4xoK5WoA3I=,iv:x/T6vBWJJk4nEYa9KP+ZE2EEbwlviWgSyccbcG6ZE3Q=,tag:+XQlx3s6ixpE2x7cs28awA==,type:str]
-                        key: ENC[AES256_GCM,data:RhTPDKBSVlxNH+qu2O2SnpuIxbNnfg==,iv:ETzW8z4z5ZUuJIQhurY/bFzX22qHU9XzJfVu83vlGlA=,tag:Wj8E2kY6U+xxg6ImBY8j+w==,type:str]
-                - name: ENC[AES256_GCM,data:OkXW5NQ0F5y+2lg2NicjCUP5AgoXb94wCjSLP1OskQ==,iv:P1pwBaqXOjyguGZ43eC4ZkwAGo2gPMThw3AqcDdLm+g=,tag:mHkmyVpHeLM3ilbK0RVSEA==,type:str]
-                  valueFrom:
-                    secretKeyRef:
-                        name: ENC[AES256_GCM,data:Y4xoK5WoA3I=,iv:x/T6vBWJJk4nEYa9KP+ZE2EEbwlviWgSyccbcG6ZE3Q=,tag:+XQlx3s6ixpE2x7cs28awA==,type:str]
-                        key: ENC[AES256_GCM,data:u5aYyfijkLv6wdwq4A==,iv:d+DDRyPW6nuLCqEPQrf0DkIbVHHfBodxZ10KxANS2mY=,tag:+Zi1c3iRiobvqBSINDSjLQ==,type:str]
-                - name: ENC[AES256_GCM,data:QiMYzeOXjKhj5Zymle5uFbjieY+JYsIKk8qy7+tKEw==,iv:QmuGZf6APfMqdTAVSZXxkvZINzJfpOP50ThxwsX/kU4=,tag:iaIAR4g/gCmB5/+tZ0vVxA==,type:str]
-                  valueFrom:
-                    secretKeyRef:
-                        name: ENC[AES256_GCM,data:Y4xoK5WoA3I=,iv:x/T6vBWJJk4nEYa9KP+ZE2EEbwlviWgSyccbcG6ZE3Q=,tag:+XQlx3s6ixpE2x7cs28awA==,type:str]
-                        key: ENC[AES256_GCM,data:p/qBjkikr2IcMjyfq9EvrMEJq1uapA==,iv:0z3gGLtIcXxp0k4jVvHZzd4/qkVwSh6xPHr5TJt1z+Y=,tag:dbLao6ZLY8GonxniOZ+lCQ==,type:str]
-                - name: ENC[AES256_GCM,data:n5PVrb8Hu75pLP2JSyKKgnsBkyfgCQT3hK+/23ScLrs5hA==,iv:IHZ1TKR7XXYkiBFmtROAbbi1hbqO/zsPHUcyef/oz4I=,tag:S9ULup2TLIbuMLC2swk4OA==,type:str]
-                  valueFrom:
-                    secretKeyRef:
-                        name: ENC[AES256_GCM,data:Y4xoK5WoA3I=,iv:x/T6vBWJJk4nEYa9KP+ZE2EEbwlviWgSyccbcG6ZE3Q=,tag:+XQlx3s6ixpE2x7cs28awA==,type:str]
-                        key: ENC[AES256_GCM,data:kT6XdD1yHcOUIQyhzA==,iv:Xd+GohPMnQNSxJyx6CZxOCqQJzHigiFFi5eWC9tYGfc=,tag:wEa6Vtvr7O9YMhafPjhgzQ==,type:str]
-        configMap:
-            theme: ENC[AES256_GCM,data:uGQ8tg==,iv:WWMklVfYWdJMW6NgXi9W661nR1wG/5p2+pMKcjZ5JLQ=,tag:F6XZx20PnQcq3Ib7VxUk7g==,type:str]
-            server:
-                address: ENC[AES256_GCM,data:lEzeBaa2XwGNJHZSYK20E4fomw==,iv:imCt8x7DVnOHp8J4lC78sE8qW0QQXGqlWd9B8tFL2yw=,tag:kwGo2Ji+VpQa1JNgZbsjXg==,type:str]
-                buffers:
-                    read: ENC[AES256_GCM,data:uiqruw==,iv:y5E/oSP0CspVIFRC4kF0GUwXFpu9B3WQYb1A9zCG3lM=,tag:GnzOY14wTtY6VdOZJs9CWw==,type:int]
-                    write: ENC[AES256_GCM,data:VTdNGQ==,iv:KQ9vYhAykjsTcM9TZqRp8KUXOdzRITGVPElpZhiJ/iA=,tag:7CyEko7VQKXB9NfBcAPNIw==,type:int]
+        controllers:
+            authelia:
+                enabled: true
+                replicas: 2
+                strategy: RollingUpdate
+                containers:
+                    app:
+                        image:
+                            repository: ghcr.io/authelia/authelia
+                            tag: 4.38.16
+                        env:
+                            - name: TZ
+                              value: America/Los_Angeles
+                            - name: AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET
+                              valueFrom:
+                                secretKeyRef:
+                                    name: authelia-secret
+                                    key: jwt_secret
+                            - name: AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD
+                              valueFrom:
+                                secretKeyRef:
+                                    name: authelia-secret
+                                    key: ldap_password
+                            - name: AUTHELIA_SESSION_REDIS_PASSWORD
+                              valueFrom:
+                                secretKeyRef:
+                                    name: authelia-secret
+                                    key: redis_password
+                            - name: AUTHELIA_SESSION_SECRET
+                              valueFrom:
+                                secretKeyRef:
+                                    name: authelia-secret
+                                    key: session_encryption_key
+                            - name: AUTHELIA_NOTIFIER_SMTP_PASSWORD
+                              valueFrom:
+                                secretKeyRef:
+                                    name: authelia-secret
+                                    key: smtp_password
+                            - name: AUTHELIA_STORAGE_ENCRYPTION_KEY
+                              valueFrom:
+                                secretKeyRef:
+                                    name: authelia-secret
+                                    key: storage_encryption_key
+                            - name: AUTHELIA_STORAGE_POSTGRES_PASSWORD
+                              valueFrom:
+                                secretKeyRef:
+                                    name: authelia-secret
+                                    key: psql_password
+                            - name: AUTHELIA_TOTP_ISSUER
+                              value: authelia.com
+                            - name: AUTHELIA_TELEMETRY_METRICS_ENABLED
+                              value: "false"
+                            - name: AUTHELIA_AUTHENTICATION_BACKEND_PASSWORD_RESET_DISABLE
+                              value: "true"
+                            - name: AUTHELIA_AUTHENTICATION_BACKEND_REFRESH_INTERVAL
+                              value: 1m
+                            - name: AUTHELIA_SERVER_ADDRESS
+                              value: tcp://0.0.0.0:80
+                            - name: AUTHELIA_DUO_API_DISABLE
+                              value: "true"
+                            - name: X_AUTHELIA_CONFIG
+                              value: /config/configuration.yaml
+                        probes:
+                            liveness:
+                                enabled: true
+                                custom: true
+                                spec:
+                                    httpGet:
+                                        path: /api/health
+                                        port: 80
+                                    initialDelaySeconds: 0
+                                    periodSeconds: 10
+                                    timeoutSeconds: 1
+                                    failureThreshold: 3
+                            readiness:
+                                enabled: true
+                                custom: true
+                                spec:
+                                    httpGet:
+                                        path: /api/health
+                                        port: 80
+                                    initialDelaySeconds: 0
+                                    periodSeconds: 10
+                                    timeoutSeconds: 1
+                                    failureThreshold: 3
+                            startup:
+                                enabled: false
+                        resources:
+                            requests:
+                                cpu: 10m
+                            limits:
+                                memory: 128Mi
+        service:
+            app:
+                controller: authelia
+                ports:
+                    http:
+                        port: 80
+                    metrics:
+                        enabled: true
+                        port: 8080
+        serviceMonitor:
+            app:
+                serviceName: authelia
+                enabled: true
                 endpoints:
-                    enable_pprof: ENC[AES256_GCM,data:R1zJaIM=,iv:RUAUtqVg4yZ3CGDg/d1rUtMkZkexyt5BLjnqazO7Qos=,tag:7rSgSlk1C9eYmQukUHfa7g==,type:bool]
-                    enable_expvars: ENC[AES256_GCM,data:vFJnlZQ=,iv:+EYJ5LuDZEJRoFqRtGnYqNiSa1+wS7IiMXQAEODXupA=,tag:cOinUf6wLvnyNKhZiUOaWg==,type:bool]
-                disable_healthcheck: ENC[AES256_GCM,data:FeuvPWM=,iv:EKgzmL0jZj9eARjGCp3nNZoansts3fZAFxr1ncVvnZ0=,tag:GWkieAt9c+5BynzC+5MJBg==,type:bool]
-            log:
-                level: ENC[AES256_GCM,data:UoyfkTs=,iv:wa504nYeOU3pzwTUmlf9E9a+0OYwLP+oxViKMMNwcC4=,tag:o+4t493ksIPIKrhkjqidkw==,type:str]
-                format: ENC[AES256_GCM,data:Y2qdiw==,iv:2DubKy3l5D+YQOV915F09LTqyG734TWPi5VZBCcBaEQ=,tag:QsReVDpHcCcOBEgJlTA/zw==,type:str]
-            totp:
-                issuer: ENC[AES256_GCM,data:LXAMTf44rhAANx+fT8+1dA==,iv:VrebZZCimcWJNEuKWdL6SiG3fQT0lskCxKWvxWXRGmk=,tag:Y3VQ8VONrWDKeuRuxI1CVg==,type:str]
-                period: ENC[AES256_GCM,data:eXA=,iv:9g3FuLoRvySXZz6bWSYtKA5Zmc8igm1/yCS6F49rjFM=,tag:dcUGvcwROGXcXngz40PzyQ==,type:int]
-                skew: ENC[AES256_GCM,data:7Q==,iv:17ULgyUzKQ11uYhRXyxezEy92Ou1+trSsSo54H7drP8=,tag:6CLaqnM4FwGLcN5dqELLoA==,type:int]
-            webauthn:
-                diable: ENC[AES256_GCM,data:VSg9jJc=,iv:5+xmbl9x8CCk54Y5NGi8YRyPbpMw+Fq2Ok3nS112Fao=,tag:/O7GFl5jWxXRMfB8RPPyog==,type:bool]
-            ntp:
-                address: ENC[AES256_GCM,data:ebVkqyeI5I2v/0R4JBfdQbU5MMs0kslZitzfvrU=,iv:TxiJePgXoPDKGdrfBNX6ZvXdQkQZsmhlYcB8tEypE50=,tag:6TLmEr4nx/Vgp50dpffMPw==,type:str]
-                version: ENC[AES256_GCM,data:3g==,iv:NtyeyZRacclpRdV+oeQJ/Lt0SCiLz8j4BgKHyF7ZWUw=,tag:0JtX+lLUznn7feXxuKllYQ==,type:int]
-            authentication_backend:
-                password_reset:
-                    disable: ENC[AES256_GCM,data:+AHyzqs=,iv:CdT3RVRcAbTFu1qeq4Esp/ZpMO9CAhLqxvVfgsHLLKI=,tag:bVWVCmIyVrZGI1sEuVAadg==,type:bool]
-                ldap:
-                    enabled: ENC[AES256_GCM,data:GPp1gg==,iv:Tg5uvE+itXHuLvju6o54g4IAzWaqpXfUPVEYCtEIt+c=,tag:/fHBR64dncnqdRhXzcv+SQ==,type:bool]
-                    implementation: ENC[AES256_GCM,data:XiU7sFc1,iv:bcZhHH+1Ek1EbU/G0hZSCNjYQWfx6bZAHaGh0XMhQ6c=,tag:3xIg2Il2QFE5+PjJo2Ly+w==,type:str]
-                    address: ENC[AES256_GCM,data:lQgRqkcEDNs8o5PZtaTeEK01zcjFiwsqLD8k/EoaYrOtgt7sA5M9eH/CCL0Z,iv:sccQyQiFM6XvJd7g/xnnUlBSliNZFdMPLfHTgtZlinI=,tag:GtSW0+vOfMYe50XMB+43xQ==,type:str]
-                    timeout: ENC[AES256_GCM,data:bfKTKnzDLMNh,iv:Z1KvfXdwv/gTaiJSJXmwWm1RkMIf7Zl0YCorQmeQTX8=,tag:BHndPhukCUk84OyzqAA9qw==,type:str]
-                    start_tls: ENC[AES256_GCM,data:GsjvMR0=,iv:aRHWZMXyjmTkXPOmMfBZT7S8B4Hmm/xbkAhDu40nRho=,tag:YA6YbsUlT5bBT33wlsdAdw==,type:bool]
-                    base_dn: ENC[AES256_GCM,data:guL9jzhFNyF93zRsE2OTtmo=,iv:vJbYu4prH0uvC93BCyY38xGvp1q9LKVZ84ZyBbxu0e8=,tag:fCC4mPPzqAdMQWJ5Fdl2bw==,type:str]
-                    additional_users_dn: ENC[AES256_GCM,data:3HgsGr3LBb/G,iv:ChJJZLb2DIj2NpjwGttM4IoTiGoA626PapVf8vEhugE=,tag:8xbL7WGFi/JBuAqAZ+fVew==,type:str]
-                    users_filter: ENC[AES256_GCM,data:Lf2eG43Ept71B9mkKAiLcmKQwVPK9BCJRXDzZEzyWLv2ROtYI3pBjZSSD4rOd0lOAsIRaUY=,iv:3KPwUeJJCZnl/HOOU4oEDxhVJw8QUdaajcgf0/t/j+M=,tag:tFOh9l8pz2jiKkpWltIqPQ==,type:str]
-                    additional_groups_dn: ENC[AES256_GCM,data:pHcmGj9mSveL,iv:3mmPfEjMkm4BqAAjgcbiXv3rtuZmgvrgNm8nnS9REyI=,tag:uUXHWHiUotWGWHiF6p7PlA==,type:str]
-                    groups_filter: ENC[AES256_GCM,data:KRvruj91GLK1eAKnAg==,iv:NgPagNLgfp26tFolqHM2vq0RjG8CXSGFZdIGw1a0+60=,tag:Qh0ck7WqsD5EKrh2/Pmq1g==,type:str]
-                    group_search_mode: ENC[AES256_GCM,data:L0bSvd5j,iv:pfQ6GZImlBV67EHWqBIUrsyJITaVI7LHHCpzsenMlg4=,tag:HSy+6WAiYSTY+zQj0yLrJQ==,type:str]
-                    user: ENC[AES256_GCM,data:G4YU4ffbxh75H0y1kVGyvYqlPfWesHrupKxDZk7k3M5dvVwIuA==,iv:SHcYpgKP9EF73B361ry9Rwac4XIIl3T9eoHWVNIlJ6g=,tag:GK5RnLrspcmeok1C/+ptRQ==,type:str]
-                    attributes:
-                        username: ENC[AES256_GCM,data:nD5r,iv:2Z7ZMkWiHZow9gFIxmxw5PuQTnzZARPrYgZvN/og9gY=,tag:io7CvdqiLwsMVPEXe5FOow==,type:str]
-                        display_name: ENC[AES256_GCM,data:PVjmUHeKVXO9A2E=,iv:gqKpHKE+3EYVpHyjL1eDajFfHOQhqOCi5kKRqDwdtVs=,tag:5tyt/ZrCQPB+1owlSmtJkg==,type:str]
-                        mail: ENC[AES256_GCM,data:pSPkzw==,iv:vhiNgPcg2zMnoObFubZpXaHWAuDDRsz8cMkCAjlpPBw=,tag:5D5xLCl+Z8+WZMktCrSdyA==,type:str]
-                        group_name: ENC[AES256_GCM,data:vHo=,iv:UtvdYOgh85l0YFYo+rezV+etCU6bnyMW04/MatNcAhM=,tag:9hYYKuOfrrxDiChSgNcX5Q==,type:str]
-                    password_policy:
-                        standard:
-                            enabled: ENC[AES256_GCM,data:NW4pBrU=,iv:jLY4XypdoUJdnNRMdMbrn2Hu15PABI1GCh31rWCslyA=,tag:tsAkF+Klsnq9/fUz6noChA==,type:bool]
-            access_control:
-                default_policy: ENC[AES256_GCM,data:p+NOrQ==,iv:e9fMaue72MjPfmZfKMSH3P3QkpqI5Mxa412nM6xRoRI=,tag:pqojG+1nR9IA9nvAQ6yV7A==,type:str]
-                rules:
-                    - domain: ENC[AES256_GCM,data:4RHirg8xp9bJyd9Q5w==,iv:8RGmE8BeuZM/G3CNvsF5riX2xStFciIALxlgVZCh4AA=,tag:OXgbwInl+kPAUyl3dlwKFw==,type:str]
-                      policy: ENC[AES256_GCM,data:Wy9LHmTbQjBVPA==,iv:leNVZrslBFV9h9jdCWqj5jUvqZPvgXh1tCcyjRHqyF8=,tag:VZ6iHxaA6DJUdn1eM1SCgQ==,type:str]
-                    - domain: ENC[AES256_GCM,data:+wGP6Im7uyN2fuL3hwTBvg==,iv:AuUbrauI3PcU98s0uyBFF+YbPkQc3cCbDDjvb/XqhmU=,tag:MvhVhPZbrf2Qgv6fxZ/2KA==,type:str]
-                      policy: ENC[AES256_GCM,data:KzaRYpDb,iv:gANRRR35mKtxiJBFabPIxwMXMOkIO36pHVjqb3uaxqg=,tag:q3G9em/CyNyx424fNRzrFA==,type:str]
-            session:
-                name: ENC[AES256_GCM,data:8jwB0S+xPBDLS9K6+oOUEg==,iv:td7KPThMC2FL0IZ4CaqK57qZPY8WgxCuobQVHWgkUAA=,tag:goZVlJdgq2uFfjgceUln3w==,type:str]
-                same_site: ENC[AES256_GCM,data:rU6D,iv:EE4JtLELJCSr/VfQ9OJHSaC93BLJOt+7Pgw9fCJBxnY=,tag:MFT8ognUhxofzaHVffHi2g==,type:str]
-                expiration: ENC[AES256_GCM,data:IkHaOu3J,iv:IagymObgp35NIHa87YEq6DEd9UqId3nmGkwppp6+oaY=,tag:bHyUP8HPm2KoGF3A1kysFg==,type:str]
-                inactivity: ENC[AES256_GCM,data:vLX87XMKXQfX,iv:e8/HuzYiG3dRgeYS+ypGduCpgsSGLjgH5gUVRqTF0cc=,tag:oH1LZpU7lTt0dPqMMrtI4g==,type:str]
-                remember_me: ENC[AES256_GCM,data:gKkRig+oRQ==,iv:1VmBRB+JHjjbAyuh3GVCVYFmRI8VAHF6xYP1OFpOIDI=,tag:KvOo31R8njAyNTVSganQSg==,type:str]
-                cookies:
-                    - domain: ENC[AES256_GCM,data:n/dinx7rVazaXjw=,iv:ncr/WN/DIYAsjXuPl8S6+ycALUumnad1y15O99vJz8Y=,tag:nbiKrZhymFS0sZeJ5QGZxg==,type:str]
-                      authelia_url: ENC[AES256_GCM,data:0OmZ/xLgxbX+Gu8vLdLL+7h+zZs7vXPg,iv:bveqtzYqtVdUC6vhmKXUk5cIYq7iIiyjfZDbBgUCboo=,tag:yC+IJN78pnugDtB7lMPV8A==,type:str]
-                      default_redirection_url: ENC[AES256_GCM,data:teRTA8xmBJbz187l/iUcllfaXg==,iv:b2ryU7moycQMAofb+KrX8N+igpilc3vU8iBHutiaWYQ=,tag:i5d+usSL8qb10JLUpCEYIQ==,type:str]
-                redis:
-                    enabled: ENC[AES256_GCM,data:ptHfoQ==,iv:5N1Tk772VkU7txLX8rFX4hSlBXtjvIACiZyqzJtY/o4=,tag:hU0XsKIwem7O3bhIe8MrxQ==,type:bool]
-                    host: ENC[AES256_GCM,data:nMiUz56jhkS8UKCWtibitoxwLdIwRUv+QKJ9g9bsJ3OZKI9RXrJYdjb1XoBBPBr5P78Xu1B2ubU=,iv:LHB6bHvPLzF+9CLpuDJN+H8QWeDamJT7IZLUZBziLLU=,tag:z3qNbEK10jvUP0s+o6pw+g==,type:str]
-            storage:
-                encryption_key:
-                    disabled: ENC[AES256_GCM,data:3EyeKg==,iv:xAuoT03759DBxGwhoE2KXnSHj3w1xA36+8CekQTi+KI=,tag:hliigR7HMWugpkjlwWJKzw==,type:bool]
-                postgres:
-                    enabled: ENC[AES256_GCM,data:04iOOw==,iv:Lz3O9rje4Qz5e0CFOV9fOW1lCa/CeNZjDyf3r1sw4I4=,tag:EI0gJs3VnvbfoKkjjggWeg==,type:bool]
-                    address: ENC[AES256_GCM,data:82WSxK+pIKBxA+Ns8DEQLwwEyQqXLW91Vdkp6CI5MsKDCQ5BTDDA04X8iASR,iv:ve4Z7KDHtL/SBAS7NqfosJpcAdcQbAvVzkRsJM2zOaA=,tag:FlewlmfgnW6CrnsIXQ2LLg==,type:str]
-                    database: ENC[AES256_GCM,data:0qEM1oujHXY=,iv:ruY4qY28grgW2wVfPG379xRmrJXq6FPBBlQnQ+1MwcI=,tag:5EVU7gt+05kV78pev8X8iw==,type:str]
-                    username: ENC[AES256_GCM,data:4SxjgyY=,iv:oDzfIVTVqR1ldeqbgKL8EKqiZk2LHSXlJR40iuOZyWc=,tag:IoUeXiUWjzHcPt90ADfong==,type:str]
-            notifier:
-                disable_startup_check: ENC[AES256_GCM,data:Hg3CNWk=,iv:A7uM0uq81e42QLL1t7AFCtY+ZXoFN6K8EjdR+qnmAgA=,tag:S1lCEjtc+Zhm8YHIrqtkyQ==,type:bool]
-                smtp:
-                    enabled: ENC[AES256_GCM,data:aLaoCg==,iv:Zz1VEm3U/J6TYVZAeQmh/q19ELsRfw9ZUDJ5A8Wwfgk=,tag:P0MFcN0ECuBGT6AHS5RGQA==,type:bool]
-                    address: ENC[AES256_GCM,data:NpDUsMWIsUVuVvSed/fW7gofUno=,iv:+NqSgrk5d4zLcOdzQLobx4oMwsGV6xZ/NdUDZ3yk2KY=,tag:iiWt64W425HsgA3U9kmODw==,type:str]
-                    secure: ENC[AES256_GCM,data:UcsSG5OwmRg=,iv:LA0SaVdBJIV/HNgMHb7Rw7RAqljl7ntxMG9Y0/wdnUs=,tag:haMAi05J+uDd4N2/Z31Omg==,type:str]
-                    sender: ENC[AES256_GCM,data:ElkHRDEcF0LKB0LhGcCCwtXo0cPc3YNhCHnvJvr7QohSJbs=,iv:rbNH5P6KgbLs7svPcudoPChVm9ohMQ+tfU2WGqaHXCI=,tag:g7qANETQ4ELJF1OKJos7sw==,type:str]
-                    username: ENC[AES256_GCM,data:wvdieDYIseSQ/VSfW0F6DnZYpst5,iv:hcGer1e8VMISPtzrgjxTY0Hgvdb1iZVE1bHO8lkponE=,tag:5mSP+8TpPpYEUwVSV6KRAw==,type:str]
-                    subject: ENC[AES256_GCM,data:KvzmO+2/18LeXgAUPJoiuf1b,iv:Mz7bsfxMNljLtkE46xR9q0xXVc5YGz2Rl9S2wG32wUQ=,tag:h6rZxHkqZ1s9uJ24u3dfdg==,type:str]
-                    startup_check_address: ENC[AES256_GCM,data:IWq5B4Q9nr/yDEBw4kh0kKC+Hw==,iv:n4LGgMYu5ncj8z+yejX0e32cMMRxbagPyhGmEmN1UFY=,tag:LY5qGO8bXPQjIZyGIlq3Gw==,type:str]
-                    disable_require_tls: ENC[AES256_GCM,data:XeYbL84=,iv:UsDQyHJttEsW/7QsKay2yPsko/xjgvjpwsl0PtoLT/c=,tag:LzU1lwdtcn97mbMrIOGZvg==,type:bool]
-                    disable_starttls: ENC[AES256_GCM,data:pLK6ygE=,iv:tr5EtVWsut/UKi2sME2JJ17TWj+y6iTnP6FvapM0XU4=,tag:3q4DE6b28oHpSQwCLSDezA==,type:bool]
-                    disable_html_emails: ENC[AES256_GCM,data:Qa7ugzA=,iv:ZRffnjYrcnZL8dkqr/LmFysjqRmEoqOT7mZk2oVujCU=,tag:9QmoVqyTvS6Rj7cACDQPpQ==,type:bool]
-                tls: null
-                server_name: ""
-                skip_verify: ENC[AES256_GCM,data:6rdJP0I=,iv:+5guQAQMKMkJ+Z72Z9kOMws403TVADuwEH8U4ViVzHY=,tag:n7W+cxsGWm4kMn2egOYBhg==,type:bool]
-                minimum_version: ENC[AES256_GCM,data:+WRa8xcf,iv:059YKEFKc40pFeskvsumPYM1KIc9IxGUyx6SnVOt8Ww=,tag:Z5GWbLL1P88RSwTBlC2fJA==,type:str]
-                maximum_version: ENC[AES256_GCM,data:/tpFT4jk,iv:ejPuQyBfKggdYnJcAYlgXKu+wJcB3AipnqYuLcEMxyA=,tag:gcwPtu9NNVaTlewh0+W3Kw==,type:str]
-        secret:
-            disabled: ENC[AES256_GCM,data:YaEoYA==,iv:luJq37ORQQgFWN3ff+VmOAuaqn1gONFYbDYu6F+3YNI=,tag:XmUMc052F8fBnoCgn0oW3w==,type:bool]
-            existingSecret: ENC[AES256_GCM,data:avADw9Laql0=,iv:OmucCg6i8gWpBcsAE6klh/bogKRkgFFCho6EgrOGL24=,tag:AS5QNyA6yxGE6SaK1qhSzg==,type:str]
+                    - port: metrics
+                      scheme: http
+                      path: /metrics
+                      interval: 1m
+                      scrapeTimeout: 10s
+        ingress:
+            app:
+                enabled: true
+                className: traefik-external
+                hosts:
+                    - host: ENC[AES256_GCM,data:GHUoWQHdVivp23Qz1wB5TQ==,iv:ZoVqwA9LzOCaCSHkd0iZCAL00zancF/NLSvgQDvdABQ=,tag:c5CpMDPnseASRYsL/IpD9Q==,type:str]
+                      paths:
+                        - path: /
+                          pathType: Prefix
+                          service:
+                            identifier: app
+                            port: http
+                tls:
+                    - hosts:
+                        - auth.xtmcore.com
+        persistence:
+            config:
+                type: configMap
+                name: authelia-configmap
+                globalMounts:
+                    - path: /config/configuration.yaml
+                      subPath: configuration.yaml
+                      readOnly: true
 sops:
     kms: []
     gcp_kms: []
@@ -158,14 +163,14 @@ sops:
         - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAyQit0ZzZaZXdTSUVScjBr
-            dERSdDBBY0hFdFVYU2J0ajlqT0JQWlVFL2pRCk1kaUVvaWszVHhONllpOXBOUkE2
-            Z2FTcnF4T3Z0NVlZZlgvUkIrR2NvcmMKLS0tIGJVenBCQzgxTUVVc2JsamFFWlp4
-            S09ROXF2aTBITGdEUFlpVkxZQ3BPcE0K0/p7B3WOtDYONShlgNbtWnoFV30RbfNW
-            slzU+P8RlLbF9F/QXTzhC37bu/KoFqhDmbXpiQpAmBmUao+V7RoB+A==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBsblJ5TFlHcDYzOXduYkYw
+            R0dwN1ZYanpDbmx4WlowWXRMMWZKYzEreXh3CklUMFQvVWxsakNJRTFDZ3NtWERm
+            Q0I1RTNiNHg5OVlQWFZGRXpZc05tYUkKLS0tIGp4THV5em5UNFFvZVRMSXRET0h3
+            TTN6cExoeFh1MEhGNjZ5QXVQSEI2MEUKGSgZQ9y4t+O7T67JFrwXa5Mmyz40nQZr
+            5x5NxZkcSpvsljs8I7tuo2O4dlx+95BMvCZhgXOEHWO/hK+ovJi5UA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-18T04:59:30Z"
-    mac: ENC[AES256_GCM,data:xnrkPrNWU1posl4afyiQlQftrJfawNMhtguExnYOzF/N5sXKLIcl0jcSlU8cff+2lJ0MLiC5mabKeasoMHfAwgVz07juS16I1C6HNFkrQ0rOsINChOKtS9FOwrMtpJf+4S/BT6AUvXGHB8fuo4DOzGRIe63RwAFROqdTh1rtVgU=,iv:sPyq0OGHcyZfSjuxl6LqNRoMdtXBq54gRGOqgzrem9U=,tag:RFxy85nhsMQEi5MxyPzr3w==,type:str]
+    lastmodified: "2024-10-20T03:58:21Z"
+    mac: ENC[AES256_GCM,data:yKSmmAT8S5716byBS6BLGKXb7M4Z/smpNFOO/wlvcd+GqwzEJmelK6kxfbYAdjAE7FlUH65jHdNJ61J58oYSNwohGY/p7aJS2xh9dK+bHBk5IibwdYFXSNo36SvyY7mvASDd/T4BbyW+WY4ievO5AAvzGQBfE9sNA94urBatw7c=,iv:EmnXNhEo3jWRFBF6sIfX9zEuHxSlcpt3oSd8sjOkU2E=,tag:PUh4L/nUVIYVxbrRr+pU0g==,type:str]
     pgp: []
-    encrypted_regex: ^(values)$
+    encrypted_regex: ^(cookies|host)$
     version: 3.9.1

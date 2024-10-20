@@ -1,7 +1,6 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: authelia
+  name: bjw-s
 spec:
-  interval: 5m
-  url: https://charts.authelia.com
+  url: https://bjw-s.github.io/helm-charts

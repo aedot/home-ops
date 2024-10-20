@@ -4,5 +4,10 @@ namespace: auth
 resources:
   - secrets.yaml
   - helmrelease.yaml
-  - helmrepository.yaml
-  - ingress.yaml
+  - helmrepo.yaml
+configMapGenerator:
+  - name: authelia-configmap
+    files:
+      - configuration.yaml=./config/configuration.yaml
+generatorOptions:
+  disableNameSuffixHash: true
