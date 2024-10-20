@@ -52,7 +52,7 @@ spec:
             app:
                 className: traefik-internal
                 hosts:
-                    - host: ENC[AES256_GCM,data:uzXQFAMXdNpjUh2sWhDZKPafGZ7z9tNx2iyC,iv:EL9uiv6phUbTiJfRUOte2Jri8UMXEwFTfYWL1n+1tkU=,tag:p1H2h4EicuQjxVOAVjInyA==,type:str]
+                    - host: ENC[AES256_GCM,data:Ys1JKTm9NVOo8PNwQ7ttda29,iv:Xv9rVbWnwxgdvVjeC+xr7uFsSMJDEeWieI/jvPSex4Y=,tag:OKPP2GHNrrHRxAZOhRxsjQ==,type:str]
                       paths:
                         - path: /
                           pathType: Prefix
@@ -81,8 +81,8 @@ sops:
             dUdMRm5DNlp4bEVZdWdaVzIrT2VBWEkKjFb2VvAcOuVxGA0t65MvkBjJfZ8hxDoq
             EKkd4MLTrtCxGlw7zNlmfhgLsSW+wMCo+vMm5h8iNp33tq5Qh7F6mw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-19T07:17:11Z"
-    mac: ENC[AES256_GCM,data:lI7xq7D+B64M4m33AfmLNpelctf70QYyD16qzaVknI+QrKKGzPnF5aDsoxjzT/wuzWtcSAfn8pAmjPNsRtGtuL+9CZDX1MnwlcfcxXdSsEi7kT/7gReWFUdVwFrRAP/VEsO1rLIpPQ45eyC6li08Y6SZQBWZLzt+cDI5PRxd70k=,iv:o9bfYu8ikeAG+MFozSNm7ztsslfCw+Ebhh/N37Cyhb4=,tag:3zsrQc5RNdPm99tfqMr46w==,type:str]
+    lastmodified: "2024-10-20T04:12:09Z"
+    mac: ENC[AES256_GCM,data:21p0RzBxWYl0S5+CQx1cpuCE31bguoOVrF9zvFgcDE+ea0RXLKvn1S+mNC9fsyaI+eYOUld/ODHG8sU5YUEUcyh3EKLYVNlsFgovetvjji65oh8HKBjevzi04e5Dd8YkJ/wTmI9yw+G1SwWb3DJdYDC80t8xrzrVRuxCI8HLgxA=,iv:WUdE99Vig+xxEQFSb03cgiEYiNl0dfnGXZ43hl7vaGE=,tag:r0PM2S05ge4n9Al2KAlNBQ==,type:str]
     pgp: []
     encrypted_regex: ^(host)$
     version: 3.9.1

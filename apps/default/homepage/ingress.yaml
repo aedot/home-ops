@@ -8,7 +8,7 @@ spec:
     entryPoints:
         - websecure
     routes:
-        - match: ENC[AES256_GCM,data:BNFNutocQw/lElvWSH8NaA+OSLOQlneCHuG94e6CO93WQOBYGw==,iv:syk9m/N5xy17afUeFqEL6Tbhr5ay42kcXrtIyaP3ISA=,tag:wupU66WeGKojgVlMkmBL9Q==,type:str]
+        - match: ENC[AES256_GCM,data:KYagkTrY/Lya2vnwKEtMvVXrfwjWr6wBpLMYwQ==,iv:8RmkXjjbhVOmqbwKj8ZBNsXs9mnbwyVSXVuQYZouFMU=,tag:tPGcE2A02LjkWqSuEBIKPA==,type:str]
           kind: Rule
           services:
             - name: homepage
@@ -28,8 +28,8 @@ sops:
             N3pvUDlsME9RVGFzbkc2T2pSeVllaFEKcYgSnxuwH+6UB982wkDiWsWCyENpS73q
             BqJvDt6JkuYUapz642iHRwLlY4N6AvW3WR47MkgVi7Oy25OK00lauA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-17T05:20:58Z"
-    mac: ENC[AES256_GCM,data:gueNYqSbheyB8H/YpJQoHVuEFzFOl68KjE7yTE/G25yQnBx+40EabqEB5Go20fXSvqSOCHL0C/1zjiFE+2zg+dVpqO1xJHDuZSnOot4Wp7YM+gbTaBl1ZEwuidQivx4Epq5mw7Yol47ddbHxr/Jg8zAGYulicfVxx8+AAQe5R68=,iv:tXb7pvTLNgd/MCE+md2dko5fCLlvH4/EMbxYNqIvmuk=,tag:Y9peldaOcDHZNO1FFMLWgA==,type:str]
+    lastmodified: "2024-10-20T04:11:54Z"
+    mac: ENC[AES256_GCM,data:KyFNNj5JQ1tk2XybGD3nQqxnw2XU9LYZSBjc2gWWh0nK2pNVVx/k/aatAU8Fp4SfufQ/hwC8brlOx55W70OElgI7Of5rynCdCB461bAJVblLdWaTuC8HaGju+PwfQhTes9M1+t8SwDvvW7Qur8he/Rwbr/FbvrSjJDVxxJz/0XY=,iv:UZa1kiapRnXFekiMOmV6x/TbsVkxKaVz/UGZvIhYOwY=,tag:OTv2Ui4/r592CgmBRJB/rg==,type:str]
     pgp: []
     encrypted_regex: ^(match)$
     version: 3.9.1
