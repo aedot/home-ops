@@ -12,15 +12,6 @@ spec:
             version: 1.31.0
     interval: 1h0m
     values:
-        ingress:
-            enabled: true
-            annotations:
-                kubernetes.io/ingress.class: traefik-internal
-            hosts:
-                - host: ENC[AES256_GCM,data:VPG2imRlut9vb5jdL0Zz/xa+oQ==,iv:60yhKkLWq8QwJS3VvCgROj62zhHSRTvdhIhH+dSWjHA=,tag:3haoUbDB4Gd9lhwBoCbLMA==,type:str]
-                  paths:
-                    - path: /
-                      pathType: Prefix
         env:
             email: ENC[AES256_GCM,data:5fiiWFYzFyqLAkxRnNTWoh+s7bY=,iv:mpy6sKOfflWiHGOqqhLa54D3i6O2FuWAJizyGpy77eM=,tag:6aNCFvrx61ARfR4OpqcDWw==,type:str]
             password: ENC[AES256_GCM,data:OAd1qy2ieMOp3y71L4Kbtn31TapNEHfrmxDhfgtZz5JmSH3R,iv:XbjlgZIfj3U2HoEMHSjvtcB5MzjeraeY0+8tLXI8Nmo=,tag:A+tq0t+B6Wr6FB8SvpAjbw==,type:str]
@@ -42,8 +33,8 @@ sops:
             Y1JNUWFVNi9Pb0szY0tmNExUMHg5UnMKApSHYP/mSRmgjogwGXHmLIUiEeKJrALb
             5tAYpVirEt8xag8B9qHRsCkXUYw7lu3EbfbU82CSY3f2v4dL0vwALw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-20T05:15:21Z"
-    mac: ENC[AES256_GCM,data:3LOfUbp2mwI7v4TOoevP4NUAZYU6JVjYCf4ZnMrLA4pY/em+MKR58qZT7G6HgZjX4Q/k0DvXQypo4U8AE8uamUJjy2UxHeciX33pcLZ4PNJLwBdoGD/nxqQJhuOI69KPoX4SWa0ObHDPsZahdgWVzjvFDJIkHhNo1yg2yer+dgc=,iv:lgpzMJz9oPdHIWUgwNnBBU4ynToRk+ehWdGaH0yhKcU=,tag:ajs979xGkZ9/Hiho64UUVg==,type:str]
+    lastmodified: "2024-10-20T07:29:33Z"
+    mac: ENC[AES256_GCM,data:UF+CywPSza8n0tyV3UQyNkodCl4hpl3JlI0YDWnL4UJvVnv9cD8cLqIdmlFWD9up8sV0GWqpesnp6hwjMASh+8FbPGdRM9p1D2M8w8sqSLWRi3rT7XeEql3d/sDI/kerfVLPNH28O0wXQnWYlEFUm5jJUbJtn7j0pn09eRi94RA=,iv:A0aLy8xPdqI6DiXng9C2MBaHTjcdnjs1LopQR3LjUPM=,tag:IGgRuqjFHmWa1ORI9Y6PIQ==,type:str]
     pgp: []
     encrypted_regex: ^(host|env)$
     version: 3.9.1

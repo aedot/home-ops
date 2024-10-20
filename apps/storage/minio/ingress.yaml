@@ -1,0 +1,36 @@
+# traefik.containo.us/v1alpha1 depreciated in Traefik v3
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+    name: minio-ui
+    annotations:
+        kubernetes.io/ingress.class: traefik-internal
+spec:
+    entryPoints:
+        - websecure
+    routes:
+        - match: ENC[AES256_GCM,data:seFjyEumAgiNi2B6a8JuHHrSytpe4brGaw==,iv:zHkdZgn16o1mpfAbliayqIBuFyRaS5WCIPZ4p9d8WgU=,tag:hEflRjNt+JKuYnUZsm6+oA==,type:str]
+          kind: Rule
+          services:
+            - name: minio
+              port: 9000
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBReGQ5Uy9WUXdwblhuemdH
+            MFVOMkVsYjF5NTNsbW1DdG50UXJBd3l1bUQwCnl1cnF5TDU2Qi9TQlVpOWtZSXVG
+            bmxtc0I5Q2hjU3NFMjlZTVZoYlM0VEEKLS0tIFAvRE9hTTlQVWEzT0EwY1V0dHF4
+            aExWQ0FyMlQvYjFoaG9MTWZrU1ZBeGMKoRROSD/KUvYE8KRjV3dpst1CzieRz2zd
+            hGMyfK1zzRtGrjSPv28LYp77eJEDyN1lJ4q0xNXtH+7ja3eMTdA6ug==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-10-20T07:31:21Z"
+    mac: ENC[AES256_GCM,data:SlRJtwez2ssE0JDAC8ubXdZjtZoWNxOWvqNG1/OqFPftf7FbNzF8dVNpnQYIG6enr2gpqeoD1Gx2dl7LQMzQ5wvtPBOET0sr8Q3FAwRcWCVoBqcAkQd5+uwgJBfOumFQRejwx2y1r0qkHaCfPT+dVAl10u6pvJZNgw3n/wRCQd4=,iv:S8AnJNkjSnuooelzn0ONyW7X/27E7j1jddJ3d7NOC9g=,tag:DXv4jBJawYU2bDxPEyAcuA==,type:str]
+    pgp: []
+    encrypted_regex: ^(match)$
+    version: 3.9.1
