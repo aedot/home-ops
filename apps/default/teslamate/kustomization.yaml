@@ -4,4 +4,3 @@ namespace: default
 resources:
   - secrets.yaml
   - helmrelease.yaml
-  - helmrepo.yaml

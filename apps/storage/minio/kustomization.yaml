@@ -4,6 +4,5 @@ namespace: storage
 resources:
   - pvc.yaml
   - secrets.yaml
-  - helmrepo.yaml
   - helmrelease.yaml
   - ingress.yaml

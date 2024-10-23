@@ -7,7 +7,6 @@ resources:
   - secrets.yaml
   - rbac.yaml
   - helmrelease.yaml
-  - helmrepo.yaml
 configMapGenerator:
   - name: gatus-configmap
     files:
