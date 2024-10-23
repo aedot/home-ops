@@ -1,62 +1,110 @@
+---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-    name: lldap
+  name: lldap
 spec:
-    chart:
-        spec:
-            chart: lldap
-            sourceRef:
-                kind: HelmRepository
-                name: lldap
-            version: 0.3.7
-    interval: 1h0m
-    values:
-        lldap:
-            baseDN: ENC[AES256_GCM,data:LSJUAYlCKJYNUonaflUuMrI=,iv:X4+zuatyN1dAzQslITj5xRjeb28UQVCoL3ZJkoEPDMc=,tag:qYRoLf7MhfiOx1/3bhsCjA==,type:str]
-            jwtSecret: ENC[AES256_GCM,data:pZhCcIjABKZYNeLICefV5foESiIcuL4f+a3AUw13yB7kvO1bcPVU97LVVtYx098uQeUO/ZFv7rIQf1Paiwmi/a8yT7r9Lzs/PdTr7khfwcAYbYP6OQ==,iv:VwXLXtCAcE8Dpe3ab3nazDHUZLSZoFXccBCmYKX8AvU=,tag:sZDrozOpeLHSL9x9tB3vpg==,type:str]
-            ldapUserPass: ENC[AES256_GCM,data:nOnQawkeawuLp3pm+M9NOthLroxtp/J0uSTX/dy/yy7hkP4=,iv:zYkOj8YbzaObowQwureEGQQthJ6c2AJFVo9d2A6tOqQ=,tag:Mr/mWvPpKtGuofc/VTsgbA==,type:str]
-            keySeed: ENC[AES256_GCM,data:DWA6+Pp0CBpAqetjBCXMuqaVNuXbfEoG+MopFETSA3NP7RD07TH4Q/DP+YdY1R97RrH8wsed+UnGLdsWufDArWM/jXRaxZ69RjztOMGFE5pmyLLapVunzxpsNRN81OVxAf0=,iv:B4a+roDqzLaseEgUMKXV57wscC5bX8dbiLp3XalGcTs=,tag:TRpSJs8lR1Uufj4MnCS8tA==,type:str]
-            tz: ENC[AES256_GCM,data:jrHneKN/MYdVexPNhHWIuaaiHw==,iv:FDmji2/weSCg3+Ai1Os4CiiTMDcw+EOqJrkdpVjqGN8=,tag:r6hEFhylHCxrJNfA3aDU9A==,type:str]
-            smtp:
-                enablePasswordReset: ENC[AES256_GCM,data:n11gKw==,iv:brAFJY/qfkzxG6QEbyucbyEUkC3F6WZ/zYoMzTDeHmY=,tag:5ZitWkb1/qabBahZmN++Ig==,type:bool]
-                server: ENC[AES256_GCM,data:/Pi8cwGQMmVxm6JwvkbSEQ==,iv:p5XuaIVKHTxPJNC5zq5v/dJ6mG2VYb8pSfaTEkdyhcs=,tag:l8bZe50zrSQI3LE8aogI8Q==,type:str]
-                port: ENC[AES256_GCM,data:syBa,iv:Pga7HSzFdWB7RNI11EPXKzQF6a1Dd6SSRcdUMf27mYU=,tag:TyehzmFs9aVNz6ZsCt/gsg==,type:int]
-                smtpEncryption: ENC[AES256_GCM,data:SiRsjOz68d4=,iv:povGTZJgp11oUO8BANnvkST0zwoMXTP8PfiQTYh5oZQ=,tag:OTNR/aKmlHxes4vT7ILA4g==,type:str]
-                user: ENC[AES256_GCM,data:VKq5xVAzn3HLa9jM0X0AqZTIihUh,iv:xw2itSyfBJqHEWbuOtrs9Ox+tW1Yxkc3/XhArsjqL0M=,tag:9V9q0oPCmRtEVEg95mdxlw==,type:str]
-                password: ENC[AES256_GCM,data:xZANa0yp8oo4RBE7ztqjyGjtpA==,iv:Gs3JdQeY/ZApA4WMyqQvFMTAQkVtc+16GrfTxUZW9ts=,tag:S+fQcstumhq/QoRPq2ewEw==,type:str]
-                from: ENC[AES256_GCM,data:nvGU3nDO5+RNR9ACLod8FR9tsigFrvb4YyflYTPd7gAa,iv:rN17QYS5WTSMLAstS0LWGSs+X2MZv4xn9khfQl6JwtQ=,tag:els+h06/tWNQ1nk8yAzdcQ==,type:str]
-                replyTo: ENC[AES256_GCM,data:LtlEwhduGWQiu8imi/iI92VWXk/VzbPENc5/raGor2LUew==,iv:bmX4wdiS/QTEgmDp2Aobhx7zFmuBD4QT/7+UxjdBPUY=,tag:TPil3emfU+zvgrCkXTI4Iw==,type:str]
-        persistence:
+  interval: 1h
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: lldap
+
+    controllers:
+      lldap:
+        replicas: 2
+        strategy: RollingUpdate
+        initContainers:
+          01-init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16
+            envFrom:
+              - secretRef:
+                  name: lldap-dbinit-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/lldap/lldap
+              tag: 2024-01-05-alpine-rootless
+            env:
+              TZ: America/Los_Angeles
+              LLDAP_HTTP_PORT: &port 17170
+              LLDAP_HTTP_URL: https://lldap.xtmcore.com
+              LLDAP_LDAP_PORT: &ldapPort 3890
+              LLDAP_SMTP_OPTIONS_ENABLE_PASSWORD_RESET: true
+              LLDAP_SMTP_OPTIONS__SMTP_ENCRYPTION: STARTTLS
+            envFrom:
+              - secretRef:
+                  name: lldap-secret
+            resources:
+              requests:
+                cpu: 100m
+                memory: 100Mi
+              limits:
+                memory: 500Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+    service:
+      app:
+        controller: lldap
+        ports:
+          http:
+            port: *port
+          ldap:
             enabled: true
-            size: 100Mi
-            accessMode: ReadWriteOnce
-            storageClass: longhorn
-        externalPostgresql:
-            enabled: true
-            auth:
-                host: ENC[AES256_GCM,data:KzSNVEQSVip1EdXP/8LSaUha5hUICg+isQS2iweDilA7Uw5TO79stw==,iv:IM/7rS62InGwpJOHATlo9HMC9csm8HQ6IboWnu2ZW4o=,tag:vZ4M8IQ+JNykuLStKRTapg==,type:str]
-                port: ENC[AES256_GCM,data:Ojyehg==,iv:WnlebKAC8Bs1cIeJPhWrkGXZFcNhxPGv0eGc8FcA4/c=,tag:BrvUwxn/CyCqP+6rsPiamA==,type:int]
-                username: ENC[AES256_GCM,data:6pQy24E=,iv:1vPLUU6tewM206+uvRo3K+854ePYeX1cAE6lV/vHi84=,tag:VmwitFjKWH3KVaXyzVn48w==,type:str]
-                password: ENC[AES256_GCM,data:bLOhfRbDhj+ax4e1kF1tQPKBY/p5gNxU3dCqnH86zAc80Q+8QV80bdIjn/5riTA=,iv:m74h91MCSiIEsqd9IOASzjoK4d67eRG3y5oGTxo5eKg=,tag:TyuwnBUFiBmB1o/Hx7sD0w==,type:str]
-                database: ENC[AES256_GCM,data:BWaxd2M=,iv:DaQ3LcwPh/+FpbsIqExzZrJeuGtAgygOqyrCOTSPs88=,tag:g4Fnbmkhum3gue+7otIGig==,type:str]
-sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age:
-        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBsU3NSbmlGQkxwcTlyd2py
-            b2FVVUxuMFRpT3BWamdHY1I0TjgrRnFkeEF3CnZEbUNUUzB1MFNrUEloMWRlOExh
-            R1pGZE5FZUxncTMwdVRPYjlJaCs0aVkKLS0tIENTWlR2bFhFSzBGazlsNEtuWFQ5
-            c3NjOG1XTUZIdyswOXlSNThiYVlHY0EKN4bsbTsNaXJwracdAPn5QwsZhrMi5hb5
-            6OgbbygOuspnEQwXMb2sHxrlN+uCUFZGOow73hqvjj2hbIknOPnNSw==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-14T05:11:10Z"
-    mac: ENC[AES256_GCM,data:R+wI3i3yXhyywLLdGun8Lhkhp28h3yxCMW2j2CPuldD88tclqQ7puG2ZBH5DhTANV3iVEunq2dNvxNftwX9/FYv7eofz/gIXj5AW6Mrnt1sHHQtqiAkkzLl73JWf3FWz4wL88BDf4HvsA/BtqFttfNpLyrqwDXEGcM2SONcuOHc=,iv:qk92xoIkodIBrK7Kmkzmtk+/HiVytqdnpuSlxDPtfWQ=,tag:nAnJLAr6kvcMTpWJcdh+WA==,type:str]
-    pgp: []
-    encrypted_regex: ^(lldap|auth)$
-    version: 3.9.1
+            port: *ldapPort
+
+    ingress:
+      app:
+        enabled: true
+        className: traefik-internal
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: System
+          gethomepage.dev/name: LLDAP
+          gethomepage.dev/icon: mdi-account-key
+        hosts:
+          - host: &host lldap.xtmcore.com
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      data:
+        enabled: true
+        type: emptyDir
