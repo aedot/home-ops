@@ -8,8 +8,9 @@ spec:
       chart: kube-prometheus-stack
       sourceRef:
         kind: HelmRepository
-        name: prometheus
-      version: 65.3.1
+        name: prometheus-community
+        namespace: flux-system
+      version: 65.3.2
   interval: 1h0m0s
   install:
     crds: Skip
@@ -20,12 +21,7 @@ spec:
     crds: Skip
     remediation:
       retries: 3
-  dependsOn:
-    - name: prometheus-operator-crds
-  valuesFrom:
-    - kind: ConfigMap
-      name: kube-state-metrics-config
-      valuesKey: kube-state-metrics-config.yaml
+
   values:
     nameOverride: *app
     crds:
@@ -33,139 +29,117 @@ spec:
     cleanPrometheusOperatorObjectNames: true
 
     alertmanager:
-      ingress:
-        enabled: true
-        ingressClassName: traefik-internal
-        hosts:
-          -  alerts.xtmcore.com
-        path: /
-        pathPrefix: Prefix
-      alertmanagerSpec:
-        replicas: 1
-        alertmanagerConfiguration:
-          name: cluster
-          global:
-            resolveTimeout: 5m
-        storage:
-          volumeClaimTemplate:
-            spec:
-              storageClassName: longhorn
-              resources:
-                requests:
-                  storage: 1Gi
+      enabled: false
 
     grafana:
       enabled: false
+      forceDeployDashboards: true
+      sidecar:
+        dashboards:
+          annotations:
+            grafana_folder: Kubernetes
 
     kubeApiServer:
+      enabled: true
       serviceMonitor:
         metricRelabelings:
+          # Drop high cardinality labels
           - action: drop
             sourceLabels: ["__name__"]
             regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
           - action: drop
             sourceLabels: ["__name__"]
-            regex: apiserver_(response|watch_events)_sizes_bucket
-          - action: drop
-            sourceLabels: ["__name__"]
-            regex: apiserver_request_body_size_bytes_bucket
-          - action: drop
-            sourceLabels: ["__name__"]
-            regex: workqueue_(work|queue)_duration_seconds_bucket
+            regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
 
     kubelet:
+      enabled: true
       serviceMonitor:
-        cAdvisorMetricRelabelings:
-        # Drop less useful container CPU metrics.
-          - sourceLabels: [__name__]
-            action: drop
-            regex: "container_cpu_(cfs_throttled_seconds_total|load_average_10s|system_seconds_total|user_seconds_total)"
-          # Drop less useful / always zero container memory metrics.
-          - sourceLabels: [__name__]
-            action: drop
-            regex: "container_memory_(failures_total|mapped_file|swap)"
-          # Drop less useful container process metrics.
-          - sourceLabels: [__name__]
-            action: drop
-            regex: "container_(file_descriptors|tasks_state|threads_max)"
-          # Drop less useful container filesystem metrics.
-          - sourceLabels: [__name__]
-            action: drop
-            regex: "container_fs_(io_current|io_time_seconds_total|io_time_weighted_seconds_total|reads_merged_total|sector_reads_total|sector_writes_total|writes_merged_total)"
-          # Drop less useful container blkio metrics.
-          - sourceLabels: [__name__]
-            action: drop
-            regex: "container_blkio_device_usage_total"
-          # Drop container spec metrics that overlap with kube-state-metrics.
-          - sourceLabels: [__name__]
-            action: drop
-            regex: "container_spec.*"
-          # Drop cgroup metrics with no pod.
-          - sourceLabels: [id, pod]
-            action: drop
-            regex: ".+;"
-          # Drop high-cardinality labels.
-          - action: labeldrop
-            regex: (uid|id|name|pod_uid|interface)
-        probesMetricRelabelings:
-          - action: drop
-            sourceLabels: ["__name__"]
-            regex: prober_probe_duration_seconds_bucket
         metricRelabelings:
-          # Drop high-cardinality labels.
+          # Drop high cardinality labels
           - action: labeldrop
-            regex: (uid|id|name|pod_uid|interface)
+            regex: (uid)
+          - action: labeldrop
+            regex: (id|name)
           - action: drop
             sourceLabels: ["__name__"]
             regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
 
     kubeControllerManager:
-      enabled: true
-      endpoints: &cp
-        - 10.11.0.16
-        - 10.11.0.17
-        - 10.11.0.18
-      serviceMonitor: &sm
-        metricRelabelings:
-          - action: drop
-            sourceLabels: ["__name__"]
-            regex: workqueue_(work|queue)_duration_seconds_bucket    
-
-    prometheus-node-exporter:
-      fullnameOverride: node-exporter
-      prometheus:
-        monitor:
-          enabled: true
-          relabelings:
-            - action: replace
-              regex: (.*)
-              replacement: $1
-              sourceLabels:
-                - __meta_kubernetes_pod_node_name
-              targetLabel: kubernetes_node
-
-    prometheusOperator:
-      enabled: true
-    fullnameOverride: prometheus-operator
+      enabled: false 
     
-    prometheus:
-      enabled: false  # Using VictoriaMetrics
+    kubeEtcd:
+      enabled: false
+
+    kubeProxy:
+      enabled: false
+
+    kubeScheduler:
+      enabled: false
+
+    kubeStateMetrics:
+      enabled: false
+
+    nodeExporter:
+      enabled: false
+
+    ### Prometheus operator values
+    prometheusOperator:
+      resources:
+        requests:
+          cpu: 35m
+          memory: 273M
+        limits:
+          memory: 326M
+
+      prometheusConfigReloader:
+        # resource config for prometheusConfigReloader
+        resources:
+          requests:
+            cpu: 5m
+            memory: 32M
+          limits:
+            memory: 32M
       
-    postRenderers:
-      - kustomize:
-          patches:
-            - target:
-                group: monitoring.coreos.com
-                version: v1
-                kind: ServiceMonitor
-                name: kps-kubelet
-              patch: |
-                - op: add
-                  path: /spec/endpoints/0/trackTimestampsStaleness
-                  value: true
-                - op: add
-                  path: /spec/endpoints/1/trackTimestampsStaleness
-                  value: true
-                - op: add
-                  path: /spec/endpoints/2/trackTimestampsStaleness
-                  value: true
+    ### Prometheus instance values
+    prometheus:
+      ingress:
+        enabled: true
+        ingressClassName: traefik-internal
+        hosts:
+          - prometheus.xtmcore.com
+        pathType: Prefix
+
+      prometheusSpec:
+        alertingEndpoints:
+          - namespace: monitor
+            name: alertmanager
+            port: 9093
+            apiVersion: v2
+        enableAdminAPI: true
+        enableFeatures:
+          - auto-gomaxprocs
+          - memory-snapshot-on-shutdown
+          - new-service-discovery-manager
+        podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
+        replicas: 1
+        replicaExternalLabelName: "__replica__" # must match with thanos value `.query.replicaLabel[0]`
+        resources:
+          requests:
+            cpu: 100m
+          limits:
+            memory: 2000M
+        retention: 14d
+        retentionSize: 50GB
+        ruleselectorniluseshelmvalues: false
+        scrapeConfigSelectorNilUsesHelmValues: false
+        scrapeInterval: 1m # Must match interval in Grafana Helm chart
+        serviceMonitorSelectorNilUsesHelmValues: false
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: longhorn
+              resources:
+                requests:
+                  storage: 40Gi
+        walCompression: true
