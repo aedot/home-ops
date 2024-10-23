@@ -1,88 +1,70 @@
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-    name: actual
+  name: actual
 spec:
-    chart:
-        spec:
-            chart: app-template
-            sourceRef:
-                kind: HelmRepository
-                name: bjw-s
-            version: 3.5.1
-    interval: 1h0m
-    install:
-        remediation:
-            retries: 3
-    upgrade:
-        cleanupOnFail: true
-        remediation:
-            strategy: rollback
-            retries: 3
-    values:
-        controllers:
-            actual:
-                containers:
-                    app:
-                        image:
-                            repository: ghcr.io/actualbudget/actual-server
-                            tag: 24.10.1
-                        env:
-                            GENERIC_TIMEZONE: America/Los_Angeles
-                        resources:
-                            requests:
-                                cpu: 15m
-                                memory: 80M
-                            limits:
-                                memory: 256M
-                pod:
-                    securityContext:
-                        runAsUser: 2000
-                        runAsGroup: 2000
-                        fsGroup: 2000
-                        fsGroupChangePolicy: OnRootMismatch
-        service:
+  interval: 1h0m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      actual:
+        containers:
+          app: 
+            image:
+              repository: ghcr.io/actualbudget/actual-server
+              tag: 24.10.1
+            env:
+              GENERIC_TIMEZONE: America/Los_Angeles
+            resources:
+              requests:
+                cpu: 15m
+                memory: 80M
+              limits:
+                memory: 256M
+        pod:
+          securityContext:
+            runAsUser: 2000
+            runAsGroup: 2000
+            fsGroup: 2000
+            fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        controller: actual
+        ports:
+          http:
+            port: 5006
+    ingress:
+      app:
+        className: traefik-internal
+        hosts:
+          - host: actual.xtmcore.com
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
+    persistence:
+      data:
+        existingClaim: actual-data
+        advancedMounts:
+          actual:
             app:
-                controller: actual
-                ports:
-                    http:
-                        port: 5006
-        ingress:
-            app:
-                className: traefik-internal
-                hosts:
-                    - host: ENC[AES256_GCM,data:Ys1JKTm9NVOo8PNwQ7ttda29,iv:Xv9rVbWnwxgdvVjeC+xr7uFsSMJDEeWieI/jvPSex4Y=,tag:OKPP2GHNrrHRxAZOhRxsjQ==,type:str]
-                      paths:
-                        - path: /
-                          pathType: Prefix
-                          service:
-                            identifier: app
-                            port: http
-        persistence:
-            data:
-                existingClaim: actual
-                advancedMounts:
-                    actual:
-                        app:
-                            - path: /data
-sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age:
-        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBtNGQxYWFkbTgvMHlsejZy
-            Nm9wQi9zUzFzeFpaY1dHdEphbnFlQWxnM2pVCmcvOVQ3dENHV2t5dTdqSFpsZHJ3
-            cWdYb2MyRjYwUWUxcXNRUDkwYklUbkEKLS0tIFRlZXYxQ3VOVlZnU3hLY0VyUHBn
-            dUdMRm5DNlp4bEVZdWdaVzIrT2VBWEkKjFb2VvAcOuVxGA0t65MvkBjJfZ8hxDoq
-            EKkd4MLTrtCxGlw7zNlmfhgLsSW+wMCo+vMm5h8iNp33tq5Qh7F6mw==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-20T04:12:09Z"
-    mac: ENC[AES256_GCM,data:21p0RzBxWYl0S5+CQx1cpuCE31bguoOVrF9zvFgcDE+ea0RXLKvn1S+mNC9fsyaI+eYOUld/ODHG8sU5YUEUcyh3EKLYVNlsFgovetvjji65oh8HKBjevzi04e5Dd8YkJ/wTmI9yw+G1SwWb3DJdYDC80t8xrzrVRuxCI8HLgxA=,iv:WUdE99Vig+xxEQFSb03cgiEYiNl0dfnGXZ43hl7vaGE=,tag:r0PM2S05ge4n9Al2KAlNBQ==,type:str]
-    pgp: []
-    encrypted_regex: ^(host)$
-    version: 3.9.1
+              - path: /data

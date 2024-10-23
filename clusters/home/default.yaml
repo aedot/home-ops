@@ -30,7 +30,3 @@ spec:
   path: ./apps/default/actual
   prune: true
   timeout: 5m
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
