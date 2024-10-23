@@ -6,3 +6,6 @@ kubeconfig*
 *.pub
 *.key
 *.decrypted~*
+
+#files
+apps/monitor/alertmanager/config
