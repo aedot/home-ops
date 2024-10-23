@@ -4,7 +4,6 @@ namespace: auth
 resources:
   - secrets.yaml
   - helmrelease.yaml
-  - helmrepo.yaml
 configMapGenerator:
   - name: authelia-configmap
     files:

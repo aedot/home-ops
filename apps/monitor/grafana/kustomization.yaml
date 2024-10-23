@@ -3,5 +3,4 @@ kind: Kustomization
 namespace: monitor
 resources:
   - secrets.yaml
-  - helmrepo.yaml
   - helmrelease.yaml

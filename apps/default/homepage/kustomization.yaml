@@ -3,5 +3,4 @@ kind: Kustomization
 namespace: default
 resources:
   - helmrelease.yaml
-  - helmrepo.yaml
   - ingress.yaml
