@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: flux-system
+resources:
+  - ./bjw-s.yaml
+  - ./cloudnative-pg.yaml
+  - ./djjudas21.yaml
+  - ./emqx.yaml
+  - ./grafana.yaml
+  - ./jetstack.yaml
+  - ./kubernetes-sigs-metrics-server.yaml
+  - ./longhorn.yaml
+  - ./metallb.yaml
+  - ./nfs-provisioner.yaml
+  - ./postfinance.yaml
+  - ./prometheus-community.yaml
+  - ./runix.yaml
+  - ./traefik.yaml
+  

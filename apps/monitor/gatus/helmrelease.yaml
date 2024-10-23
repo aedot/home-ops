@@ -13,6 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: bjw-s
+        namespace: flux-system
   install:
     remediation:
       retries: 3
@@ -60,7 +61,6 @@ spec:
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
               CUSTOM_WEB_PORT: &port 8080
-              SECRET_DOMAIN_NAME: xtmcore.com
             envFrom: *envFrom
             probes:
               liveness: &probes

@@ -1,55 +1,37 @@
 web:
-    port: 8080
+  port: ${CUSTOM_WEB_PORT}
 storage:
-    type: postgres
-    path: ENC[AES256_GCM,data:xSMm0XcD/4Ck2xqIsFF8b1JUbGWR2DMcsRNgrEYTp706D6udZX1MxKAJ+9hDpDdIc3gx8hvLPnWizSI4Cgx/K9bIqBgovGn/VZcNSw43W5wvHqmPKed09sv86EmhHYWUHTvh8zcJxXsqArJQ2L1QU+j+Fm8o5GmCw01XPz4e,iv:V5gVnHTW/ho5eLtfwkQPot9Ew3jOgCgiCZCiGemYqc0=,tag:/xT5MzQ/l3ZQsa0M85Fsgg==,type:str]
-    caching: true
+  type: postgres
+  path: postgres://${INIT_POSTGRES_USER}:${INIT_POSTGRES_PASS}@${INIT_POSTGRES_HOST}:5432/${INIT_POSTGRES_DBNAME}?sslmode=disable
+  caching: true
 metrics: true
 debug: false
 ui:
-    title: Status | Gatus
-    header: Status
-# alerting:
-#   pushover:
-#     application-token: $${CUSTOM_PUSHOVER_APP_TOKEN}
-#     user-key: $${CUSTOM_PUSHOVER_USER_KEY}
-#     default-alert:
-#       description: health-check failed
-#       send-on-resolved: true
-#       failure-threshold: 5
-#       success-threshold: 2
+  title: Status | Gatus
+  header: Status
+alerting:
+  slack:
+    webhook-url: ${SLACK_WEBHOOK_URL}
 connectivity:
-    checker:
-        target: 1.1.1.1:53
-        interval: 1m
+  checker:
+    target: 1.1.1.1:53
+    interval: 1m
 endpoints:
-    - name: status
-      group: external
-      url: https://status.xtmcore.com
-      interval: 1m
-      client:
-        dns-resolver: tcp://1.1.1.1:53
-      conditions:
-        - '[STATUS] == 200'
-      # alerts:
-      #   - type: pushover
-sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age:
-        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBQL2Nibmt3TWlmVG9nZTU2
-            cVNvbTEwMHk5Mzk0NlZGVE5UMjRUWjBQTXpvCks3MjdkN2tqekltZmUwVmNzbGhF
-            eVlPNnIvWUp6ZVZCYVhTUGtTQ0had28KLS0tIExNOWZkekhudURXRjV6SElDVFlK
-            UGJCOGhFNWMrMElVVmtYWWtkU2JnOU0KMHNOWC4d8tyA9Njxhe7ES7yJjlhzM3yk
-            nCzxH3hPj0zRdEIow3Rl2IhgEO5T+LDOt21T8D+LuiRoUas7TBryqQ==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-23T00:06:11Z"
-    mac: ENC[AES256_GCM,data:919vEHvE+C0+RDYCuVYFGDSKctJ1vRAGaF4Fu8ZBTLbP09m0SRTei19+pGV+oCO8818/KlqOri0sPRl1dNTzNcWkBpllEgIq4NX9M79/coBcuf/vkJ60TIkK4liuN8ZxC5Ta9cUPwfmMz6MS7qUr/4e49I2T9OSu1j0DQ0xWqkk=,iv:nZw+bdY8RCeEH8Zi7Y0cp6Zy9kT47EVck6eX41n1gI0=,tag:WeDsMaT7c79Tq+0EJTB1VA==,type:str]
-    pgp: []
-    encrypted_regex: ^(path)$
-    version: 3.9.1
+  - name: status
+    group: external
+    url: https://status.xtmcore.com
+    interval: 1m
+    client:
+      dns-resolver: tcp://1.1.1.1:53
+    conditions:
+      - '[STATUS] == 200'
+      # - '[BODY].status == UP'
+      - '[RESPONSE_TIME] < 300'
+    alerts:
+      - type: slack
+        description: "healthcheck failed 3 times in a row"
+        send-on-resolved: true
+      - type: slack
+        failure-threshold: 5
+        description: "healthcheck failed 5 times in a row"
+        send-on-resolved: true
