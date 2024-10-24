@@ -1,83 +1,52 @@
-log:
-    level: info
-regulation:
-    max_retries: 3
-    find_time: 1h
-    ban_time: 1d
-session:
-    name: authelia-home-ops
-    inactivity: 3d
-    expiration: 7d
-    remember_me: 6M
-    cookies:
-        - domain: ENC[AES256_GCM,data:Q4IrkkueyZT8vME=,iv:t94leB8efdo1cRh7fFmrUKkMg2kQHkqX8jgKBuErty8=,tag:B1VPfkOC9aTfl6zUNGYp6Q==,type:str]
-          authelia_url: ENC[AES256_GCM,data:VfdbyWzyd3WAKe7uoUQzVOZVwvFrT8GT,iv:oK9duX2G2e0lR8EOIzzeO+nAVp5K0yml98BWkxtfec8=,tag:vaCq5G7uFlO1nNKEHdxTcQ==,type:str]
-    redis:
-        host: redis-master-0.redis-headless.database.svc.cluster.local
-authentication_backend:
-    ldap:
-        implementation: ENC[AES256_GCM,data:bkjzWnTn,iv:FosimnTBgG623h+CayrZ3Ue6CCTUfD5vC6oDGjGFPe0=,tag:5Wtg1/b5bOqsFGplQ6eeLg==,type:str]
-        address: ENC[AES256_GCM,data:+B2wpK99L9iwbrRjur3atI0N3WQnvuBvEqrfWrLLLFQLBeU6T4sBWD0zXGyZ,iv:XQTtSSWJXGh6hmWRUg7SRXhxaUHDRmPpcdGAu6CNN0o=,tag:Q6STakg5PBG2Za4MyzjWcw==,type:str]
-        timeout: ENC[AES256_GCM,data:8hvte0hYcWfw,iv:hr5qURrCre0YtF4svSmxuDbha6aPJjNqrvuVCJ3/Fbg=,tag:jj22Dtg8tLfns9oYuFgITg==,type:str]
-        start_tls: ENC[AES256_GCM,data:p6lVE4c=,iv:cj/sa6OOchnF0O1rucorGE8DfYLf/2w87JFVZbbFcIo=,tag:MRENjH2F6X0lZuWEkIxfEA==,type:bool]
-        base_dn: ENC[AES256_GCM,data:7OU1js9yjGfrD1e/5Ti3UsY=,iv:IxD65yY3uGRC+btRne4nZAYgj5xyxsb/dr2YgoBaaWs=,tag:pYVXMc4qw8psSQEz60EyMQ==,type:str]
-        additional_users_dn: ENC[AES256_GCM,data:2bn03YYKsEug,iv:o9nynT+/HUUj36hYlEAx/iZFLUuZbkUtgP89Q7CIZ0A=,tag:1rxFtnE23lzYmaHdgSylzQ==,type:str]
-        users_filter: ENC[AES256_GCM,data:Qm6rsHVJvh7KWz5IMvaIaa6zJbverkH71jKhiKoYmbE2Z196DNE8IznDcDIQt+VPCldg9BA=,iv:SEi7YUB1v7EY9ZohIXbUF66DRk585aXs82UDp7xTLmY=,tag:amZ8JntkxhZHBTtzHikroA==,type:str]
-        additional_groups_dn: ENC[AES256_GCM,data:1EvIslSH6a5m,iv:y910LtyCPHxoZpPZ9mR/hTXuYHeNHRdZkxnagnoXbXA=,tag:S0n7pSd2VALN6GtzZyLjqA==,type:str]
-        groups_filter: ENC[AES256_GCM,data:fBCpzcDqQjhACQosDQ==,iv:CodX3Vwb1V3XIe3/Ri7wIfLnSXmbkmxPWGNJR5LwLdo=,tag:qQ7ziSnbpCv6Sod3FKIBfg==,type:str]
-        group_search_mode: ENC[AES256_GCM,data:dyPzwqVA,iv:LqxjzOW4ENxiIFivZtMLuP2xB8YDwLup3KRUrA0eIHU=,tag:ilSg1xW+mTFBw4uo3VhfFA==,type:str]
-        user: ENC[AES256_GCM,data:5ftfhJK46PtD+RidPjbGQR/o/FBmTuY8jO78Kpv40x8Jv0XXUA==,iv:Xam7ZgS7i/HyvUEkI+gd6A1pPljjhUM4VtWpssC765g=,tag:lMDdgYpfyxPKXwli1cVTow==,type:str]
-        attributes:
-            username: ENC[AES256_GCM,data:C+Pk,iv:na3jghjN6shCJzQh6Be/dagE/5zu3h10LwoGIQwQ0aI=,tag:z9SBrwGtVbrT73BJ00g4PQ==,type:str]
-            display_name: ENC[AES256_GCM,data:79MdfiyTPV56Og8=,iv:rt0F8o7AvWSojCjwM4rP2gbFzAD/bVneVnA9jgdjDzI=,tag:yxFdn3CpO7V6MZJglRtqTw==,type:str]
-            mail: ENC[AES256_GCM,data:DOpUOA==,iv:lQDxogiAA4hinjm7pOpqF4BVy2ZiSqdjSTGz30d3IZc=,tag:WHl9j+b/KeTP7tfCti5+8Q==,type:str]
-            group_name: ENC[AES256_GCM,data:uBk=,iv:G/pMehPYwh0LivPSrt9Mp6epl+xznRQrsOlkiHpSPhA=,tag:lotBj6Nr49177xWUR71oWQ==,type:str]
-storage:
-    postgres:
-        address: postgres16-rw.database.svc.cluster.local:5432
-        database: authelia
-        username: authy
+---
 access_control:
-    default_policy: one_factor
-    # networks:
-    #   - name: internal
-    #     networks:
-    #       - 10.0.0.0/8
-    #       - 172.16.0.0/12
-    #       - 192.168.0.0/16
-    rules:
-        - domain: ENC[AES256_GCM,data:3B930jFa6wn8TtPHiKhU5w==,iv:1un33u2cnuhEZPpACvBiQV7MGGMk7z/Y0l1dtOgY9QY=,tag:I4gTlnY8RawSBzsr9YY5UA==,type:str]
-          policy: ENC[AES256_GCM,data:RN1mWFqO,iv:V/Nt002TeaPwrGBDK1bM6FvkzAg3VQtR+ingfkAawS8=,tag:d8AWmCuuSm6/13Q/IdQ0IA==,type:str]
-        - domain: ENC[AES256_GCM,data:iUrThfZxU99+MWsqtw==,iv:L4DMPUqKp6/HBNITFJDCgtdXb52yyM+HOrhQxv0ABS4=,tag:AR9CxkMJTuBjiohfv5yWBQ==,type:str]
-          policy: ENC[AES256_GCM,data:jA6lMpg6e6flOQ==,iv:mMyrEYGPhOvGLJwRXaTAvCHpUzDutj8IuAuO/Mk61uI=,tag:rQmZ55UMjvQ7C4880r/BCQ==,type:str]
+  default_policy: two_factor
+
+authentication_backend:
+  ldap:
+    implementation: custom
+    address: ldap://lldap.auth.svc.cluster.local:3890
+    timeout: 5 seconds
+    start_tls: false
+    additional_users_dn: ou=people
+    users_filter: (&({username_attribute}={input})(objectClass=person))
+    additional_groups_dn: ou=groups
+    groups_filter: (member={dn})
+    group_search_mode: filter
+    attributes:
+      username: uid
+      display_name: displayName
+      mail: mail
+      group_name: cn
+
 notifier:
-    disable_startup_check: false
-    smtp:
-        address: ENC[AES256_GCM,data:ZidPBTBCRITw9YYY75kROzrXIbc=,iv:qAKcrUTxrkV1Tpbbvu8XaCvYPg+ZUNPZyf12OLF+4uo=,tag:KS1oXkjxZ7URhpuK6j3rOQ==,type:str]
-        sender: ENC[AES256_GCM,data:R2gVSSpweKlwTIBvxbKrIJAijhEFLUUj1Y/xyHv193p/Y+o=,iv:scVeq+9CppvfN+iQKFGKXeK4KNq+hujxwEZNWOsjQVI=,tag:cuEP43qYg/A6+X9Klk/mrA==,type:str]
-        username: ENC[AES256_GCM,data:YlV2pwngQ2deOU7qNFPGro76ceBO,iv:BXZQbZKhdMXKA35/XiK9thscAuYRUK9SbLFiDJsGJQI=,tag:Ge/qTGyCIMve4502DEr4bg==,type:str]
-        subject: ENC[AES256_GCM,data:2VTme9EtqtAe0yAvjQsrdVuB,iv:H3AoIEaRSk4YrqQFF2AWFLy7WYUUzltY5d0VvCkWqog=,tag:lUKYcJPnkq1jV6wY57+mbg==,type:str]
-        startup_check_address: ENC[AES256_GCM,data:gSB9akVN4M8dwFoxkSpwlv9dyw==,iv:atL/Rj+tKmPZPk3nut/0LIwy34A9df7699QEmxfW2jo=,tag:mDUUl+YCPla3hveCxPwpnQ==,type:str]
-        disable_require_tls: ENC[AES256_GCM,data:h9lyDB8=,iv:PLoH9FgeOZ1QWnVSdxDdWE1l4kYQoJcHfmBPbAgZFuE=,tag:SlkBrd8iQ3cDkh2ayMPU0g==,type:bool]
-        disable_starttls: ENC[AES256_GCM,data:THuiIWI=,iv:IbTYBWHXpAVEL1Y4fjm0HO0t2uhs9KGWpQKIWNAaZvA=,tag:+d/IojydalwPYCy+pZuuNg==,type:bool]
-        disable_html_emails: ENC[AES256_GCM,data:SDa4dYg=,iv:EwXMEzxF13csueQkCXvW65Kw7HbWCTsUVN0h2h1tP/o=,tag:x/fk+AIKHz/+TzlUqi66Kw==,type:bool]
-sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age:
-        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBFMlN4UEhjSFdvM0pNclY0
-            OWNpQUtEdmRJZUh4Y25YQWF6QmxhY3hSTkQ4CnVndFcvU2xVUlI5aVZ6V2Ftb3Ra
-            VFVWQy8vZjhHU3N2OWRad25TQlNsN2MKLS0tIEhvZkdoQ21la3BSMHJqVkIzRXdB
-            bGdZbHdkSlc4ZE5URnNYRlVrUlNIT28K+OBdWB0rZrM0BmkctR/3454X7Gl0OWR9
-            kcTi0dIlxwitvMhAMyrj0wXdIrUk/3v3Tktd8uzpVoO8qfxGA4sgKA==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-20T03:57:29Z"
-    mac: ENC[AES256_GCM,data:FvAN/3dmJ3Hu7x0IzqE0H0zTojCxYVUFGLFr0zwJ90SdFwn6FQqrhq/nTjXOT2yb+/UsWpM01Oy6tgI6izwvuBpovY28Tin6IZlWB/ht5lk5JRuc1zbN+8ymEfp2is8mDUNQDci63MyES58FnEwMNDMz5+1BNnT+Nl87YqIxfiA=,iv:bdqAFaonO2l84GdU4RLNRj/5OFkEWdw5ZsRWe3nnsOM=,tag:JTKRdDUiwO0rG6BJooIGVw==,type:str]
-    pgp: []
-    encrypted_regex: ^(cookies|ldap|rules|smtp)$
-    version: 3.9.1
+  disable_startup_check: false
+  smtp:
+    subject: '[Authelia] {title}'
+    disable_require_tls: false
+    disable_starttls: false
+    disable_html_emails: false
+
+session:
+  name: x_session
+  inactivity: 5m
+  expiration: 1h
+  remember_me: 1M
+  cookies:
+    - domain: xtmcore.com
+      authelia_url: https://auth.xtmcore.com
+  redis:
+    database_index: 3
+    host: dragonfly.database.svc.cluster.local
+
+totp:
+  disable: false
+  issuer: authelia.com
+
+log:
+  level: info
+regulation:
+  max_retries: 3
+  find_time: 1h
+  ban_time: 1d
+

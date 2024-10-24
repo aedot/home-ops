@@ -1,176 +1,134 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-    name: authelia
+  name: &app authelia
 spec:
-    chart:
-        spec:
-            chart: app-template
-            version: 3.5.1
-            sourceRef:
-                kind: HelmRepository
-                name: bjw-s
-    interval: 1h0m
-    install:
-        remediation:
-            retries: 3
-    upgrade:
-        cleanupOnFail: true
-        remediation:
-            strategy: rollback
-            retries: 3
-    values:
-        controllers:
-            authelia:
+  chart:
+    spec:
+      chart: app-template
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      version: 3.5.1
+  interval: 1h0m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      authelia:
+        enabled: true
+        replicas: 3
+        strategy: RollingUpdate
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16
+            envFrom: &envFrom
+              - secretRef:
+                  name: authelia-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/authelia/authelia
+              tag: 4.38.16
+            env:
+              TZ: America/Los_Angeles
+              AUTHELIA_SERVER_ADDRESS: tcp://0.0.0.0:9091
+              AUTHELIA_SERVER_DISABLE_HEALTHCHECK: true
+              AUTHELIA_TELEMETRY_METRICS_ADDRESS: tcp://0.0.0.0:8080
+              AUTHELIA_TELEMETRY_METRICS_ENABLED: true
+              AUTHELIA_DUO_API_DISABLE: true
+              AUTHELIA_THEME: dark
+              X_AUTHELIA_CONFIG: /config/configuration.yaml
+              X_AUTHELIA_CONFIG_FILTERS: expand-env
+            envFrom: *envFrom
+            probes:
+              liveness: &probes
                 enabled: true
-                replicas: 2
-                strategy: RollingUpdate
-                containers:
-                    app:
-                        image:
-                            repository: ghcr.io/authelia/authelia
-                            tag: 4.38.16
-                        env:
-                            - name: TZ
-                              value: America/Los_Angeles
-                            - name: AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET
-                              valueFrom:
-                                secretKeyRef:
-                                    name: authelia-secret
-                                    key: jwt_secret
-                            - name: AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD
-                              valueFrom:
-                                secretKeyRef:
-                                    name: authelia-secret
-                                    key: ldap_password
-                            - name: AUTHELIA_SESSION_REDIS_PASSWORD
-                              valueFrom:
-                                secretKeyRef:
-                                    name: authelia-secret
-                                    key: redis_password
-                            - name: AUTHELIA_SESSION_SECRET
-                              valueFrom:
-                                secretKeyRef:
-                                    name: authelia-secret
-                                    key: session_encryption_key
-                            - name: AUTHELIA_NOTIFIER_SMTP_PASSWORD
-                              valueFrom:
-                                secretKeyRef:
-                                    name: authelia-secret
-                                    key: smtp_password
-                            - name: AUTHELIA_STORAGE_ENCRYPTION_KEY
-                              valueFrom:
-                                secretKeyRef:
-                                    name: authelia-secret
-                                    key: storage_encryption_key
-                            - name: AUTHELIA_STORAGE_POSTGRES_PASSWORD
-                              valueFrom:
-                                secretKeyRef:
-                                    name: authelia-secret
-                                    key: psql_password
-                            - name: AUTHELIA_TOTP_ISSUER
-                              value: authelia.com
-                            - name: AUTHELIA_TELEMETRY_METRICS_ENABLED
-                              value: "false"
-                            - name: AUTHELIA_AUTHENTICATION_BACKEND_PASSWORD_RESET_DISABLE
-                              value: "true"
-                            - name: AUTHELIA_AUTHENTICATION_BACKEND_REFRESH_INTERVAL
-                              value: 1m
-                            - name: AUTHELIA_SERVER_ADDRESS
-                              value: tcp://0.0.0.0:80
-                            - name: AUTHELIA_DUO_API_DISABLE
-                              value: "true"
-                            - name: X_AUTHELIA_CONFIG
-                              value: /config/configuration.yaml
-                        probes:
-                            liveness:
-                                enabled: true
-                                custom: true
-                                spec:
-                                    httpGet:
-                                        path: /api/health
-                                        port: 80
-                                    initialDelaySeconds: 0
-                                    periodSeconds: 10
-                                    timeoutSeconds: 1
-                                    failureThreshold: 3
-                            readiness:
-                                enabled: true
-                                custom: true
-                                spec:
-                                    httpGet:
-                                        path: /api/health
-                                        port: 80
-                                    initialDelaySeconds: 0
-                                    periodSeconds: 10
-                                    timeoutSeconds: 1
-                                    failureThreshold: 3
-                            startup:
-                                enabled: false
-                        resources:
-                            requests:
-                                cpu: 10m
-                            limits:
-                                memory: 128Mi
-        service:
-            app:
-                controller: authelia
-                ports:
-                    http:
-                        port: 80
-                    metrics:
-                        enabled: true
-                        port: 8080
-        serviceMonitor:
-            app:
-                serviceName: authelia
-                enabled: true
-                endpoints:
-                    - port: metrics
-                      scheme: http
-                      path: /metrics
-                      interval: 1m
-                      scrapeTimeout: 10s
-        ingress:
-            app:
-                enabled: true
-                className: traefik-external
-                hosts:
-                    - host: ENC[AES256_GCM,data:GHUoWQHdVivp23Qz1wB5TQ==,iv:ZoVqwA9LzOCaCSHkd0iZCAL00zancF/NLSvgQDvdABQ=,tag:c5CpMDPnseASRYsL/IpD9Q==,type:str]
-                      paths:
-                        - path: /
-                          pathType: Prefix
-                          service:
-                            identifier: app
-                            port: http
-                tls:
-                    - hosts:
-                        - auth.xtmcore.com
-        persistence:
-            config:
-                type: configMap
-                name: authelia-configmap
-                globalMounts:
-                    - path: /config/configuration.yaml
-                      subPath: configuration.yaml
-                      readOnly: true
-sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age:
-        - recipient: age1r3ehz4v5czfczcmfgnyuc7zmz8pjl055shhek88nsjv2xnrnkq8svjnj5c
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBsblJ5TFlHcDYzOXduYkYw
-            R0dwN1ZYanpDbmx4WlowWXRMMWZKYzEreXh3CklUMFQvVWxsakNJRTFDZ3NtWERm
-            Q0I1RTNiNHg5OVlQWFZGRXpZc05tYUkKLS0tIGp4THV5em5UNFFvZVRMSXRET0h3
-            TTN6cExoeFh1MEhGNjZ5QXVQSEI2MEUKGSgZQ9y4t+O7T67JFrwXa5Mmyz40nQZr
-            5x5NxZkcSpvsljs8I7tuo2O4dlx+95BMvCZhgXOEHWO/hK+ovJi5UA==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-10-20T03:58:21Z"
-    mac: ENC[AES256_GCM,data:yKSmmAT8S5716byBS6BLGKXb7M4Z/smpNFOO/wlvcd+GqwzEJmelK6kxfbYAdjAE7FlUH65jHdNJ61J58oYSNwohGY/p7aJS2xh9dK+bHBk5IibwdYFXSNo36SvyY7mvASDd/T4BbyW+WY4ievO5AAvzGQBfE9sNA94urBatw7c=,iv:EmnXNhEo3jWRFBF6sIfX9zEuHxSlcpt3oSd8sjOkU2E=,tag:PUh4L/nUVIYVxbrRr+pU0g==,type:str]
-    pgp: []
-    encrypted_regex: ^(cookies|host)$
-    version: 3.9.1
+                custom: true
+                spec:
+                  httpGet:
+                    path: &path /api/health
+                    port: &port 9091
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: *app
+              
+    service:
+      app:
+        controller: *app
+        ports: 
+          http:
+            port: *port
+          metrics:
+            enabled: true
+            port: 8080
+    serviceMonitor:
+      app:
+        serviceName: *app
+        enabled: true
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
+    ingress:
+      app:
+        enabled: true
+        className: traefik-external
+        annotations:
+          gatus.io/path: *path
+        hosts:
+          - host: &host auth.xtmcore.com
+            paths: &paths
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+            - *host
+
+    persistence:
+      config:
+        type: configMap
+        name: authelia-configmap
+        globalMounts:
+          - path: /config/configuration.yaml
+            subPath: configuration.yaml
+            readOnly: true
+
