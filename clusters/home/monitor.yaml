@@ -52,11 +52,6 @@ spec:
     provider: sops
     secretRef:
       name: sops-age
-  PostBuild:
-    substitute:
-      GATUS_APP: kromgo
-      GATUS_SUBDOMAIN: kromgo
-      GATUS_PATH: /cluster_node_count
 # ---
 # apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 # kind: Kustomization
