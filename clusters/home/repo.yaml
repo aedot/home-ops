@@ -9,6 +9,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./clusters/repositories/helm-charts
+  path: ./clusters/repositories
   prune: true
   timeout: 5m

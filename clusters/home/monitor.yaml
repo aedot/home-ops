@@ -45,7 +45,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./infrastructure/kube-prometheus-stack/prometheus-crds
+  path: ./apps/monitor/prometheus-operator-crds
   prune: true
   timeout: 5m
 # ---
