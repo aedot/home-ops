@@ -1,0 +1,39 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAlert
+metadata:
+  name: stack
+spec:
+  image:
+    repository: victoriametrics/vmalert
+    tag: v1.105.0@sha256:0c299a78a9529b9bddd1bc43dddb48a4575b637ec88a037d32021fa2d59d6630
+  datasource:
+    url: http://vmsingle-stack.monitor.svc:8429
+  evaluationInterval: 1m
+  externalLabels:
+    cluster: main
+  extraArgs:
+    external.url: https://vm-single.xtmcore.com
+  notifiers:
+    - url: http://alertmanager-operated.monitor.svc:9093
+  remoteRead:
+    url: http://vmsingle-stack.monitor.svc:8429
+  remoteWrite:
+    url: http://vmagent-stack.monitor.svc:8429
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 20m
+      memory: 64Mi
+    limits:
+      cpu: 1
+      memory: 1Gi
+  selectAllByDefault: true
+  # topologySpreadConstraints:
+  #   - maxSkew: 1
+  #     topologyKey: kubernetes.io/hostname
+  #     whenUnsatisfiable: DoNotSchedule
+  #     labelSelector:
+  #       matchLabels:
+  #         app.kubernetes.io/name: vmalert
+  #         app.kubernetes.io/instance: victoria

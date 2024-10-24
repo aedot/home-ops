@@ -18,4 +18,5 @@ resources:
   - ./prometheus-community.yaml
   - ./runix.yaml
   - ./traefik.yaml
+  - ./victoria-metrics-charts.yaml
   
