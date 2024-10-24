@@ -5,3 +5,5 @@ resources:
   - secrets.yaml
   - cluster16.yaml
   - scheduledbackup16.yaml
+  - gatus.yaml
+  - prometheusrule.yaml
