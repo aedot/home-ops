@@ -1,0 +1,3 @@
+---
+providerRegex: ^(yemoja|moremi|yemolu)$
+bypassDnsResolution: true
