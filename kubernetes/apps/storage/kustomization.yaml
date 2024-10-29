@@ -5,3 +5,4 @@ resources:
   - ./namespace.yaml
   - ./longhorn/ks.yaml
   - ./nfs-provisioner/ks.yaml
+  - ./minio/ks.yaml
