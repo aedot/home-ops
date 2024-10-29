@@ -5,11 +5,11 @@ kind: HelmRelease
 metadata:
   name: minio
 spec:
-  interval: 30m
+  interval: 60m
   chart:
     spec:
       chart: app-template
-      version: 3.4.0
+      version: 3.5.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -22,10 +22,11 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  uninstall:
+    keepHistory: false
   values:
     controllers:
-      main:
-        replicas: 1
+      minio:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -34,13 +35,15 @@ spec:
               repository: quay.io/minio/minio
               tag: RELEASE.2024-10-13T13-34-11Z
             env:
-              TZ: "America/Los_Angeles"
               MINIO_UPDATE: "off"
-              MINIO_PROMETHEUS_URL: http://vmagent-vm-operator.observability.svc.cluster.local:8429
-              MINIO_PROMETHEUS_JOB_ID: minio
               MINIO_BROWSER_REDIRECT_URL: "https://minio.${SECRET_DOMAIN}"
               MINIO_SERVER_URL: "https://s3.${SECRET_DOMAIN}"
-              MINIO_PROMETHEUS_AUTH_TYPE: "public"
+              MINIO_API_CORS_ALLOW_ORIGIN: https://minio.${SECRET_DOMAIN},https://s3.${SECRET_DOMAIN}
+              MINIO_PROMETHEUS_JOB_ID: minio
+              MINIO_PROMETHEUS_URL: https://prometheus.${SECRET_DOMAIN}
+              MINIO_PROMETHEUS_AUTH_TYPE: public
+              MINIO_STORAGE_CLASS_RRS: EC:0
+              MINIO_STORAGE_CLASS_STANDARD: EC:0
             envFrom:
               - secretRef:
                   name: minio
@@ -58,50 +61,59 @@ spec:
                   timeoutSeconds: 10
                   failureThreshold: 6
               readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: { type: RuntimeDefault }
     service:
-      main:
-        controller: main
+      app:
+        controller: minio
         ports:
           http:
             port: 9001
-          api:
+          s3:
             port: 9000
+    serviceMonitor:
+      app:
+        serviceName: minio
+        endpoints:
+          - port: s3
+            scheme: http
+            path: /minio/v2/metrics/cluster
+            interval: 1m
+            scrapeTimeout: 10s
     ingress:
-      main:
-        enabled: true
+      app:
         className: internal
         hosts:
           - host: minio.${SECRET_DOMAIN}
             paths:
               - path: /
-                pathType: Prefix
                 service:
-                  identifier: main
+                  identifier: app
                   port: http
-      s3:
-        enabled: true
-        className: internal
-        hosts:
           - host: s3.${SECRET_DOMAIN}
             paths:
               - path: /
-                pathType: Prefix
                 service:
-                  identifier: main
-                  port: api
-    serviceMonitor:
-      main:
-        serviceName: minio
-        enabled: true
-        endpoints:
-          - port: api
-            scheme: http
-            path: /minio/v2/metrics/cluster
-            interval: 1m
-            scrapeTimeout: 10s
+                  identifier: app
+                  port: s3
     persistence:
       config:
-        enabled: true
         type: nfs
         server: "172.16.10.12"
         path: /volume1/k8s
