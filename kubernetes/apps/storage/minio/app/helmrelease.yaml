@@ -39,9 +39,6 @@ spec:
             supplementalGroups:
               - 100
 
-          nodeSelector:
-            kubernetes.io/hostname: s01
-
         containers:
           app:
             image:
