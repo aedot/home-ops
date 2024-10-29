@@ -43,7 +43,6 @@ spec:
               MINIO_UPDATE: "off"
               MINIO_BROWSER_REDIRECT_URL: "https://minio.${SECRET_DOMAIN}"
               MINIO_SERVER_URL: "https://s3.${SECRET_DOMAIN}"
-              MINIO_API_CORS_ALLOW_ORIGIN: https://minio.${SECRET_DOMAIN},https://s3.${SECRET_DOMAIN}
               MINIO_PROMETHEUS_JOB_ID: minio
               MINIO_PROMETHEUS_URL: https://prometheus.${SECRET_DOMAIN}
               MINIO_PROMETHEUS_AUTH_TYPE: public
@@ -101,24 +100,21 @@ spec:
           - host: &console-host minio.${SECRET_DOMAIN}
             paths:
               - path: /
+                pathType: Prefix
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *console-host
+
       s3:
         className: internal
         hosts:
           - host: &api-host s3.${SECRET_DOMAIN}
             paths:
               - path: /
+                pathType: Prefix
                 service:
                   identifier: app
                   port: api
-        tls:
-          - hosts:
-              - *api-host
 
     persistence:
       config:
