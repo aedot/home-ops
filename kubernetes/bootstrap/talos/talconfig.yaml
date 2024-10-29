@@ -24,7 +24,7 @@ nodes:
   - hostname: "yemoja"
     ipAddress: "10.90.2.11"
     installDisk: "/dev/nvme0n1"
-    talosImageURL: factory.talos.dev/installer/a34a81c20f74790775e3aa56e33d959cda63ea978916cbd0e34218b5c097ff0a
+    talosImageURL: factory.talos.dev/installer/1ea6b5498851449cdc963bdb5d6489690d70e314e7edb9b2174ec1193d93a34c
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -38,10 +38,19 @@ nodes:
         mtu: 1500
         vip:
           ip: "10.90.2.10"
+    extensionServices:
+      - name: nut-client
+        configFiles:
+          - content: |-
+              MONITOR ${upsmonHost} 1 ${upsmonUser} ${upsmonPass} slave
+              SHUTDOWNCMD "/sbin/poweroff"
+            mountPath: /usr/local/etc/nut/upsmon.conf
+        environment:
+          - UPS_NAME=eaton-network
   - hostname: "moremi"
     ipAddress: "10.90.2.12"
     installDisk: "/dev/nvme0n1"
-    talosImageURL: factory.talos.dev/installer/a34a81c20f74790775e3aa56e33d959cda63ea978916cbd0e34218b5c097ff0a
+    talosImageURL: factory.talos.dev/installer/1ea6b5498851449cdc963bdb5d6489690d70e314e7edb9b2174ec1193d93a34c
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -55,10 +64,19 @@ nodes:
         mtu: 1500
         vip:
           ip: "10.90.2.10"
+    extensionServices:
+      - name: nut-client
+        configFiles:
+          - content: |-
+              MONITOR ${upsmonHost} 1 ${upsmonUser} ${upsmonPass} slave
+              SHUTDOWNCMD "/sbin/poweroff"
+            mountPath: /usr/local/etc/nut/upsmon.conf
+        environment:
+          - UPS_NAME=eaton-network
   - hostname: "yemolu"
     ipAddress: "10.90.2.13"
     installDisk: "/dev/nvme0n1"
-    talosImageURL: factory.talos.dev/installer/a34a81c20f74790775e3aa56e33d959cda63ea978916cbd0e34218b5c097ff0a
+    talosImageURL: factory.talos.dev/installer/1ea6b5498851449cdc963bdb5d6489690d70e314e7edb9b2174ec1193d93a34c
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -72,6 +90,15 @@ nodes:
         mtu: 1500
         vip:
           ip: "10.90.2.10"
+    extensionServices:
+      - name: nut-client
+        configFiles:
+          - content: |-
+              MONITOR ${upsmonHost} 1 ${upsmonUser} ${upsmonPass} slave
+              SHUTDOWNCMD "/sbin/poweroff"
+            mountPath: /usr/local/etc/nut/upsmon.conf
+        environment:
+          - UPS_NAME=eaton-network
 
 # Global patches
 patches:
