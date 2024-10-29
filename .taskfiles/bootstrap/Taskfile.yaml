@@ -90,7 +90,7 @@ tasks:
         sh: test -f {{.BOOTSTRAP_CONFIG_FILE}}
 
   secrets:
-    internal: true
+    # internal: true
     cmds:
       - for: { var: SECRET_FILES }
         cmd: |
