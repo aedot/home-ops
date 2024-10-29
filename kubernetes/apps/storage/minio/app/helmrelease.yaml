@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.5.1
+      version: 3.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -23,21 +23,21 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false
   values:
     controllers:
-      minio:
+      main:
+        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
-
         containers:
           app:
             image:
               repository: quay.io/minio/minio
               tag: RELEASE.2024-10-13T13-34-11Z
-
             env:
               TZ: "America/Los_Angeles"
               MINIO_UPDATE: "off"
@@ -46,13 +46,10 @@ spec:
               MINIO_PROMETHEUS_JOB_ID: minio
               MINIO_PROMETHEUS_URL: https://prometheus.${SECRET_DOMAIN}
               MINIO_PROMETHEUS_AUTH_TYPE: public
-
             envFrom:
               - secretRef:
                   name: minio
-
             args: ["server", "/data", "--console-address", ":9001"]
-
             probes:
               liveness: &probes
                 enabled: true
@@ -66,17 +63,9 @@ spec:
                   timeoutSeconds: 10
                   failureThreshold: 6
               readiness: *probes
-
-            resources:
-              requests:
-                memory: 100Mi
-                cpu: 100m
-              limits:
-                memory: 4000Mi
-
     service:
-      app:
-        controller: minio
+      main:
+        controller: main
         ports:
           http:
             port: 9001
@@ -84,40 +73,50 @@ spec:
             port: 9000
 
     serviceMonitor:
-      app:
+      main:
         serviceName: minio
+        enabled: true
         endpoints:
-          - port: s3
+          - port: api
             scheme: http
             path: /minio/v2/metrics/cluster
             interval: 1m
             scrapeTimeout: 10s
 
     ingress:
-      app:
+      main:
+        enabled: true
         className: internal
         hosts:
-          - host: &console-host minio.${SECRET_DOMAIN}
+          - host: minio.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: app
+                  identifier: main
                   port: http
-
       s3:
+        enabled: true
         className: internal
+        annotations:
+          hajimari.io/enable: "false"
+          nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
+          nginx.ingress.kubernetes.io/proxy-body-size: 1024m
+          nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            chunked_transfer_encoding off;
         hosts:
-          - host: &api-host s3.${SECRET_DOMAIN}
+          - host: s3.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: app
+                  identifier: main
                   port: api
 
     persistence:
       config:
+        enabled: true
         type: nfs
         server: "172.16.10.12"
         path: /volume1/k8s
