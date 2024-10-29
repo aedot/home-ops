@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: minio
 spec:
-  interval: 60m
+  interval: 30m
   chart:
     spec:
       chart: app-template
@@ -14,10 +14,7 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      interval: 60m
-  maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -25,8 +22,6 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     controllers:
       main:
@@ -41,11 +36,11 @@ spec:
             env:
               TZ: "America/Los_Angeles"
               MINIO_UPDATE: "off"
+              MINIO_PROMETHEUS_URL: http://vmagent-vm-operator.observability.svc.cluster.local:8429
+              MINIO_PROMETHEUS_JOB_ID: minio
               MINIO_BROWSER_REDIRECT_URL: "https://minio.${SECRET_DOMAIN}"
               MINIO_SERVER_URL: "https://s3.${SECRET_DOMAIN}"
-              MINIO_PROMETHEUS_JOB_ID: minio
-              MINIO_PROMETHEUS_URL: https://prometheus.${SECRET_DOMAIN}
-              MINIO_PROMETHEUS_AUTH_TYPE: public
+              MINIO_PROMETHEUS_AUTH_TYPE: "public"
             envFrom:
               - secretRef:
                   name: minio
@@ -71,18 +66,6 @@ spec:
             port: 9001
           api:
             port: 9000
-
-    serviceMonitor:
-      main:
-        serviceName: minio
-        enabled: true
-        endpoints:
-          - port: api
-            scheme: http
-            path: /minio/v2/metrics/cluster
-            interval: 1m
-            scrapeTimeout: 10s
-
     ingress:
       main:
         enabled: true
@@ -98,13 +81,6 @@ spec:
       s3:
         enabled: true
         className: internal
-        annotations:
-          hajimari.io/enable: "false"
-          nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
-          nginx.ingress.kubernetes.io/proxy-body-size: 1024m
-          nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            chunked_transfer_encoding off;
         hosts:
           - host: s3.${SECRET_DOMAIN}
             paths:
@@ -113,7 +89,16 @@ spec:
                 service:
                   identifier: main
                   port: api
-
+    serviceMonitor:
+      main:
+        serviceName: minio
+        enabled: true
+        endpoints:
+          - port: api
+            scheme: http
+            path: /minio/v2/metrics/cluster
+            interval: 1m
+            scrapeTimeout: 10s
     persistence:
       config:
         enabled: true
