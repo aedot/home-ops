@@ -140,6 +140,6 @@ spec:
         enabled: true
         type: nfs
         server: "172.16.10.12"
-        path: /volume1/k3scluster
+        path: /volume1/k8s
         globalMounts:
           - path: /data
