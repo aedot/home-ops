@@ -81,6 +81,8 @@ spec:
     ingress:
       app:
         className: internal
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal-utility.${SECRET_DOMAIN}
         hosts:
           - host: minio.${SECRET_DOMAIN}
             paths:
@@ -96,6 +98,7 @@ spec:
                   port: s3
     persistence:
       config:
+        enabled: true
         type: nfs
         server: "172.16.10.12"
         path: /volume1/k8s
