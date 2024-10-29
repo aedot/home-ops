@@ -32,13 +32,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
-        pod:
-          securityContext:
-            fsGroup: 1000
-            fsGroupChangePolicy: "OnRootMismatch"
-            supplementalGroups:
-              - 100
-
         containers:
           app:
             image:
@@ -46,6 +39,7 @@ spec:
               tag: RELEASE.2024-10-13T13-34-11Z
 
             env:
+              TZ: "America/Los_Angeles"
               MINIO_UPDATE: "off"
               MINIO_BROWSER_REDIRECT_URL: "https://minio.${SECRET_DOMAIN}"
               MINIO_SERVER_URL: "https://s3.${SECRET_DOMAIN}"
@@ -103,8 +97,6 @@ spec:
     ingress:
       app:
         className: internal
-        annotations:
-          nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
         hosts:
           - host: &console-host minio.${SECRET_DOMAIN}
             paths:
@@ -117,13 +109,6 @@ spec:
               - *console-host
       s3:
         className: internal
-        annotations:
-          nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
-          nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
-          nginx.ingress.kubernetes.io/proxy-body-size: 1024m
-          nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            chunked_transfer_encoding off;
         hosts:
           - host: &api-host s3.${SECRET_DOMAIN}
             paths:
