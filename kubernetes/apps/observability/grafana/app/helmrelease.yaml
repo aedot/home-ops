@@ -81,7 +81,7 @@ spec:
               implementation: prometheus
           - name: Prometheus
             type: prometheus
-            url: http://kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090
+            url: http://prometheus-operated.observability.svc.cluster.local:9090
             isDefault: true
             jsonData:
               prometheusType: Prometheus
