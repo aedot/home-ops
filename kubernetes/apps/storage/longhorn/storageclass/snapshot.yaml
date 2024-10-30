@@ -1,6 +1,6 @@
 ---
 apiVersion: storage.k8s.io/v1
-kind: StorageClass
+kind: VolumeSnapshotClass
 reclaimPolicy: Delete
 provisioner: driver.longhorn.io
 parameters:
