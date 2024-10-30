@@ -18,8 +18,4 @@ spec:
     kind: GitRepository
     name: home-kubernetes
   wait: false
-  postBuild:
-    substitute:
-      APP: *app
-      VOLSYNC_CAPACITY: 10Gi
 
