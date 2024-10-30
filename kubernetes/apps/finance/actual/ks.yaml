@@ -18,3 +18,21 @@ spec:
     kind: GitRepository
     name: home-kubernetes
   wait: false
+---
+kind: Kustomization
+metadata:
+  name: &appname actual-backup
+  namespace: flux-system
+spec:
+  targetNamespace: finance
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 30m
+  timeout: 5m
+  path: "./kubernetes/apps/finance/actual/backup"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: false

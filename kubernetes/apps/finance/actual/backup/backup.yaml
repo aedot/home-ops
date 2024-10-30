@@ -1,0 +1,20 @@
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: actual-backup
+  namespace: applications
+spec:
+  sourcePVC: actual-data
+  trigger:
+    schedule: 5 * * * *
+  restic:
+    pruneIntervalDays: 14
+    repository: /repository/actual
+    retain:
+      daily: 2
+      weekly: 1
+      monthly: 1
+    copyMethod: Clone
+    volumeSnapshotClassName: nfs-provision
+    cacheStorageClassName: nfs-provision
+    cacheAccessModes: ["ReadWriteOnce"]
