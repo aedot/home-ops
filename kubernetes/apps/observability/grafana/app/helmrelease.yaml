@@ -1,0 +1,415 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app grafana
+spec:
+  chart:
+    spec:
+      chart: grafana
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+      version: 8.5.8
+  interval: 1h0m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    extraInitContainers:
+      - name: init-db
+        image: ghcr.io/onedr0p/postgres-init:16.3@sha256:9c136223fb4e05b0ca24e2350c2dc45843110d0e1d09615c52c9a037628c09fa
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - secretRef:
+              name: grafana-secret
+    deploymentStrategy:
+      type: Recreate
+    rbac:
+      pspEnabled: false
+    persistence:
+      enabled: false
+    testFramework:
+      enabled: false
+    admin:
+      existingSecret: grafana-secret
+      userKey: adminuser
+      passwordKey: adminPassword
+    env:
+      GF_ANALYTICS_CHECK_FOR_UPDATES: false
+      GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
+      GF_EXPLORE_ENABLED: true
+      GF_GRAFANA_NET_URL: https://grafana.net
+      GF_LOG_FILTERS: rendering:debug
+      GF_PANELS_DISABLE_SANITIZE_HTML: true
+      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
+      GF_SECURITY_ALLOW_EMBEDDING: true
+      GF_SECURITY_COOKIE_SAMESITE: grafana
+      GF_SERVER_ROOT_URL: "https://grafana.${SECRET_DOMAIN}"
+      GF_FEATURE_TOGGLES_ENABLE: publicDashboards
+      GF_SECURITY_ANGULAR_SUPPORT_ENABLED: true
+
+    envFromSecrets:
+      - name: grafana-secret
+
+    grafana.ini:
+      analytics:
+        check_for_updates: false
+        reporting_enabled: false
+      date_formats:
+        use_browser_locale: true
+        full_date: "MMM Do, YYYY hh:mm:ss a"
+      explore:
+        enabled: true
+      grafana_net:
+        url: https://grafana.net
+      log:
+        mode: console
+      news:
+        news_feed_enabled: false
+      paths:
+        data: /var/lib/grafana/data
+        logs: /var/log/grafana
+        plugins: /var/lib/grafana/plugins
+        provisioning: /etc/grafana/provisioning
+      security:
+        allow_embedding: true
+        cookie_samesite: grafana
+      server:
+        root_url: https://grafana.${SECRET_DOMAIN}
+      users:
+        auto_assign_org: true
+        auto_assign_org_id: 1
+
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: default
+            orgId: 1
+            type: file
+            disableDeletion: false
+            editable: true
+            folder: ""
+            options:
+              path: /var/lib/grafana/dashboards/default
+
+          - name: "flux"
+            orgId: 1
+            folder: "Flux"
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/flux
+
+          - name: "kubernetes"
+            orgId: 1
+            folder: "Kubernetes"
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/kubernetes
+
+          - name: dbms
+            orgId: 1
+            folder: Databases
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/dbms
+
+          - name: network
+            orgId: 1
+            folder: Network
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/network
+
+          - name: "system"
+            orgId: 1
+            folder: "System"
+            type: file
+            disableDeletion: false
+            editable: true
+            allowUiUpdates: true
+            options:
+              path: /var/lib/grafana/dashboards/system
+
+          - name: "teslamate`"
+            orgId: 1
+            folder: "Teslamate"
+            type: file
+            disableDeletion: false
+            editable: true
+            allowUiUpdates: true
+            options:
+              path: /var/lib/grafana/dashboards/teslamate
+
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        deleteDatasources:
+          - name: Alertmanager
+            orgId: 1
+        datasources:
+          - name: Prometheus
+            type: prometheus
+            url: http://prometheus-operated.observability.svc.cluster.local:9090
+            isDefault: true
+            jsonData:
+              prometheusType: Prometheus
+
+          - name: Alertmanager
+            type: alertmanager
+            access: proxy
+            url: http://alertmanager.observability.svc.cluster.local:9093
+            jsonData:
+              implementation: prometheus
+
+          - name: TeslaMate
+            type: postgres
+            access: proxy
+            url: postgres-ro.dbms.svc.cluster.local:5432
+            database: teslamate
+            user: tessy
+            secureJsonData:
+              password: "$TESLAMATE_DB_PASSWORD"
+            basicAuth: false
+            withCredentials: false
+            jsonData:
+              # postgresVersion: 1000
+              sslmode: disable
+              database: teslamate
+            version: 1
+            editable: true
+
+          - name: Redis
+            type: redis-datasource
+            access: proxy
+            url: redis://dragonfly.dbms.svc.cluster.local:6379
+            jsonData:
+              client: standalone
+              poolSize: 5
+              timeout: 10
+              pingInterval: 0
+              pipelineWindow: 0
+            editable: true
+
+    ingress:
+      enabled: true
+      ingressClassName: internal
+      hosts:
+        - &host grafana.${SECRET_DOMAIN}
+      tls:
+        - hosts:
+          - *host
+
+    imageRenderer:
+      enabled: true
+      replicas: 2
+      networkPolicy:
+        limitIngress: false
+      serviceMonitor:
+        enabled: true
+
+    plugins:
+      - pr0ps-trackmap-panel
+      - grafana-clock-panel
+      - grafana-piechart-panel
+      - grafana-worldmap-panel
+      - natel-discrete-panel
+      - natel-plotly-panel
+      - vonage-status-panel
+      - https://github.com/panodata/panodata-map-panel/releases/download/0.16.0/panodata-map-panel-0.16.0.zip;grafana-worldmap-panel-ng
+      - redis-datasource
+
+    serviceMonitor:
+      enabled: true
+
+    serviceAccount:
+      create: true
+      autoMount: true
+
+    sidecar:
+      datasources:
+        enabled: true
+        searchNamespace: ALL
+        initDatasources: true
+        labelValue: ""
+      dashboards:
+        enabled: true
+        label: grafana_dashboard
+        folderAnnotation: grafana_folder
+        searchNamespace: ALL
+        provider:
+          disableDelete: true
+          foldersFromFilesStructure: true
+
+    dashboards:
+      dbms:
+        cloudnative-pg:
+          url: https://raw.githubusercontent.com/cloudnative-pg/grafana-dashboards/main/charts/cluster/grafana-dashboard.json
+          datasource: Prometheus
+
+        redis-sentinel:
+          # renovate: dashboardName="Redis"
+          gnetId: 12776
+          revision: 2
+          datasource: Redis
+
+      flux:
+        flux-cluster:
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json
+          datasource: Prometheus
+        flux-control-plane:
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
+          datasource: Prometheus
+        flux-logs:
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json
+          datasource: Prometheus
+
+      kubernetes:
+        api-server:
+          # renovate: dashboardName="Kubernetes / System / API Server"
+          gnetId: 15761
+          revision: 18
+          datasource: Prometheus
+        coredns:
+          # renovate: dashboardName="Kubernetes / System / CoreDNS"
+          gnetId: 15762
+          revision: 18
+          datasource: Prometheus
+        global:
+          # renovate: dashboardName="Kubernetes / Views / Global"
+          gnetId: 15757
+          revision: 42
+          datasource: Prometheus
+        namespaces:
+          # renovate: dashboardName="Kubernetes / Views / Namespaces"
+          gnetId: 15758
+          revision: 39
+          datasource: Prometheus
+        nodes:
+          # renovate: dashboardName="Kubernetes / Views / Nodes"
+          gnetId: 15759
+          revision: 32
+          datasource: Prometheus
+        pods:
+          # renovate: dashboardName="Kubernetes / Views / Pods"
+          gnetId: 15760
+          revision: 32
+          datasource: Prometheus
+        volumes:
+          # renovate: dashboardName="K8s / Storage / Volumes / Cluster"
+          gnetId: 11454
+          revision: 14
+          datasource: Prometheus
+
+      system:
+        1-node-exporter:
+          url: https://grafana.com/api/dashboards/11074/revisions/9/download
+          datasource: Prometheus
+        # blocky:
+        #   # renovate: dashboardName="blocky"
+        #   gnetId: 13768
+        #   revision: 3
+        #   datasource:
+        #     - name: DS_PROMETHEUS
+        #       value: Prometheus
+        #     - name: "VAR_BLOCKY_URL"
+        #       value: 'http:\/\/10.0.0.7:4000'
+        node-exporter-full:
+          # Ref: https://grafana.com/grafana/dashboards/1860-node-exporter-full/
+          gnetId: 1860
+          revision: 37
+          datasource: Prometheus
+
+      network:
+        cert-manager:
+          url: https://raw.githubusercontent.com/szinn/k8s-homelab/main/kubernetes/main/apps/cert-manager/cert-manager/app/cert-manager-dashboard.json
+          datasource: Prometheus
+        external-dns:
+          # renovate: depName="External-dns"
+          gnetId: 15038
+          revision: 3
+          datasource: Prometheus
+        cloudflared:
+          # renovate: dashboardName="Cloudflare Tunnels (cloudflared)"
+          gnetId: 17457
+          revision: 6
+          datasource:
+            - name: DS_PROMETHEUS
+              value: Prometheus
+
+
+
+      teslamate:
+        charge-level:
+          url: https://raw.githubusercontent.com/adriankumpf/teslamate/master/grafana/dashboards/charge-level.json
+          # datasource: TeslaMate
+        charges:
+          url: https://raw.githubusercontent.com/adriankumpf/teslamate/master/grafana/dashboards/charges.json
+          # datasource: TeslaMate
+        charging-stats:
+          url: https://raw.githubusercontent.com/adriankumpf/teslamate/master/grafana/dashboards/charging-stats.json
+          # datasource: TeslaMate
+        drive-stats:
+          url: https://raw.githubusercontent.com/adriankumpf/teslamate/master/grafana/dashboards/drive-stats.json
+          # datasource: TeslaMate
+        drives:
+          url: https://raw.githubusercontent.com/adriankumpf/teslamate/master/grafana/dashboards/drives.json
+          # datasource: TeslaMate
+        efficiency:
+          url: https://raw.githubusercontent.com/adriankumpf/teslamate/master/grafana/dashboards/efficiency.json
+          # datasource: TeslaMate
+        locations:
+          url: https://raw.githubusercontent.com/adriankumpf/teslamate/master/grafana/dashboards/locations.json
+          # datasource: TeslaMate
+        mileage:
+          url: https://raw.githubusercontent.com/adriankumpf/teslamate/master/grafana/dashboards/mileage.json
+          # datasource: TeslaMate
+        overview:
+          url: https://raw.githubusercontent.com/adriankumpf/teslamate/master/grafana/dashboards/overview.json
+          # datasource: TeslaMate
+        projected-range:
+          url: https://raw.githubusercontent.com/adriankumpf/teslamate/master/grafana/dashboards/projected-range.json
+          # datasource: TeslaMate
+        states:
+          url: https://raw.githubusercontent.com/adriankumpf/teslamate/master/grafana/dashboards/states.json
+          # datasource: TeslaMate
+        statistics:
+          url: https://raw.githubusercontent.com/adriankumpf/teslamate/master/grafana/dashboards/statistics.json
+          # datasource: TeslaMate
+        timeline:
+          url: https://raw.githubusercontent.com/adriankumpf/teslamate/master/grafana/dashboards/timeline.json
+          # datasource: TeslaMate
+        trip:
+          url: https://raw.githubusercontent.com/adriankumpf/teslamate/master/grafana/dashboards/trip.json
+          # datasource: TeslaMate
+        updates:
+          url: https://raw.githubusercontent.com/adriankumpf/teslamate/master/grafana/dashboards/updates.json
+          # datasource: TeslaMate
+        vampire-drain:
+          url: https://raw.githubusercontent.com/adriankumpf/teslamate/master/grafana/dashboards/vampire-drain.json
+          # datasource: TeslaMate
+        visited:
+          url: https://raw.githubusercontent.com/adriankumpf/teslamate/master/grafana/dashboards/visited.json
+          # datasource: TeslaMate
+        charge-details:
+          url: https://raw.githubusercontent.com/adriankumpf/teslamate/master/grafana/dashboards/internal/charge-details.json
+          # datasource: TeslaMate
+        drive-details:
+          url: https://raw.githubusercontent.com/adriankumpf/teslamate/master/grafana/dashboards/internal/drive-details.json
+          # datasource: TeslaMate
