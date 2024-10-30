@@ -2,11 +2,10 @@ apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
   name: actual-backup
-  namespace: finance
 spec:
   sourcePVC: actual-data
   trigger:
-    schedule: 5 * * * *
+    schedule: 8 * * * *
   restic:
     pruneIntervalDays: 14
     repository: /repository/actual
@@ -15,6 +14,6 @@ spec:
       weekly: 1
       monthly: 1
     copyMethod: Clone
-    volumeSnapshotClassName: nfs-provision
-    cacheStorageClassName: nfs-provision
+    volumeSnapshotClassName: longhorn
+    cacheStorageClassName: longhorn-cache
     cacheAccessModes: ["ReadWriteOnce"]
