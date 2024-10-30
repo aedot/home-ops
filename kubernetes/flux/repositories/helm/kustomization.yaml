@@ -18,3 +18,4 @@ resources:
   - ./longhorn.yaml
   - ./nfs-provisioner.yaml
   - ./cloudnative-pg.yaml
+  - ./grafana.yaml
