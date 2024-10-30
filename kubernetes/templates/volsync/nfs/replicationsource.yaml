@@ -3,11 +3,11 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: ${APP}
+  name: ${APP}-rsrc
 spec:
-  sourcePVC: "${CLAIM:-${APP}}"
+  sourcePVC: "${VOLSYNC_CLAIM:-${APP}}"
   trigger:
-    schedule: "${VOLSYNC_TIME:-30 * * * *}"
+    schedule: "${VOLSYNC_TIME:-48 * * * *}"
   restic:
     copyMethod: "${VOLSYNC_COPYMETHOD:-Snapshot}"
     pruneIntervalDays: 14
