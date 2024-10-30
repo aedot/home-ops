@@ -1,0 +1,91 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: actual
+  namespace: applications
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      actual:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/actualbudget/actual-server
+              tag: 24.10.1
+            env:
+              GENERIC_TIMEZONE: America/Los_Angeles
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+            resources:
+              requests:
+                cpu: 12m
+                memory: 128M
+              limits:
+                memory: 512M
+
+        pod:
+          securityContext:
+            runAsUser: 2000
+            runAsGroup: 2000
+            fsGroup: 2000
+            fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      app:
+        controller: actual
+        ports:
+          http:
+            port: 5006
+
+    ingress:
+      app:
+        annotations:
+          kubernetes.io/ingress.class: internal
+          cert-manager.io/cluster-issuer: letsencrypt-production
+        hosts:
+          - host: &hostName actual.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *hostName
+            secretName: actual-tls
+
+    persistence:
+      data:
+        existingClaim: actual-data
+        advancedMounts:
+          actual:
+            app:
+              - path: /data
