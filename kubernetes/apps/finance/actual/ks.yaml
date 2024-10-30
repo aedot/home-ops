@@ -6,7 +6,7 @@ metadata:
   name: &appname actual
   namespace: flux-system
 spec:
-  targetNamespace: default
+  targetNamespace: finance
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
