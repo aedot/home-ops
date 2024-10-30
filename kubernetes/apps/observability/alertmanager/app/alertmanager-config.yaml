@@ -1,20 +1,33 @@
----
-global:
-  resolve_timeout: 5m
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: cluster
+spec:
+  route:
+    group_by: ['alertname', 'app', 'job']
+    group_wait: 30s
+    group_interval: 5m
+    repeat_interval: 3h
+    receivers: 'slack'
+    routes:
+      - receiver: "null"
+        matchers:
+          [
+            {
+              name: alertname,
+              value: InfoInhibitor|Watchdog|CPUThrottlingHigh,
+              matchType: =~
+            }
+          ]
+      - receiver: slack
+        matchers: [{name: severity, value: critical|warning, matchType: =~}]
+        continue: true
 
-route:
-  group_by: ['alertname', 'app', 'job']
-  group_wait: 30s
-  group_interval: 5m
-  repeat_interval: 3h
-  receivers: 'slack'
-
-
-receivers:
-  - name: "null"
-  - name: "slack"
-    slack_configs:
-      - api_url:
+  receivers:
+    - name: "null"
+    - name: "slack"
+      slackConfigs:
+      - apiURL:
           name: alertmanager-secret
           key: slack_url
         channel: '#homelab'

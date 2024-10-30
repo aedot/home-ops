@@ -77,14 +77,14 @@ spec:
           - hosts:
               - *host
 
-    persistence:
-      config:
-        type: configMap
-        name: alertmanager-configmap
-        globalMounts:
-          - path: /etc/alertmanager
-      secrets:
-        type: secret
-        name: alertmanager-secret
-        globalMounts:
-          - path: /etc/secrets
+    # persistence:
+    #   config:
+    #     type: configMap
+    #     name: alertmanager-configmap
+    #     globalMounts:
+    #       - path: /etc/alertmanager
+    #   secrets:
+    #     type: secret
+    #     name: alertmanager-secret
+    #     globalMounts:
+    #       - path: /etc/secrets
