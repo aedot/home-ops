@@ -67,8 +67,8 @@ spec:
 
     ingress:
       app:
+        className: internal
         annotations:
-          kubernetes.io/ingress.class: internal
           cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: &hostName actual.${SECRET_DOMAIN}
