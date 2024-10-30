@@ -51,6 +51,8 @@ spec:
         reporting_enabled: false
     admin:
       existingSecret: *secret
+      userKey: adminuser
+      passwordKey: adminPassword
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
