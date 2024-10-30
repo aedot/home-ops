@@ -93,7 +93,7 @@ spec:
     prometheus:
       ingress:
         enabled: true
-        ingressClassName: nginx
+        ingressClassName: internal
         hosts:
           - prometheus.${SECRET_DOMAIN}
         pathType: Prefix
