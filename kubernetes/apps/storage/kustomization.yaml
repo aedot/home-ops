@@ -5,4 +5,6 @@ resources:
   - ./namespace.yaml
   - ./longhorn/ks.yaml
   - ./nfs-provisioner/ks.yaml
-  - ./minio/ks.yaml
+  # - ./minio/ks.yaml
+  - ./snapshot-controller/ks.yaml
+  - ./volsync/ks.yaml

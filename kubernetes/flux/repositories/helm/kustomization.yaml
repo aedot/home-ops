@@ -19,3 +19,5 @@ resources:
   - ./nfs-provisioner.yaml
   - ./cloudnative-pg.yaml
   - ./grafana.yaml
+  - ./piraeus.yaml
+  - ./backcube.yaml
