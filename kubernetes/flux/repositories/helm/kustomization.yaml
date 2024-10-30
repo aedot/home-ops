@@ -21,3 +21,4 @@ resources:
   - ./grafana.yaml
   - ./piraeus.yaml
   - ./backcube.yaml
+  - ./kyverno.yaml
