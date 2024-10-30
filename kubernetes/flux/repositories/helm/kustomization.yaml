@@ -17,3 +17,4 @@ resources:
   - ./k8s-gateway.yaml
   - ./longhorn.yaml
   - ./nfs-provisioner.yaml
+  - ./cloudnative-pg.yaml
