@@ -6,7 +6,7 @@ metadata:
 spec:
   sourcePVC: "${CLAIM:-${APP}}"
   trigger:
-    schedule: "0 * * * *"
+    schedule: "22 * * * *"
   restic:
     pruneIntervalDays: 14
     repository: "${APP}-volsync"
