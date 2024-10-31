@@ -82,7 +82,7 @@ spec:
         enabled: true
         className: external
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - host: &host "lldap.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
