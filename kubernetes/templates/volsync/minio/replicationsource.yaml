@@ -6,7 +6,7 @@ metadata:
 spec:
   sourcePVC: "${CLAIM:-${APP}-data}"
   trigger:
-    schedule: "40 * * * *"
+    schedule: "45 * * * *"
   restic:
     pruneIntervalDays: 14
     repository: "${APP}-restic-secret"
