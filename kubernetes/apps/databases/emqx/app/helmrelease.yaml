@@ -1,0 +1,63 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: emqx
+spec:
+  chart:
+    spec:
+      chart: emqx
+      sourceRef:
+        kind: HelmRepository
+        name: emqx
+        namespace: flux-system
+      version: 5.8.1
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  timeout: 20m
+  interval: 1h0m
+  values:
+    emqxConfig:
+      EMQX_ALLOW_ANONYMOUS: "false"
+      EMQX_LOADED_MODULES: "emqx_mod_presence,emqx_mod_acl_internal,emqx_mod_topic_metrics"
+      EMQX_LOADED_PLUGINS: "emqx_management,emqx_recon,emqx_retainer,emqx_dashboard,emqx_rule_engine,emqx_auth_mnesia,emqx_prometheus"
+      EMQX_AUTH__MNESIA__PASSWORD_HASH: plain
+      EMQX_AUTH__USER__1__USERNAME: mqtt
+
+    emqxAclConfig: >
+      {allow, {user, "dashboard"}, subscribe, ["$SYS/#"]}.
+      {allow, {ipaddr, "127.0.0.1"}, pubsub, ["$SYS/#", "#"]}.
+      {allow, all, subscribe, ["$SYS/#", {eq, "#"}]}. {
+      allow, all}.
+
+    resources:
+      limits:
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+
+    ingress:
+      dashboard:
+        enabled: true
+        ingressClassName: internal
+        path: /
+        hosts:
+        - &host emqx.${SECRET_DOMAIN}
+        tls:
+        - hosts:
+          - *host
+
+    valuesFrom:
+    - targetPath: emqxConfig.EMQX_DASHBOARD__DEFAULT_PASSWORD
+      kind: Secret
+      name: emqx-secret
+      valuesKey: admin_password
+    - targetPath: emqxConfig.EMQX_AUTH__USER__1__PASSWORD
+      kind: Secret
+      name: emqx-secret
+      valuesKey: user_1_password
