@@ -6,12 +6,11 @@ metadata:
 spec:
   sourcePVC: "${CLAIM:-${APP}-data}"
   trigger:
-    schedule: "45 * * * *"
+    schedule: "45 23 * * *"
   restic:
     pruneIntervalDays: 14
     repository: "${APP}-restic-secret"
     retain:
-      hourly: 24
       daily: 10
       weekly: 5
       monthly: 3
@@ -19,7 +18,7 @@ spec:
     accessModes: ["${VOLSYNC_ACCESSMODES:-ReadWriteOnce}"]
     storageClassName: "${VOLSYNC_STORAGECLASS:-longhorn}"
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-longhorn-snapshot}"
-    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-4Gi}"
+    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-10Gi}"
     cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-longhorn}"
     cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
     moverSecurityContext:
