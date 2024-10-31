@@ -5,7 +5,7 @@ metadata:
 spec:
   sourcePVC: actual-data
   trigger:
-    schedule: 45 * * * *
+    schedule: 52 * * * *
   restic:
     pruneIntervalDays: 14
     repository: actual-restic-secret
