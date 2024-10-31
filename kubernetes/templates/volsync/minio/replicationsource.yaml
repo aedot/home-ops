@@ -4,12 +4,12 @@ kind: ReplicationSource
 metadata:
   name: "${APP}-backup"
 spec:
-  sourcePVC: "${CLAIM:-${APP}}"
+  sourcePVC: "${CLAIM:-${APP}-data}"
   trigger:
-    schedule: "30 * * * *"
+    schedule: "45 * * * *"
   restic:
     pruneIntervalDays: 14
-    repository: "${APP}-volsync"
+    repository: "${APP}-restic-secret"
     retain:
       hourly: 24
       daily: 10

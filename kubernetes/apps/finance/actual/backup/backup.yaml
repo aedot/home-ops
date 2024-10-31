@@ -1,0 +1,18 @@
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: actual-backup
+spec:
+  sourcePVC: actual-data
+  trigger:
+    schedule: 45 * * * *
+  restic:
+    pruneIntervalDays: 14
+    repository: actual-restic-secret
+    retain:
+      daily: 2
+      weekly: 1
+      monthly: 1
+    copyMethod: Clone
+    volumeSnapshotClassName: longhorn-snapshot
+    cacheAccessModes: ["ReadWriteOnce"]
