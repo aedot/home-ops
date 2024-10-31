@@ -1,18 +1,17 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minio
+  name: &app minio
 spec:
   interval: 60m
   chart:
     spec:
-      chart: app-template
-      version: 3.5.1
+      chart: minio
+      version: 5.3.0
       sourceRef:
         kind: HelmRepository
-        name: bjw-s
+        name: minio
         namespace: flux-system
       interval: 60m
   maxHistory: 2
@@ -23,127 +22,59 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false
   values:
-    controllers:
-      minio:
-        annotations:
-          reloader.stakater.com/auto: "true"
+    image:
+      repository: quay.io/minio/minio
+      tag: RELEASE.2024-10-13T13-34-11Z
+    mcImage:
+      repository: quay.io/minio/mc
+      tag: RELEASE.2023-01-11T03-14-16Z
+    mode: standalone
 
-        pod:
-          securityContext:
-            fsGroup: 1000
-            fsGroupChangePolicy: "OnRootMismatch"
-            supplementalGroups:
-              - 100
+    existingSecret: minio-secret
 
-        containers:
-          app:
-            image:
-              repository: quay.io/minio/minio
-              tag: RELEASE.2024-10-13T13-34-11Z
+    # users:
+    #   - accessKey: ${SECRET_VOLSYNC_MINIO_ACCESS_KEY}
+    #     secretKey: ${SECRET_VOLSYNC_MINIO_SECRET_KEY}
+    #     policy: readwrite
+    #   - accessKey: ${SECRET_CNPG_MINIO_ACCESS_KEY}
+    #     secretKey: ${SECRET_CNPG_MINIO_SECRET_KEY}
 
-            env:
-              MINIO_UPDATE: "off"
-              MINIO_BROWSER_REDIRECT_URL: "https://minio.${SECRET_DOMAIN}"
-              MINIO_SERVER_URL: "https://s3.${SECRET_DOMAIN}"
-              MINIO_API_CORS_ALLOW_ORIGIN: https://minio.${SECRET_DOMAIN},https://s3.${SECRET_DOMAIN}
-              MINIO_PROMETHEUS_JOB_ID: minio
-              MINIO_PROMETHEUS_URL: https://prometheus.${SECRET_DOMAIN}
-              MINIO_PROMETHEUS_AUTH_TYPE: public
-
-            envFrom:
-              - secretRef:
-                  name: minio
-
-            args: ["server", "/data", "--console-address", ":9001"]
-
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /minio/health/live
-                    port: 9000
-                  initialDelaySeconds: 30
-                  periodSeconds: 30
-                  timeoutSeconds: 10
-                  failureThreshold: 6
-              readiness: *probes
-
-            resources:
-              requests:
-                memory: 100Mi
-                cpu: 100m
-              limits:
-                memory: 4000Mi
-
-    service:
-      app:
-        controller: minio
-        ports:
-          http:
-            port: 9001
-          api:
-            port: 9000
-
-    serviceMonitor:
-      app:
-        serviceName: minio
-        endpoints:
-          - port: s3
-            scheme: http
-            path: /minio/v2/metrics/cluster
-            interval: 1m
-            scrapeTimeout: 10s
+    persistence:
+      enabled: true
+      existingClaim: "nfs-minio-pvc"
 
     ingress:
-      app:
-        className: internal
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
-        hosts:
-          - host: &console-host minio.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *console-host
-            secretName: minio-tls
-      s3:
-        className: nginx
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
-          nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
-          nginx.ingress.kubernetes.io/proxy-body-size: 1024m
-          nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            chunked_transfer_encoding off;
-        hosts:
-          - host: &api-host s3.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: api
-        tls:
+      enabled: true
+      ingressClassName: internal
+      hosts:
+        - &api-host s3.${SECRET_DOMAIN}
+      tls:
           - hosts:
               - *api-host
             secretName: s3-tls
 
-    persistence:
-      config:
+    consoleIngress:
+      enabled: true
+      hosts:
+        - &console-host minio.${SECRET_DOMAIN}
+      tls:
+          - hosts:
+              - *console-host
+            secretName: minio-tls
+
+    securityContext:
+      enabled: false
+    resources:
+      requests:
+        memory: 350Mi
+        cpu: 25m
+      limits:
+        memory: 1500Mi
+    metrics:
+      serviceMonitor:
         enabled: true
-        type: nfs
-        server: "172.16.10.12"
-        path: /volume1/k8s
-        globalMounts:
-          - path: /data
