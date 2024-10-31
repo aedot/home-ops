@@ -30,7 +30,7 @@ spec:
       app.kubernetes.io/name: *appname-cluster
   interval: 30m
   timeout: 5m
-  path: "./kubernetes/apps/databases/dragonfly/clusters"
+  path: "./kubernetes/apps/databases/dragonfly/cluster"
   prune: true
   sourceRef:
     kind: GitRepository
