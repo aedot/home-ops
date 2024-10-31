@@ -18,11 +18,10 @@ spec:
     kind: GitRepository
     name: home-kubernetes
   wait: false
-  # postBuild:
-  #   substitute:
-  #     APP: *app
-  #     VOLSYNC_CAPACITY: 5Gi
-  #     copyMethod: clone
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CAPACITY: 5Gi
 # ---
 # # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 # apiVersion: kustomize.toolkit.fluxcd.io/v1
