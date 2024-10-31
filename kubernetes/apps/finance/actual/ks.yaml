@@ -23,23 +23,23 @@ spec:
   #     APP: *app
   #     VOLSYNC_CAPACITY: 5Gi
   #     copyMethod: clone
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app actual-backup
-  namespace: flux-system
-spec:
-  targetNamespace: finance
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  interval: 30m
-  timeout: 5m
-  path: ./kubernetes/apps/finance/actual/backup
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-kubernetes
-  wait: false
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app actual-backup
+#   namespace: flux-system
+# spec:
+#   targetNamespace: finance
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   interval: 30m
+#   timeout: 5m
+#   path: ./kubernetes/apps/finance/actual/backup
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: home-kubernetes
+#   wait: false
