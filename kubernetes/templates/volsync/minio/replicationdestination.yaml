@@ -7,7 +7,7 @@ spec:
   trigger:
     manual: restore-once
   restic:
-    repository: "${APP}-volsync"
+    repository: "${APP}-restic-secret/actual"
     copyMethod: Snapshot
     storageClassName: "${VOLSYNC_STORAGECLASS:-longhorn}"
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-longhorn-snapshot}"

@@ -4,3 +4,4 @@ namespace: database
 resources:
   - ./postgres-cluster.yaml
   - ./postgres-service.yaml
+  - ./postgres-backup.yaml
