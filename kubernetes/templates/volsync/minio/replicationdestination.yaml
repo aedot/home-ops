@@ -15,10 +15,11 @@ spec:
     cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
     cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-longhorn}"
     accessModes: ["${VOLSYNC_ACCESSMODES:-ReadWriteOnce}"]
-    moverSecurityContext:
-      runAsUser: ${VOLSYNC_PUID:-568}
-      runAsGroup: ${VOLSYNC_PGID:-568}
-      fsGroup: ${VOLSYNC_PGID:-568}
+    capacity: "${VOLSYNC_CAPACITY}"
+    # moverSecurityContext: # Not needed due to privileged movers
+    #   runAsUser: ${VOLSYNC_PUID:-568}
+    #   runAsGroup: ${VOLSYNC_PGID:-568}
+    #   fsGroup: ${VOLSYNC_PGID:-568}
     enableFileDeletion: true
     cleanupCachePVC: true
     cleanupTempPVC: true
