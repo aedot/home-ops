@@ -46,7 +46,7 @@ spec:
                   - name: repository
                     nfs:
                       server: "172.16.10.12"
-                      path: /volume1/volsync
+                      path: /volume1/minio/volsync
     - name: mutate-volsync-dst-movers
       match:
         any:
@@ -71,4 +71,4 @@ spec:
                   - name: repository
                     nfs:
                       server: "172.16.10.12"
-                      path: /volume1/volsync
+                      path: /volume1/minio/volsync
