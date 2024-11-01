@@ -33,8 +33,7 @@ session:
       authelia_url: https://auth.${SECRET_DOMAIN}
       default_redirection_url: https://${SECRET_DOMAIN}
   redis:
-    host: dragonfly.dbms.svc.cluster.local.
-    port: 6379
+    host: dragonfly-operator.dbms.svc.cluster.local
     database_index: 2
 
 notifier:
