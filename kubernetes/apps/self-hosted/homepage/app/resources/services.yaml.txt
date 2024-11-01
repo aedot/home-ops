@@ -23,20 +23,20 @@
       href: http://${MEDIA_SERVER}:8080
       description: torrent downloader
       widget:
-          type: qbittorrent
-          url: http://${MEDIA_SERVER}:8080
-          username: {{HOMEPAGE_VAR_QBIT_USERNAME}}
-          password: {{HOMEPAGE_VAR_QBIT_PASSWORD}}
+        type: qbittorrent
+        url: http://${MEDIA_SERVER}:8080
+        username: {{HOMEPAGE_VAR_QBIT_USERNAME}}
+        password: {{HOMEPAGE_VAR_QBIT_PASSWORD}}
   - Unmanic:
-        icon: unmanic.png
-        href: http://${MEDIA_SERVER}:8888/
-        description: media converter
-        widget:
-            type: unmanic
-            url: http://${MEDIA_SERVER}:8888
-- DevTools
+      icon: unmanic.png
+      href: http://${MEDIA_SERVER}:8888/
+      description: media converter
+      widget:
+        type: unmanic
+        url: http://${MEDIA_SERVER}:8888
+- DevTools:
   - It-tools:
-        icon: it-tools.svg
-        href: http://it-tools.${SECRET_DOMAIN}
-        description: IT tools for dev
+      icon: it-tools.svg
+      href: http://it-tools.${SECRET_DOMAIN}
+      description: IT tools for dev
 
