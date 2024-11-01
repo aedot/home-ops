@@ -15,5 +15,6 @@ configMapGenerator:
       - services.yaml=./resources/services.yaml.txt
       - settings.yaml=./resources/settings.yaml
       - widgets.yaml=./resources/widgets.yaml.txt
+      - custom.css=./resources/custom.css
 generatorOptions:
   disableNameSuffixHash: true

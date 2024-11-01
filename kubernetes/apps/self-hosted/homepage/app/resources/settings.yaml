@@ -15,20 +15,24 @@ showStats: false
 statusStyle: "dot"
 
 layout:
+  Infrastructure:
+    style: column
+    columns: 3
+    icon: mdi-server
   Calendar:
     style: column
     icon: mdi-calendar
   Media:
-    style: row
-    columns: 2
+    style: column
+    columns: 3
     icon: mdi-play-circle
   DevTools:
-    style: row
+    style: column
     columns: 3
     icon: mdi-apps
   Storage:
-    style: row
-    columns: 2
+    style: column
+    columns: 3
     icon: mdi-desktop-tower
   Home:
     style: column
@@ -37,6 +41,6 @@ layout:
     style: column
     icon: mdi-chart-line
   Downloads:
-    style: row
+    style: column
     columns: 3
     icon: mdi-download-circle

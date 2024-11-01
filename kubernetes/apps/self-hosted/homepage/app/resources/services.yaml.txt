@@ -34,7 +34,7 @@
       widget:
         type: unmanic
         url: http://${MEDIA_SERVER}:8888
-- DevTools:
+- Dev-Tools:
   - It-tools:
       icon: it-tools.svg
       href: http://it-tools.${SECRET_DOMAIN}
