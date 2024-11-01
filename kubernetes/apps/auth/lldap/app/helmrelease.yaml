@@ -80,7 +80,7 @@ spec:
     ingress:
       app:
         enabled: true
-        className: external
+        className: internal
         hosts:
           - host: &host "lldap.${SECRET_DOMAIN}"
             paths:
