@@ -10,16 +10,13 @@ authentication_backend:
     users_filter: (&({username_attribute}={input})(objectClass=person))
     additional_groups_dn: ou=groups
     groups_filter: (member={dn})
+    group_search_mode: filter
     user: uid=authy,ou=people,dc=home,dc=arpa
     attributes:
       username: uid
       display_name: displayName
-      group_name: cn
       mail: mail
-      member_of: memberOf
-  password_reset:
-    disable: true
-  refresh_interval: 1m
+      group_name: cn
 
 session:
   name: authelia-home-ops
