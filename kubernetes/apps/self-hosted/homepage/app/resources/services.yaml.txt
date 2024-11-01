@@ -1,0 +1,42 @@
+---
+- Infrastructure:
+  - Cloudflared:
+      href: https://dash.cloudflare.com/
+      icon: cloudflare-zero-trust.png
+      description: Cloudflared Tunnel
+      widget:
+        type: cloudflared
+        accountid: {{HOMEPAGE_VAR_CLOUDFLARED_ACCOUNTID}}
+        tunnelid: {{HOMEPAGE_VAR_CLOUDFLARED_TUNNELID}}
+        key: {{HOMEPAGE_VAR_CLOUDFLARED_API_TOKEN}}
+- Media:
+  - Plex:
+      href: https://app.plex.tv/desktop
+      icon: plex.png
+      description: shango Media Server
+      widget:
+        type: tautulli
+        url: http://${MEDIA_SERVER}:8181
+        key: {{HOMEPAGE_VAR_TAUTULLI_TOKEN}}
+  - Qbittorrent:
+      icon: qbittorrent.svg
+      href: http://${MEDIA_SERVER}:8080
+      description: torrent downloader
+      widget:
+          type: qbittorrent
+          url: http://${MEDIA_SERVER}:8080
+          username: {{HOMEPAGE_VAR_QBIT_USERNAME}}
+          password: {{HOMEPAGE_VAR_QBIT_PASSWORD}}
+  - Unmanic:
+        icon: unmanic.png
+        href: http://${MEDIA_SERVER}:8888/
+        description: media converter
+        widget:
+            type: unmanic
+            url: http://${MEDIA_SERVER}:8888
+- DevTools
+  - It-tools:
+        icon: it-tools.svg
+        href: http://it-tools.${SECRET_DOMAIN}
+        description: IT tools for dev
+
