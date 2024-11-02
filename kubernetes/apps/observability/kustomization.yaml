@@ -8,3 +8,4 @@ resources:
   - ./grafana/ks.yaml
   - ./alertmanager/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
+  - ./gatus/ks.yaml
