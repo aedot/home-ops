@@ -28,7 +28,7 @@ spec:
         initContainers:
           init-db:
             image:
-              repository: gchr.io/onedr0p/postgres-init
+              repository: ghcr.io/onedr0p/postgres-init
               tag: 16
             envFrom: &envFrom
               - secretRef:
