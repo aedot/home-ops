@@ -87,14 +87,29 @@ spec:
           - name: TeslaMate
             type: postgres
             access: proxy
-            url: postgres-rw.db.svc.cluster.local:5432
+            url: postgres-ro.db.svc.cluster.local:5432
             database: teslamate
-            user: teslamate
+            user: tessy
             secureJsonData:
               password: "$TESLAMATE_DB_PASSWORD"
+            basicAuth: false
+            withCredentials: false
             jsonData:
               postgresVersion: 1000
               sslmode: disable
+            version: 1
+            editable: true
+          - name: Redis
+            type: redis-datasource
+            access: proxy
+            url: redis://dragonfly.database.svc.cluster.local:6379
+            jsonData:
+              client: standalone
+              poolSize: 5
+              timeout: 10
+              pingInterval: 0
+              pipelineWindow: 0
+            editable: true
 
     dashboardProviders:
       dashboardproviders.yaml:
@@ -165,7 +180,7 @@ spec:
           datasource: Prometheus
         dragonfly:
           url: https://raw.githubusercontent.com/dragonflydb/dragonfly/main/tools/local/monitoring/grafana/provisioning/dashboards/dashboard.json
-          datasource: Prometheus
+          datasource: Redis
         cloudflared:
           # renovate: depName="Cloudflare Tunnels (cloudflared)"
           gnetId: 17457
