@@ -87,7 +87,7 @@ spec:
           - name: TeslaMate
             type: postgres
             access: proxy
-            url: postgres-ro.db.svc.cluster.local:5432
+            url: postgres-ro.dbms.svc.cluster.local:5432
             database: teslamate
             user: tessy
             secureJsonData:
@@ -102,7 +102,7 @@ spec:
           - name: Redis
             type: redis-datasource
             access: proxy
-            url: redis://dragonfly.database.svc.cluster.local:6379
+            url: redis://dragonfly.dbms.svc.cluster.local:6379
             jsonData:
               client: standalone
               poolSize: 5
