@@ -49,18 +49,3 @@ endpoints:
     alerts:
       - type: slack
         send-on-resolved: true
-
-  - name: Minio
-    group: Services
-    url: https://minio.${SECRET_DOMAIN}/minio/health/live
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    client:
-      dns-resolver: tcp://1.1.1.1:53
-    conditions:
-      - "[STATUS] == 200"
-    alerts:
-      - type: slack
-        send-on-resolved: true

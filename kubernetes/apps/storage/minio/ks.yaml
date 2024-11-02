@@ -17,3 +17,6 @@ spec:
     kind: GitRepository
     name: home-kubernetes
   wait: true
+  postBuild:
+    substitute:
+      APP: *app
