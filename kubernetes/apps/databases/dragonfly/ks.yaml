@@ -38,3 +38,7 @@ spec:
   wait: false
   dependsOn:
     - name: dragonfly-operator
+  postBuild:
+    substitute:
+      APP: *app-cluster
+

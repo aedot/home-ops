@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./dragonflycluster.yaml
   - ./podmonitor.yaml
+  - ../../../../templates/gatus/guarded
