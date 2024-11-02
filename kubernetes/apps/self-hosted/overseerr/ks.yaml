@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/self-hosted/overseerr/app
+  path: ./kubernetes/apps/self-hosted/overseerr/app
   prune: true
   sourceRef:
     kind: GitRepository
