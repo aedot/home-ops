@@ -64,6 +64,7 @@ spec:
               tag: v5.13.0
             env:
               TZ: ${TIMEZONE}
+              PUBLIC_DOMAIN: ${SECRET_DOMAIN}
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
               WEB_PORT: &port 80

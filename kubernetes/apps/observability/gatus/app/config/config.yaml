@@ -1,4 +1,12 @@
 ---
+alerting:
+  slack:
+    webhook-url: ${SLACK_WEBHOOK_URL}
+connectivity:
+  checker:
+    target: 1.1.1.1:53
+    interval: 1m
+
 web:
   port: ${WEB_PORT}
 storage:
@@ -8,30 +16,51 @@ storage:
 metrics: true
 debug: false
 ui:
-  title: Health Status
-  header: Health Status
-alerting:
-  slack:
-    webhook-url: ${SLACK_WEBHOOK_URL}
-connectivity:
-  checker:
-    target: 1.1.1.1:53
-    interval: 1m
+  title: Status | Gatus
+  header: Status
+
 endpoints:
-  - name: gatus-status
+  - name: Status
     group: external
     url: https://status.${SECRET_DOMAIN}
     interval: 1m
+    ui:
+      hide-hostname: true
+      hide-url: true
     client:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == 200"
-      - '[RESPONSE_TIME] < 300'
     alerts:
       - type: slack
-        description: "healthcheck failed 3 times in a row"
         send-on-resolved: true
+
+  - name: Flux webhook
+    group: Services
+    url: https://flux-webhook.${SECRET_DOMAIN}
+    interval: 1m
+    ui:
+      hide-hostname: true
+      hide-url: true
+    client:
+      dns-resolver: tcp://1.1.1.1:53
+    conditions:
+      - "[STATUS] == 404"
+    alerts:
       - type: slack
-        failure-threshold: 5
-        description: "healthcheck failed 5 times in a row"
+        send-on-resolved: true
+
+  - name: Minio
+    group: Services
+    url: https://minio.${SECRET_DOMAIN}/minio/health/live
+    interval: 1m
+    ui:
+      hide-hostname: true
+      hide-url: true
+    client:
+      dns-resolver: tcp://1.1.1.1:53
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: slack
         send-on-resolved: true
