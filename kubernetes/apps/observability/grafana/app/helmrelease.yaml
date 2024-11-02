@@ -117,23 +117,15 @@ spec:
         providers:
           - name: default
             orgId: 1
-            folder: ""
+            folder: "Default"
             type: file
             disableDeletion: false
             editable: true
             options:
               path: /var/lib/grafana/dashboards/default
-          - name: network
-            orgID: 1
-            folder: ""
-            type: file
-            disableDeletion: false
-            editable: true
-            options:
-              path: /var/lib/grafana/dashboards/network
           - name: kubernetes
             orgID: 1
-            folder: ""
+            folder: "Kubernetes"
             type: file
             disableDeletion: false
             editable: true
@@ -141,7 +133,7 @@ spec:
               path: /var/lib/grafana/dashboards/kubernetes
           - name: flux
             orgID: 1
-            folder: ""
+            folder: "Flux"
             type: file
             disableDeletion: false
             editable: true
