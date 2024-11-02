@@ -84,6 +84,17 @@ spec:
             isDefault: true
             jsonData:
               prometheusType: Prometheus
+          - name: TeslaMate
+            type: postgres
+            access: proxy
+            url: postgres-rw.db.svc.cluster.local:5432
+            database: teslamate
+            user: teslamate
+            secureJsonData:
+              password: "$TESLAMATE_DB_PASSWORD"
+            jsonData:
+              postgresVersion: 1000
+              sslmode: disable
 
     dashboardProviders:
       dashboardproviders.yaml:
