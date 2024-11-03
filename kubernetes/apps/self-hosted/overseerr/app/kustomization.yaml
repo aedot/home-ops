@@ -6,4 +6,4 @@ resources:
   - ./volume.yaml
   - ./helmrelease.yaml
   - ../../../../templates/gatus/external
-  # - ../../../../templates/volsync
+  - ../../../../templates/volsync
