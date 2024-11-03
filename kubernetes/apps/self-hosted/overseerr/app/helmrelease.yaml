@@ -97,16 +97,6 @@ spec:
             secretName: overseerr-tls
     persistence:
       config:
-        existingClaim: overseerr
+        existingClaim: overseerr-data
         globalMounts:
           - path: /app/config
-      cache:
-        existingClaim: overseerr-cache
-        globalMounts:
-          - path: /app/config/cache
-      logs:
-        type: emptyDir
-        globalMounts:
-          - path: /app/config/logs
-      tmp:
-        type: emptyDir
