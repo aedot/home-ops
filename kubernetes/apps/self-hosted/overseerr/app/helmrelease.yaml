@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/sct/overseerr
-              tag: 1.33.2
+              tag: develop
             env:
               TZ: America/Los_Angeles
               LOG_LEVEL: "info"
