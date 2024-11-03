@@ -70,6 +70,10 @@ spec:
         className: internal
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: actual.png
+          gethomepage.dev/name: Actual-budget
+          gethomepage.dev/group: Home
         hosts:
           - host: &hostName actual.${SECRET_DOMAIN}
             paths:

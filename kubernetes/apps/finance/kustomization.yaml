@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./actual/ks.yaml
-  - ../../../../templates/gatus/guarded
+

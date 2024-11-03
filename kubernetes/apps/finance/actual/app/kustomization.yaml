@@ -6,4 +6,5 @@ resources:
   - ./volume.yaml
   - ./helmrelease.yaml
   - ../../../../templates/volsync
+  - ../../../../templates/gatus/guarded
 
