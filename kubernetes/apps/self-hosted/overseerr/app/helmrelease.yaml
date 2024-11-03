@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: overseerr
+  name: &app overseerr
 spec:
   interval: 30m
   chart:
@@ -22,11 +22,6 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  dependsOn:
-    - name: longhorn
-      namespace: storage
-    - name: volsync
-      namespace: storage
   values:
     controllers:
       overseerr:
@@ -83,6 +78,10 @@ spec:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           cert-manager.io/cluster-issuer: letsencrypt-production
           external-dns.alpha.kubernetes.io/enabled: "true"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: Overseerr
+          gethomepage.dev/icon: overseerr.svg
+          gethomepage.dev/group: Media
         className: external
         hosts:
           - host: &host requests.${SECRET_DOMAIN}
@@ -97,6 +96,6 @@ spec:
             secretName: overseerr-tls
     persistence:
       config:
-        existingClaim: overseerr-data
+        existingClaim: *app
         globalMounts:
           - path: /app/config
