@@ -63,7 +63,7 @@ spec:
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/name: Mealie
-          gethomepage.dev/icon: mdi-food-apple-outline
+          gethomepage.dev/icon: mealie.svg
           gethomepage.dev/group: Home
           external-dns-pihole.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
