@@ -96,6 +96,7 @@ spec:
             secretName: overseerr-tls
     persistence:
       config:
-        existingClaim: *app
+        enabled: true
+        existingClaim: overseerr-config
         globalMounts:
           - path: /app/config

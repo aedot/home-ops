@@ -8,21 +8,6 @@ stringData:
   AWS_ACCESS_KEY_ID: ${VOLSYNC_B2_KEY_ID}
   AWS_SECRET_ACCESS_KEY: ${VOLSYNC_B2_KEY_SECRET}
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: overseerr-data
-spec:
-  accessModes: ["ReadWriteOnce"]
-  dataSourceRef:
-    kind: ReplicationDestination
-    apiGroup: volsync.backube
-    name: overseerr
-  resources:
-    requests:
-      storage: 2Gi
-  storageClassName: longhorn
----
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
@@ -50,7 +35,7 @@ kind: ReplicationSource
 metadata:
   name: overseerr
 spec:
-  sourcePVC: overseerr
+  sourcePVC: overseerr-config
   trigger:
     schedule: "15 */8 * * *"
   restic:
