@@ -2,9 +2,9 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: "${APP}-backup"
+  name: "${APP}"
 spec:
-  sourcePVC: "${CLAIM:-${APP}-data}"
+  sourcePVC: "${CLAIM:-${APP}}"
   trigger:
     schedule: "45 23 * * *"
   restic:
