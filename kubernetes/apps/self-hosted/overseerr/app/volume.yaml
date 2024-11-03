@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: overseerr-cache
+  name: overseerr-data
 spec:
   accessModes: ["ReadWriteOnce"]
   resources:
