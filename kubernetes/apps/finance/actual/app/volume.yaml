@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: actual-data
+  name: actual
 spec:
   storageClassName: longhorn
   accessModes:
