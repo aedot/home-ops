@@ -7,4 +7,4 @@ resources:
   - ./homepage/ks.yaml
   - ./teslamate/ks.yaml
   - ./mealie/ks.yaml
-  # - ./overseerr/ks.yaml
+  - ./overseerr/ks.yaml
