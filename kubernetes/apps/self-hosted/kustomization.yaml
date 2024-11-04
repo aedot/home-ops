@@ -6,5 +6,5 @@ resources:
   - ./it-tools/ks.yaml
   - ./homepage/ks.yaml
   - ./teslamate/ks.yaml
-  # - ./mealie/ks.yaml
+  - ./mealie/ks.yaml
   # - ./overseerr/ks.yaml
