@@ -7,4 +7,3 @@ resources:
   - ./volsync.yaml
   - ./helmrelease.yaml
   - ../../../../templates/gatus/external
-  - ../../../../templates/volsync

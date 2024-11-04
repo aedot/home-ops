@@ -68,7 +68,7 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: overseerr
+        controller: *app
         ports:
           http:
             port: *port
@@ -97,10 +97,16 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: overseerr-config
+        existingClaim: *app
         globalMounts:
           - path: /app/config
       cache:
-        existingClaim: overseerr
+        existingClaim: overseerr-cache
         globalMounts:
           - path: /app/config/cache
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /app/config/logs
+      tmp:
+        type: emptyDir
