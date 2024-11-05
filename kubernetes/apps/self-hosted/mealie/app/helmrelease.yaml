@@ -66,6 +66,7 @@ spec:
           gethomepage.dev/icon: mealie.svg
           gethomepage.dev/group: Home
           external-dns-pihole.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+          cert-manager.io/cluster-issuer: letsencrypt-production
         hosts:
           - host: &host "mealie.${SECRET_DOMAIN}"
             paths:
@@ -77,6 +78,7 @@ spec:
         tls:
           - hosts:
               - *host
+            secretName: wizarr-tls
 
     persistence:
       data:
