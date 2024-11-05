@@ -22,7 +22,7 @@ spec:
               service:
                 name: unraid
                 port:
-                  number: 443
+                  number: 80
   tls:
     - hosts:
         - *host
