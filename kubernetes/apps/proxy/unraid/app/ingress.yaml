@@ -1,0 +1,29 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    external-dns-pihole.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/icon: unraid.png
+    gethomepage.dev/name: Unraid
+    gethomepage.dev/group: Server
+  name: unraid
+spec:
+  ingressClassName: internal
+  rules:
+    - host: &host unraid.${SECRET_DOMAIN}
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: unraid
+                port:
+                  number: 443
+  tls:
+    - hosts:
+        - *host
+      secretName: unraid-tls
