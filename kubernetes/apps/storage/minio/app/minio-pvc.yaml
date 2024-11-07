@@ -11,7 +11,7 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: 172.16.10.12
+    server: ${NFS_SERVER}
     path: "/volume1/minio"
   mountOptions:
     - nfsvers=4.1
