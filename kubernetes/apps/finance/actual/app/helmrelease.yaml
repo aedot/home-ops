@@ -70,6 +70,7 @@ spec:
         className: internal
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns-pihole.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: actual.png
           gethomepage.dev/name: Actual-budget

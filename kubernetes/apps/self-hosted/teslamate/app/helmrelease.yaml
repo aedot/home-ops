@@ -66,6 +66,7 @@ spec:
       app:
         className: internal
         annotations:
+          external-dns-pihole.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: teslamate.png
           gethomepage.dev/name: TeslaMate
