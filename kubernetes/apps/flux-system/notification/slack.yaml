@@ -1,0 +1,37 @@
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Provider
+metadata:
+  name: slack-bot-provider
+  namespace: flux-system
+spec:
+  type: slack
+  channel: homelab
+  secretRef:
+    name: slack-bot-url
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Alert
+metadata:
+  name: slack-bot-alert
+  namespace: flux-system
+spec:
+  providerRef:
+    name: slack-bot-provider
+  eventSeverity: error
+  eventSources:
+    - kind: GitRepository
+      name: "*"
+    - kind: HelmRelease
+      name: "*"
+    - kind: HelmRepository
+      name: "*"
+    - kind: Kustomization
+      name: "*"
+    - kind: OCIRepository
+      name: "*"
+  exclusionList:
+    - "error.*lookup github\\.com"
+    - "error.*lookup raw\\.githubusercontent\\.com"
+    - "dial.*tcp.*timeout"
+    - "waiting.*socket"
+  suspend: false
