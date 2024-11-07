@@ -78,7 +78,7 @@ spec:
         tls:
           - hosts:
               - *host
-            secretName: wizarr-tls
+            secretName: mealie-tls
 
     persistence:
       data:
