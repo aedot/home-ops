@@ -41,6 +41,8 @@
         type: tautulli
         url: http://${MEDIA_SERVER}:8181
         key: {{HOMEPAGE_VAR_TAUTULLI_TOKEN}}
+        enableUser: true
+        showEpisodeNumber: true
   - Unmanic:
       icon: unmanic.png
       href: http://${MEDIA_SERVER}:8888/
@@ -73,7 +75,7 @@
       href: http://${MEDIA_SERVER}:8989
       description: TV Pull Automation
       widget:
-        type: radarr
+        type: sonarr
         url: http://${MEDIA_SERVER}:8989
         key: {{HOMEPAGE_VAR_SONARR_API_KEY}}
         enableQueue: true
