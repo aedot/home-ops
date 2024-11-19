@@ -80,7 +80,7 @@
         key: {{HOMEPAGE_VAR_SONARR_API_KEY}}
         enableQueue: true
   - Prowlarr:
-      icon: prowlarr..svg
+      icon: prowlarr.svg
       href: http://${MEDIA_SERVER}:9696
       description: Index Pull Automation
       widget:

@@ -38,9 +38,10 @@ layout:
     style: column
     icon: mdi-home-analytics
   Observability:
-    style: column
+    style: row
+    columns: 4
     icon: mdi-chart-line
   Downloads:
     style: row
-    columns: 3
+    columns: 4
     icon: mdi-download-circle
