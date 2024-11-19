@@ -1,14 +1,37 @@
 ---
 - Infrastructure:
-  - Cloudflared:
-      href: https://dash.cloudflare.com/
-      icon: cloudflare-zero-trust.png
-      description: Cloudflared Tunnel
+  - Unraid:
+      icon: unraid.svg
+      href: https://unraid.${SECRET_DOMAIN}
+      description: Media server
+  - Synology:
+      icon: synology-dsm.svg
+      href: https://synology.${SECRET_DOMAIN}
+      description: backup server
+  - Longhorn:
+      icon: longhorn.svg
+      href: https://longhorn.${SECRET_DOMAIN}
+      description: K8S Storage
+
+- Network:
+  - PiHole:
+      icon: pi-hole.svg
+      href: {{HOMEPAGE_VAR_PIHOLE_SERVER}}/admin
+      description: Network wide adblocker + DNS server
       widget:
-        type: cloudflared
-        accountid: {{HOMEPAGE_VAR_CLOUDFLARED_ACCOUNTID}}
-        tunnelid: {{HOMEPAGE_VAR_CLOUDFLARED_TUNNELID}}
-        key: {{HOMEPAGE_VAR_CLOUDFLARED_API_TOKEN}}
+        type: pihole
+        url: {{HOMEPAGE_VAR_PIHOLE_SERVER}}
+        key: {{HOMEPAGE_VAR_PIHOLE_API_KEY}}
+  - Unifi:
+      icon: unifi.svg
+      href: {{HOMEPAGE_VAR_UNIFI_SERVER}}
+      description: Network controller
+      widget:
+        type: unifi
+        url: {{HOMEPAGE_VAR_UNIFI_SERVER}}
+        username: username
+        password: password
+
 - Media:
   - Plex:
       href: https://app.plex.tv/desktop
@@ -18,6 +41,15 @@
         type: tautulli
         url: http://${MEDIA_SERVER}:8181
         key: {{HOMEPAGE_VAR_TAUTULLI_TOKEN}}
+  - Unmanic:
+      icon: unmanic.png
+      href: http://${MEDIA_SERVER}:8888/
+      description: media converter
+      widget:
+        type: unmanic
+        url: http://${MEDIA_SERVER}:8888
+
+- Downloads:
   - Qbittorrent:
       icon: qbittorrent.svg
       href: http://${MEDIA_SERVER}:8080
@@ -27,13 +59,33 @@
         url: http://${MEDIA_SERVER}:8080
         username: {{HOMEPAGE_VAR_QBIT_USERNAME}}
         password: {{HOMEPAGE_VAR_QBIT_PASSWORD}}
-  - Unmanic:
-      icon: unmanic.png
-      href: http://${MEDIA_SERVER}:8888/
-      description: media converter
+  - Radarr:
+      icon: radarr.svg
+      href: http://${MEDIA_SERVER}:7878
+      description: Movie Pull Automation
       widget:
-        type: unmanic
-        url: http://${MEDIA_SERVER}:8888
+        type: radarr
+        url: http://${MEDIA_SERVER}:7878
+        key: {{HOMEPAGE_VAR_RADARR_API_KEY}}
+        enableQueue: true
+  - Sonarr:
+      icon: sonarr.svg
+      href: http://${MEDIA_SERVER}:8989
+      description: TV Pull Automation
+      widget:
+        type: radarr
+        url: http://${MEDIA_SERVER}:8989
+        key: {{HOMEPAGE_VAR_SONARR_API_KEY}}
+        enableQueue: true
+  - Prowlarr:
+      icon: prowlarr..svg
+      href: http://${MEDIA_SERVER}:9696
+      description: Index Pull Automation
+      widget:
+        type: prowlarr
+        url: http://${MEDIA_SERVER}:9696
+        key: {{HOMEPAGE_VAR_PROWLARR_API_KEY}}
+
 - Dev-Tools:
   - It-tools:
       icon: it-tools.svg

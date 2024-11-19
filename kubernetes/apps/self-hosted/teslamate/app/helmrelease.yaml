@@ -70,7 +70,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: teslamate.png
           gethomepage.dev/name: TeslaMate
-          gethomepage.dev/group: Observability
+          gethomepage.dev/group: Home
         hosts:
           - host: &host teslamate.${SECRET_DOMAIN}
             paths:

@@ -30,10 +30,10 @@ layout:
     style: column
     columns: 3
     icon: mdi-apps
-  Storage:
+  Network:
     style: column
     columns: 3
-    icon: mdi-desktop-tower
+    icon: mdi-network
   Home:
     style: column
     icon: mdi-home-analytics
@@ -41,6 +41,6 @@ layout:
     style: column
     icon: mdi-chart-line
   Downloads:
-    style: column
+    style: row
     columns: 3
     icon: mdi-download-circle
