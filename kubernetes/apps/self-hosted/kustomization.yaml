@@ -8,4 +8,5 @@ resources:
   - ./teslamate/ks.yaml
   - ./mealie/ks.yaml
   - ./overseerr/ks.yaml
+  - ./peanut/ks.yaml
   # - ./wizarr/ks.yaml
