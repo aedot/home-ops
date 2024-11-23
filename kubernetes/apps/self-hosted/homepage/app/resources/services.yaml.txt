@@ -26,11 +26,6 @@
       icon: unifi.svg
       href: {{HOMEPAGE_VAR_UNIFI_SERVER}}
       description: Network controller
-      widget:
-        type: unifi
-        url: {{HOMEPAGE_VAR_UNIFI_SERVER}}
-        username: username
-        password: password
 
 - Media:
   - Plex:

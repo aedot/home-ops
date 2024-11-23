@@ -1,16 +1,4 @@
-- Communitcate:
-    - Discord:
-        - icon: discord.png
-          href: 'https://discord.com/app'
-    - Mail:
-        - icon: gmail.png
-          href: 'https://www.fastmail.com/mail/inbox'
-    - GoogleCalendar:
-        - icon: google-calendar.png
-          href: 'https://www.fastmail.com/calendar'
-    - Outlook:
-        - icon: 'https://raw.githubusercontent.com/LilDrunkenSmurf/k3s-home-cluster/main/icons/outlook.png'
-          href: 'https://outlook.com'
+
 - Media:
     - YouTube:
         - icon: youtube.png
@@ -25,3 +13,7 @@
     - home-cluster:
         - icon: github.png
           href: 'https://github.com/aedot/home-ops'
+- Social-Media:
+    - Reddit:
+      - icon: reddit.png
+        href: 'https://old.reddit.com'
