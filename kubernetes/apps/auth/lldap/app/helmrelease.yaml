@@ -54,7 +54,7 @@ spec:
           app:
             image:
               repository: ghcr.io/lldap/lldap
-              tag: v0.6.0
+              tag: v0.6.1
             env:
               TZ: America/Los_Angeles
               LLDAP_HTTP_PORT: &port 8080
