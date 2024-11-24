@@ -5,4 +5,5 @@ resources:
   - ./namespace.yaml
   - ./actual/ks.yaml
   - ./aa-actual/ks.yaml
+  - ./fa-actual/ks.yaml
 
