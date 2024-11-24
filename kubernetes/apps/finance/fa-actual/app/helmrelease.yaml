@@ -82,6 +82,10 @@ spec:
                 service:
                   identifier: app
                   port: http
+        tls:
+          - hosts:
+              - *hostName
+            secretName: actual-tls
 
     persistence:
       data:
