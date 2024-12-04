@@ -84,7 +84,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: "${VOLSYNC_CLAIM}"
+        existingClaim: changedetection-data
         advancedMounts:
           main:
             main:

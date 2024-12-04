@@ -23,6 +23,5 @@ spec:
       APP: *app
       APP_UID: "2000"
       APP_GID: "2000"
-      VOLSYNC_CLAIM: changedetection-config
       VOLSYNC_CAPACITY: 5Gi
       GATUS_SUBDOMAIN: *app
