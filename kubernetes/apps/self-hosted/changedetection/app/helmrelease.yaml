@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &appname changedetection
+  name: &app changedetection
 spec:
   interval: 15m
   chart:
@@ -84,7 +84,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: changedetection-data
+        existingClaim: *app
         advancedMounts:
           main:
             main:
