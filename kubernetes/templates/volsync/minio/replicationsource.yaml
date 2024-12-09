@@ -4,7 +4,7 @@ kind: ReplicationSource
 metadata:
   name: "${APP}"
 spec:
-  sourcePVC: "${CLAIM:-${APP}-data}"
+  sourcePVC: "${CLAIM:-${APP}}"
   trigger:
     schedule: "45 23 * * *"
   restic:
