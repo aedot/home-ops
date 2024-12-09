@@ -2,13 +2,13 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
-  name: "${APP}-bootstrap"
+  name: "${APP}-dest"
 spec:
   trigger:
     manual: restore-once
   restic:
     repository: "${APP}-restic-secret"
-    copyMethod: Snapshot
+    copyMethod: Direct
     destinationPVC: ${APP}
     storageClassName: "${VOLSYNC_STORAGECLASS:-longhorn}"
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-longhorn-snapshot}"
