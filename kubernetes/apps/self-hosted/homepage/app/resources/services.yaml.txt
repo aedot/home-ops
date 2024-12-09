@@ -22,11 +22,11 @@
 - Network:
   - PiHole:
       icon: pi-hole.svg
-      href: {{HOMEPAGE_VAR_PIHOLE_ADDRESS}}
+      href: http://${PIHOLE_ADDRESS}/admin
       description: Network wide adblocker + DNS server
       widget:
         type: pihole
-        url: {{HOMEPAGE_VAR_PIHOLE_SERVER}}
+        url: http://${PIHOLE_ADDRESS}
         key: {{HOMEPAGE_VAR_PIHOLE_API_KEY}}
   - Unifi:
       icon: unifi.svg
