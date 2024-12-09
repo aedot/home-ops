@@ -37,8 +37,12 @@ layout:
   Home:
     style: column
     icon: mdi-home-analytics
+  Storage:
+    style: column
+    columns: 3
+    icon: mdi-nas
   Observability:
-    style: row
+    style: column
     columns: 4
     icon: mdi-chart-line
   Downloads:

@@ -8,15 +8,21 @@
       icon: synology-dsm.svg
       href: https://synology.${SECRET_DOMAIN}
       description: backup server
+
+- Storage:
   - Longhorn:
       icon: longhorn.svg
       href: https://longhorn.${SECRET_DOMAIN}
       description: K8S Storage
+  - Minio:
+      icon: minio.svg
+      href: https://minio.${SECRET_DOMAIN}
+      description: S3 bucket
 
 - Network:
   - PiHole:
       icon: pi-hole.svg
-      href: {{HOMEPAGE_VAR_PIHOLE_SERVER}}
+      href: {{HOMEPAGE_VAR_PIHOLE_SERVER}}/admin
       description: Network wide adblocker + DNS server
       widget:
         type: pihole
