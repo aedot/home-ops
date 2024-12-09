@@ -22,7 +22,7 @@
 - Network:
   - PiHole:
       icon: pi-hole.svg
-      href: {{HOMEPAGE_VAR_PIHOLE_SERVER}}/admin
+      href: {{HOMEPAGE_VAR_PIHOLE_ADDRESS}}
       description: Network wide adblocker + DNS server
       widget:
         type: pihole
