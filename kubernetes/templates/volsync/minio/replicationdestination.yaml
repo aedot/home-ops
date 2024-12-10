@@ -10,17 +10,17 @@ spec:
     repository: "${APP}-restic-secret"
     copyMethod: Direct
     destinationPVC: ${APP}
-    storageClassName: "${VOLSYNC_STORAGECLASS:-longhorn}"
-    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-longhorn-snapshot}"
-    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-10Gi}"
-    cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
-    cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-longhorn}"
-    accessModes: ["${VOLSYNC_ACCESSMODES:-ReadWriteOnce}"]
-    capacity: "${VOLSYNC_CAPACITY:-5Gi}"
-    moverSecurityContext: # Not needed due to privileged movers
-      runAsUser: ${VOLSYNC_PUID:-568}
-      runAsGroup: ${VOLSYNC_PGID:-568}
-      fsGroup: ${VOLSYNC_PGID:-568}
+    # storageClassName: "${VOLSYNC_STORAGECLASS:-longhorn}"
+    # volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-longhorn-snapshot}"
+    # cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-10Gi}"
+    # cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
+    # cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-longhorn}"
+    # accessModes: ["${VOLSYNC_ACCESSMODES:-ReadWriteOnce}"]
+    # capacity: "${VOLSYNC_CAPACITY:-5Gi}"
+    # moverSecurityContext: # Not needed due to privileged movers
+    #   runAsUser: ${VOLSYNC_PUID:-568}
+    #   runAsGroup: ${VOLSYNC_PGID:-568}
+    #   fsGroup: ${VOLSYNC_PGID:-568}
     enableFileDeletion: true
     cleanupCachePVC: true
     cleanupTempPVC: true
