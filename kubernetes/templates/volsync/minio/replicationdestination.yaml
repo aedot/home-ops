@@ -5,11 +5,12 @@ metadata:
   name: "${APP}-dest"
 spec:
   trigger:
-    manual: restore-once
+    manual: restore
   restic:
     repository: "${APP}-restic-secret"
-    copyMethod: Direct
+    copyMethod: None
     destinationPVC: ${APP}
+    restoreASOf: 2024-12-08T15:46:28-0800
     # storageClassName: "${VOLSYNC_STORAGECLASS:-longhorn}"
     # volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-longhorn-snapshot}"
     # cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-10Gi}"
@@ -21,6 +22,6 @@ spec:
     #   runAsUser: ${VOLSYNC_PUID:-568}
     #   runAsGroup: ${VOLSYNC_PGID:-568}
     #   fsGroup: ${VOLSYNC_PGID:-568}
-    enableFileDeletion: true
-    cleanupCachePVC: true
-    cleanupTempPVC: true
+    # enableFileDeletion: true
+    # cleanupCachePVC: true
+    # cleanupTempPVC: true
