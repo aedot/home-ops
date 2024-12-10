@@ -10,7 +10,7 @@ spec:
     repository: "${APP}-restic-secret"
     copyMethod: None
     destinationPVC: ${APP}
-    restoreASOf: 2024-12-08T15:46:28-0800
+    restoreAsOf: 2024-12-08T15:46:28-0800
     # storageClassName: "${VOLSYNC_STORAGECLASS:-longhorn}"
     # volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-longhorn-snapshot}"
     # cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-10Gi}"
