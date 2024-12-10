@@ -5,6 +5,6 @@ kind: Kustomization
 resources:
   # - ./volume.yaml
   - ./helmrelease.yaml
-  - ../../../../templates/volsync
+  - ../../../../templates/volume
   - ../../../../templates/gatus/guarded
 

@@ -5,4 +5,4 @@ resources:
   - ./helmrelease.yaml
   - ./secret.sops.yaml
   - ../../../../templates/gatus/guarded
-  - ../../../../templates/volsync
+  - ../../../../templates/volume

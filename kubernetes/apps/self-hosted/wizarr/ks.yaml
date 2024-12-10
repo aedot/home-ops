@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: overseerr
-    - name: volsync
+    - name: longhorn
   path: ./kubernetes/apps/self-hosted/wizarr/app
   prune: true
   sourceRef:

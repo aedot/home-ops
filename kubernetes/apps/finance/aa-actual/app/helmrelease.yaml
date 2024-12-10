@@ -33,7 +33,7 @@ spec:
               repository: ghcr.io/actualbudget/actual-server
               tag: 24.12.0
             env:
-              GENERIC_TIMEZONE: America/Los_Angeles
+              GENERIC_TIMEZONE: ${TIMEZONE}
             probes:
               liveness:
                 enabled: true

@@ -11,6 +11,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/self-hosted/changedetection/app
+  dependsOn:
+    - name: longhorn
   prune: true
   sourceRef:
     kind: GitRepository
@@ -23,5 +25,5 @@ spec:
       APP: *app
       APP_UID: "2000"
       APP_GID: "2000"
-      VOLSYNC_CAPACITY: 5Gi
+      CAPACITY: 5Gi
       GATUS_SUBDOMAIN: *app
