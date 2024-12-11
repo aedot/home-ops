@@ -11,6 +11,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/self-hosted/overseerr/app
+  dependsOn:
+    - name: longhorn
   prune: true
   sourceRef:
     kind: GitRepository

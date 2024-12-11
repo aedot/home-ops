@@ -33,7 +33,7 @@ spec:
               repository: ghcr.io/sct/overseerr
               tag: develop
             env:
-              TZ: America/Los_Angeles
+              TZ: ${TIMEZONE}
               LOG_LEVEL: "info"
               PORT: &port 80
             probes:
