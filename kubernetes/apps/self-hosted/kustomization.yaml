@@ -10,3 +10,4 @@ resources:
   - ./overseerr/ks.yaml
   - ./changedetection/ks.yaml
   - ./wizarr/ks.yaml
+  - ./searxng/ks.yaml
