@@ -24,3 +24,4 @@ resources:
   - ./kyverno.yaml
   - ./minio.yaml
   - ./emqx.yaml
+  - ./k8tz.yaml
