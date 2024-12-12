@@ -25,3 +25,4 @@ resources:
   - ./minio.yaml
   - ./emqx.yaml
   - ./k8tz.yaml
+  - ./kubernetes-sigs-descheduler.yaml
