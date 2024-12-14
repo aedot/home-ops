@@ -139,22 +139,22 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/flux
-          - name: nginx
+          - name: network
             orgId: 1
-            folder: Nginx
+            folder: Network
             type: file
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/nginx
-          - name: emqx
+              path: /var/lib/grafana/dashboards/network
+          - name: data
             orgId: 1
-            folder: EMQX
+            folder: Data
             type: file
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/emqx
+              path: /var/lib/grafana/dashboards/data
           - name: "teslamate"
             orgId: 1
             folder: Teslamate
@@ -167,24 +167,6 @@ spec:
 
     dashboards:
       default:
-        cert-manager:
-          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
-          datasource: Prometheus
-        dragonfly:
-          url: https://raw.githubusercontent.com/dragonflydb/dragonfly/main/tools/local/monitoring/grafana/provisioning/dashboards/dashboard.json
-          datasource: Redis
-        cloudflared:
-          # renovate: depName="Cloudflare Tunnels (cloudflared)"
-          gnetId: 17457
-          revision: 6
-          datasource:
-            - name: DS_PROMETHEUS
-              value: Prometheus
-        external-dns:
-          # renovate: depName="External-dns"
-          gnetId: 15038
-          revision: 3
-          datasource: Prometheus
         minio:
           # renovate: depName="MinIO Dashboard"
           gnetId: 13502
@@ -192,7 +174,10 @@ spec:
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
 
-      emqx:
+      data:
+        dragonfly:
+          url: https://raw.githubusercontent.com/dragonflydb/dragonfly/main/tools/local/monitoring/grafana/provisioning/dashboards/dashboard.json
+          datasource: Redis
         emqx-authentication:
           url: https://raw.githubusercontent.com/emqx/emqx-exporter/main/grafana-dashboard/template/emqx-5/authentication.json
           datasource: Prometheus
@@ -227,43 +212,61 @@ spec:
           datasource: Prometheus
 
       kubernetes:
-        api-server:
+        kubernetes-api-server:
           # renovate: depName="Kubernetes / System / API Server"
           gnetId: 15761
           revision: 18
           datasource: Prometheus
-        coredns:
+        kubernetes-coredns:
           # renovate: depName="Kubernetes / System / CoreDNS"
           gnetId: 15762
           revision: 18
           datasource: Prometheus
-        global:
+        kubernetes-global:
           # renovate: depName="Kubernetes / Views / Global"
           gnetId: 15757
           revision: 42
           datasource: Prometheus
-        namespaces:
+        kubernetes-namespaces:
           # renovate: depName="Kubernetes / Views / Namespaces"
           gnetId: 15758
           revision: 39
           datasource: Prometheus
-        nodes:
+        kubernetes-nodes:
           # renovate: depName="Kubernetes / Views / Nodes"
           gnetId: 15759
           revision: 32
           datasource: Prometheus
-        pods:
+        kubernetes-pods:
           # renovate: depName="Kubernetes / Views / Pods"
           gnetId: 15760
           revision: 32
           datasource: Prometheus
-        volumes:
+        kubernetes-volumes:
           # renovate: depName="K8s / Storage / Volumes / Cluster"
           gnetId: 11454
           revision: 14
           datasource: Prometheus
 
-      nginx:
+      network:
+        cert-manager:
+          # url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/refs/heads/master/assets/cert-manager/dashboards/overview.json
+          datasource: Prometheus
+        cloudflared-geomap:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/refs/heads/master/assets/cloudflare/dashboards/cloudflare-geomap-overview.json
+          datasource: Prometheus
+        cloudflared-worker:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/refs/heads/master/assets/cloudflare/dashboards/cloudflare-worker-overview.json
+          datasource: Prometheus
+        cloudflared-zone:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/refs/heads/master/assets/cloudflare/dashboards/cloudflare-zone-overview.json
+          datasource: Prometheus
+        external-dns:
+          # renovate: depName="External-dns"
+          gnetId: 15038
+          revision: 3
+          datasource: Prometheus
         nginx:
           url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
           datasource: Prometheus
