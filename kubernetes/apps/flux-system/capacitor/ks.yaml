@@ -5,16 +5,15 @@ metadata:
   name: &app capacitor
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/flux-system/capacitor/
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-ops
-  wait: true
-  interval: 30m
-  retryInterval: 1m
-  timeout: 3m
   targetNamespace: flux-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  path: ./kubernetes/apps/flux-system/capacitor/
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  prune: true
+  wait: false
+  interval: 10m
+
