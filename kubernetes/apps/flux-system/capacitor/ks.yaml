@@ -9,7 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/flux-system/capacitor/
+  path: ./kubernetes/apps/flux-system/capacitor/app
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
