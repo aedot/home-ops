@@ -32,19 +32,19 @@ spec:
           app:
             image:
               repository: ghcr.io/gimlet-io/capacitor
-              tag: v0.4.8
+              tag: v0.4.8@sha256:c999a42cccc523b91086547f890466d09be4755bf05a52763b0d14594bf60782
             resources:
               requests:
-                cpu: 350m
+                cpu: 50m
                 memory: 100Mi
                 ephemeral-storage: 1Gi
               limits:
-                memory: 2Gi
+                memory: 200Mi
                 ephemeral-storage: 2Gi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: [ALL] }
+              capabilities: {drop: [ALL]}
     serviceAccount:
       create: true
       name: *app
@@ -59,10 +59,8 @@ spec:
       app:
         enabled: true
         className: internal
-        annotations:
-          external-dns-pihole.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
-          - host: capacitor.${SECRET_DOMAIN}
+          - host: "capacitor.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
