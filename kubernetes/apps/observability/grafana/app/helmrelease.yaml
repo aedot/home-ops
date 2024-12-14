@@ -99,18 +99,6 @@ spec:
               sslmode: disable
             version: 1
             editable: true
-          - name: Redis
-            type: redis-datasource
-            access: proxy
-            url: redis://dragonfly.dbms.svc.cluster.local:6379
-            jsonData:
-              client: standalone
-              poolSize: 5
-              timeout: 10
-              pingInterval: 0
-              pipelineWindow: 0
-            editable: true
-
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
@@ -177,7 +165,7 @@ spec:
       data:
         dragonfly:
           url: https://raw.githubusercontent.com/dragonflydb/dragonfly/main/tools/local/monitoring/grafana/provisioning/dashboards/dashboard.json
-          datasource: Redis
+          datasource: Prometheus
         emqx-authentication:
           url: https://raw.githubusercontent.com/emqx/emqx-exporter/main/grafana-dashboard/template/emqx-5/authentication.json
           datasource: Prometheus
