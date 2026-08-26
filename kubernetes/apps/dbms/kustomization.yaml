@@ -10,4 +10,3 @@ resources:
   - ./cnpg/ks.yaml
   - ./dragonfly/ks.yaml
   - ./mosquitto/ks.yaml
-  # - ./pgadmin/ks.yaml
