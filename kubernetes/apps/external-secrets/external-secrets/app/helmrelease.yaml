@@ -19,3 +19,5 @@ spec:
       replicaCount: 2
     bitwarden-sdk-server:
       enabled: true
+      deploymentAnnotations:
+        reloader.stakater.com/auto: "true"
