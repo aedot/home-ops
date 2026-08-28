@@ -3,9 +3,68 @@
   packageRules: [
     {
       description: "Actions Runner Controller Group",
-      groupName: "actions-runner-controller",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/gha-runner-scale-set-controller/", "/gha-runner-scale-set/"],
+      groupName: "Actions Runner Controller",
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "/gha-runner-scale-set-controller/",
+        "/gha-runner-scale-set/"
+      ],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      minimumGroupSize: 2,
+    },
+    {
+      description: "Cert-Manager Group",
+      groupName: "Cert-Manager",
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "/cert-manager/"
+      ],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "CoreDNS Group",
+      groupName: "CoreDNS",
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "/coredns/"
+      ],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "External Secrets Operator Group",
+      groupName: "External Secrets Operator",
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "/external-secrets/"
+      ],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "Dragonfly Operator Group",
+      groupName: "Dragonfly Operator",
+      matchDatasources: [
+        "docker",
+        "github-releases"
+      ],
+      matchPackageNames: [
+        "/dragonfly(?:db)?.operator/"
+      ],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -14,17 +73,52 @@
     {
       description: "Flux Operator Group",
       groupName: "Flux Operator",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/flux-operator/", "/flux-instance/"],
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "/flux-operator/",
+        "/flux-instance/"
+      ],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
       minimumGroupSize: 2,
     },
     {
+      description: "Intel Device Plugins Group",
+      groupName: "intel-device-plugins",
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "/intel-device-plugins-operator/",
+        "/intel-device-plugins-gpu/"
+      ],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      minimumGroupSize: 2,
+    },
+    {
+      description: "Kube Prometheus Stack Group",
+      groupName: "kube-prometheus-stack",
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "/kube-prometheus-stack/"
+      ],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
       description: "Kubernetes Group",
-      groupName: "kubernetes",
-      matchDatasources: ["docker"],
+      groupName: "Kubernetes",
+      matchDatasources: [
+        "docker"
+      ],
       matchPackageNames: [
         "/kube-apiserver/",
         "/kube-controller-manager/",
@@ -36,6 +130,36 @@
         commitMessageTopic: "{{{groupName}}} group",
       },
       minimumGroupSize: 5,
+    },
+    {
+      description: "Renovate",
+      groupName: 'renovate',
+      matchUpdateTypes: [
+        'patch',
+        'minor'
+      ],
+      matchPackageNames: [
+        'renovatebot/pre-commit-hooks',
+        'renovate/renovate'
+      ],
+      schedule: [
+        '* 0-4 * * 1'
+      ],
+      automerge: true,
+      assignees: [],
+    },
+    {
+      description: "Spegel Group",
+      groupName: "Spegel",
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "/spegel/"
+      ],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
     },
   ],
 }
