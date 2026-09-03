@@ -38,17 +38,5 @@
       ],
       datasourceTemplate: "docker",
     },
-        {
-          // CoreDNS >=1.14.3 prefetch poisons autopath answers (coredns/coredns#8390) —
-          // 1.47.0 caused the 2026-07-29 AAAA-only dial failures cluster-wide; hold at
-          // 1.46.2 until fixed upstream
-          matchDatasources: [
-            "docker"
-          ],
-          matchPackageNames: [
-            "ghcr.io/coredns/charts/coredns"
-          ],
-          enabled: false,
-        },
   ],
 }
