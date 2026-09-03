@@ -24,7 +24,7 @@ nodes:
       serial: A0D6073B184B00007040
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/8af8cf71310e5eeddc32fa523441d6a0f181e0fb859e66bf7dbed7affb2e73c9
+    talosImageURL: factory.talos.dev/metal-installer/8af8cf71310e5eeddc32fa523441d6a0f181e0fb859e66bf7dbed7affb2e73c9
     controlPlane: true
     userVolumes:
       - name: longhorn
@@ -54,7 +54,7 @@ nodes:
       serial: AA202302171T21213049
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/8af8cf71310e5eeddc32fa523441d6a0f181e0fb859e66bf7dbed7affb2e73c9
+    talosImageURL: factory.talos.dev/metal-installer/8af8cf71310e5eeddc32fa523441d6a0f181e0fb859e66bf7dbed7affb2e73c9
     controlPlane: true
     userVolumes:
       - name: longhorn
@@ -80,7 +80,7 @@ nodes:
       serial: AA230711NV01KG10664
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/8af8cf71310e5eeddc32fa523441d6a0f181e0fb859e66bf7dbed7affb2e73c9
+    talosImageURL: factory.talos.dev/metal-installer/8af8cf71310e5eeddc32fa523441d6a0f181e0fb859e66bf7dbed7affb2e73c9
     controlPlane: true
     userVolumes:
       - name: longhorn
