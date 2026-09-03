@@ -8,5 +8,5 @@ components:
   - ../../components/sops
   - ../../components/namespace
 
-resources: []
-  # - ./tuppr/ks.yaml
+resources:
+  - ./tuppr/ks.yaml
