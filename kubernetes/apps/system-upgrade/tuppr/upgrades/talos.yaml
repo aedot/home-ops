@@ -20,5 +20,6 @@ spec:
         !has(status.phase) || !(status.phase in ['Resolving', 'Restoring'])
     - apiVersion: longhorn.io/v1beta2
       kind: Volume
+      timeout: 2h
       expr: |-
-        !has(status.state) || status.state != "attached" || !has(status.robustness) || status.robustness != "healthy"
+        !has(status.state) || status.state != "attached" || !has(status.robustness) || status.robustness == "healthy"
