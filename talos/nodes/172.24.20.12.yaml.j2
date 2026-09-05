@@ -1,0 +1,33 @@
+---
+machine:
+  type: controlplane
+  network:
+    hostname: oya
+    interfaces:
+      - interface: bond0
+        bond:
+          deviceSelectors:
+            - hardwareAddr: "58:47:ca:7b:e6:e4"
+          mode: active-backup
+        dhcp: true
+        vip:
+          ip: 172.24.20.11
+        vlans:
+          - vlanId: 40   # IoT VLAN
+            dhcp: false
+            mtu: 1500
+          - vlanId: 50   # Vpn VLAN
+            dhcp: false
+            mtu: 1500
+  install:
+    diskSelector:
+      serial: A0D6073B184B00007040
+---
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: longhorn
+provisioning:
+  diskSelector:
+    match: disk.serial == "50026B73839504FD"
+  minSize: 300GiB
+  grow: true

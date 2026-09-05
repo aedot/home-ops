@@ -1,0 +1,144 @@
+---
+version: v1alpha1
+machine:
+  token: bws://MACHINE_TOKEN
+  ca:
+    crt: bws://MACHINE_CA_CRT
+  install:
+    image: factory.talos.dev/metal-installer/{{ ENV.SCHEMATIC }}:{{ talosVersion }}
+  features:
+    apidCheckExtKeyUsage: true
+    diskQuotaSupport: true
+    hostDNS:
+      enabled: true
+      forwardKubeDNSToHost: true
+      resolveMemberNames: true
+    kubePrism:
+      enabled: true
+      port: 7445
+    kubernetesTalosAPIAccess:
+      enabled: true
+      allowedRoles:
+        - os:admin
+      allowedKubernetesNamespaces:
+        - actions-runner-system
+        - system-upgrade
+    rbac: true
+  kernel:
+    modules:
+      - name: nbd
+  kubelet:
+    image: ghcr.io/siderolabs/kubelet:{{ kubernetesVersion }}
+    extraConfig:
+      serializeImagePulls: false
+      imageMaximumGCAge: 24h
+    extraMounts:
+      - destination: /var/mnt/longhorn
+        type: bind
+        source: /var/mnt/longhorn
+        options:
+          - bind
+          - rshared
+          - rw
+    defaultRuntimeSeccompProfileEnabled: true
+    nodeIP:
+      validSubnets:
+        - 172.24.20.0/24
+    disableManifestsDirectory: true
+  time:
+    disabled: false
+    servers:
+      - time.cloudflare.com
+  sysctls:
+    fs.inotify.max_user_watches: "1048576"      # Watchdog
+    fs.inotify.max_user_instances: "8192"       # Watchdog
+    net.core.default_qdisc: fq                  # 10Gb/s
+    net.core.somaxconn: "8192"                  # Raise listen backlog for burst handling
+    net.core.netdev_max_backlog: "16384"        # Raise kernel ingress queue depth
+    net.core.rmem_max: "67108864"               # 10Gb/s | Cloudflared / QUIC
+    net.core.wmem_max: "67108864"               # 10Gb/s | Cloudflared / QUIC
+    net.ipv4.neigh.default.gc_thresh1: "4096"   # Prevent ARP cache overflows
+    net.ipv4.neigh.default.gc_thresh2: "8192"   # Prevent ARP cache overflows
+    net.ipv4.neigh.default.gc_thresh3: "16384"  # Prevent ARP cache overflows
+    net.ipv4.ping_group_range: 0 2147483647     # Allow Ping
+    net.ipv4.tcp_congestion_control: bbr        # 10Gb/s
+    net.ipv4.tcp_fastopen: "3"                  # Send and accept data in the opening SYN packet
+    net.ipv4.tcp_max_syn_backlog: "8192"        # Larger SYN queue for bursty connection rates
+    net.ipv4.tcp_mtu_probing: "1"               # 10Gb/s | Jumbo frames
+    net.ipv4.tcp_notsent_lowat: "131072"        # Allow Ping
+    net.ipv4.tcp_rmem: 4096 87380 33554432      # 10Gb/s
+    net.ipv4.tcp_wmem: 4096 65536 33554432      # 10Gb/s
+    net.ipv4.tcp_slow_start_after_idle: "0"     # Allow Ping
+    net.ipv4.tcp_window_scaling: "1"            # 10Gb/s
+    sunrpc.tcp_slot_table_entries: "128"        # 10Gb/s | NFS
+    sunrpc.tcp_max_slot_table_entries: "128"    # 10Gb/s | NFS
+    user.max_user_namespaces: "11255"           # User Namespaces
+    vm.dirty_background_ratio: "5"              # Start writeback earlier
+    vm.dirty_ratio: "20"                        # Cap dirty page buildup
+    vm.dirty_expire_centisecs: "3000"           # Expire dirty data after 30s
+    vm.dirty_writeback_centisecs: "500"         # Flush dirty pages every 5s
+  files:
+    - op: create
+      path: /etc/cri/conf.d/20-customization.part
+      content: |-
+        [plugins]
+        [plugins."io.containerd.cri.v1.images"]
+          discard_unpacked_layers = false
+        [plugins."io.containerd.cri.v1.runtime"]
+          device_ownership_from_security_context = true
+    - op: overwrite
+      path: /etc/nfsmount.conf
+      permissions: 0o644
+      content: |
+        [ NFSMount_Global_Options ]
+        nfsvers=4.2
+        hard=True
+        nconnect=16
+        noatime=True
+  nodeAnnotations:
+    node.longhorn.io/default-disks-config: '[{"path":"/var/mnt/longhorn","allowScheduling":true}]'
+  nodeLabels:
+    node.longhorn.io/create-default-disk: "config"
+    node.kubernetes.io/gpu: "true"
+    topology.kubernetes.io/region: k8s
+    topology.kubernetes.io/zone: m
+  udev:
+    rules:
+      # Thunderbolt
+      - ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="0", ATTR{authorized}="1"
+      # Intel GPU
+      - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
+cluster:
+  clusterName: k8s-gitops
+  id: bws://CLUSTER_ID
+  secret: bws://CLUSTER_SECRET
+  token: bws://CLUSTER_TOKEN
+  ca:
+    crt: bws://CLUSTER_CA_CRT
+  controlPlane:
+    endpoint: https://172.24.20.11:6443
+  network:
+    podSubnets:
+      - 10.42.0.0/16
+    serviceSubnets:
+      - 10.43.0.0/16
+    cni:
+      name: none
+  proxy:
+    disabled: true
+  discovery:
+    enabled: true
+    registries:
+      kubernetes:
+        disabled: true
+      service:
+        disabled: false
+---
+apiVersion: v1alpha1
+kind: WatchdogTimerConfig
+device: /dev/watchdog0
+timeout: 10m
+---
+apiVersion: v1alpha1
+kind: OOMConfig
+triggerExpression: "false"

@@ -6,50 +6,77 @@ set script-interpreter := ['bash', '-euo', 'pipefail']
 default:
     just talos -l
 
+[confirm('Apply Talos config to ' + node + ' — continue? [y/N]')]
 [doc('Apply Talos config to a node')]
 [group('talos')]
-apply-node ip mode='auto':
-    talhelper gencommand apply --node "{{ ip }}" --extra-flags "--mode={{ mode }}" | bash
+apply-node node *args:
+    just talos render-config {{ node }} | talosctl -n {{ node }} apply-config -f /dev/stdin {{ args }}
 
-[doc('Generate Talos configuration')]
+[doc('Render the merged Talos machine config for a node')]
 [group('talos')]
-generate-config:
-    talhelper genconfig
+render-config node:
+    TYPE="$(just talos machine-type {{ node }})"
+    export SCHEMATIC="$(just talos schematic-id)"
+    talosctl machineconfig patch <(just template "{{ source_directory() }}/cluster.yaml.j2" "{{ source_directory() }}/talenv.yaml") \
+        -p @<(just template "{{ source_directory() }}/networking.yaml.j2") \
+        -p @<(just template "{{ source_directory() }}/nodes/{{ node }}.yaml.j2") \
+        -p @<(just template "{{ source_directory() }}/${TYPE}.yaml.j2")
 
-[confirm("This will destroy your cluster and reset all nodes to maintenance mode — continue? [y/N]")]
-[doc('Reset all nodes back to maintenance mode (DESTRUCTIVE)')]
+[doc('Validate the merged Talos machine config for a node')]
 [group('talos')]
-reset:
-    talhelper gencommand reset \
-        --extra-flags="--reboot --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --graceful=false --wait=false" | bash
+validate-config node:
+    just talos render-config {{ node }} | talosctl validate -m metal -c /dev/stdin
 
-[confirm("This will reset the specified node to maintenance mode — continue? [y/N]")]
+[confirm('Reboot node ' + node + ' — continue? [y/N]')]
+[doc('Reboot a node')]
+[group('talos')]
+reboot-node node *args:
+    talosctl -n {{ node }} reboot {{ args }}
+
+[confirm('Shutdown node ' + node + ' — continue? [y/N]')]
+[doc('Shutdown a node')]
+[group('talos')]
+shutdown-node node *args:
+    talosctl -n {{ node }} shutdown --force {{ args }}
+
+[confirm('This resets ' + node + ' to maintenance mode (DESTRUCTIVE) — continue? [y/N]')]
 [doc('Reset a single node back to maintenance mode (DESTRUCTIVE)')]
 [group('talos')]
-reset-node ip:
-    talhelper gencommand reset --node "{{ ip }}" \
-        --extra-flags="--reboot --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --graceful=false --wait=false" | bash
+reset-node node *args:
+    talosctl -n {{ node }} reset \
+        --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL \
+        --reboot --graceful=false --wait=false {{ args }}
 
-[confirm("This ALSO wipes the Longhorn data disk (/dev/nvme0n1) on every node — ALL storage is destroyed. Continue? [y/N]")]
-[doc('Reset all nodes AND wipe the Longhorn data disk /dev/nvme0n1 (DESTRUCTIVE — for a clean V2 rebuild)')]
-[group('talos')]
-reset-wipe-data:
-    talhelper gencommand reset \
-        --extra-flags="--reboot --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --user-disks-to-wipe /dev/nvme0n1 --graceful=false --wait=false" | bash
-
-[confirm("This ALSO wipes the Longhorn data disk (/dev/nvme0n1) on the node — its storage is destroyed. Continue? [y/N]")]
+[confirm('This ALSO wipes the Longhorn data disk /dev/nvme0n1 on ' + node + ' — ALL storage is destroyed. Continue? [y/N]')]
 [doc('Reset a single node AND wipe its Longhorn data disk /dev/nvme0n1 (DESTRUCTIVE)')]
 [group('talos')]
-reset-node-wipe-data ip:
-    talhelper gencommand reset --node "{{ ip }}" \
-        --extra-flags="--reboot --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --user-disks-to-wipe /dev/nvme0n1 --graceful=false --wait=false" | bash
+reset-node-wipe-data node *args:
+    talosctl -n {{ node }} reset \
+        --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL \
+        --user-disks-to-wipe /dev/nvme0n1 \
+        --reboot --graceful=false --wait=false {{ args }}
 
-[doc('Upgrade Kubernetes')]
+[confirm('Upgrade Kubernetes on the cluster — continue? [y/N]')]
+[doc('Upgrade Kubernetes to the version in talenv.yaml')]
 [group('talos')]
 upgrade-k8s:
-    talhelper gencommand upgrade-k8s --extra-flags "--to '$(yq '.kubernetesVersion' talenv.yaml)'" | bash
+    talosctl upgrade-k8s --to "$(yq -r -e '.kubernetesVersion' "{{ source_directory() }}/talenv.yaml")"
 
-[doc('Upgrade Talos on a single node')]
+[confirm('Upgrade Talos on ' + node + ' — continue? [y/N]')]
+[doc('Upgrade Talos on a single node to the schematic + version in talenv.yaml')]
 [group('talos')]
-upgrade-node ip:
-    talhelper gencommand upgrade --node "{{ ip }}" --extra-flags "--timeout=10m" | bash
+upgrade-node node *args:
+    talosctl -n {{ node }} upgrade -i "$(just talos machine-image)" -m powercycle --timeout=10m {{ args }}
+
+[doc('Generate a Talos factory schematic ID from schematic.yaml.j2')]
+[group('talos')]
+schematic-id:
+    curl -sX POST --data-binary @<(just template "{{ source_directory() }}/schematic.yaml.j2") "https://factory.talos.dev/schematics" | jq -r '.id'
+
+[private]
+machine-type node:
+    just template "{{ source_directory() }}/nodes/{{ node }}.yaml.j2" | yq -r -e 'select(.machine) | .machine.type'
+
+[private]
+machine-image:
+    echo "factory.talos.dev/metal-installer/$(just talos schematic-id):$(yq -r -e '.talosVersion' "{{ source_directory() }}/talenv.yaml")"

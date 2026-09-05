@@ -1,0 +1,33 @@
+---
+machine:
+  type: controlplane
+  network:
+    hostname: aje
+    interfaces:
+      - interface: bond0
+        bond:
+          deviceSelectors:
+            - hardwareAddr: "58:47:ca:7b:e9:48"
+          mode: active-backup
+        dhcp: true
+        vip:
+          ip: 172.24.20.11
+        vlans:
+          - vlanId: 40   # IoT VLAN
+            dhcp: false
+            mtu: 1500
+          - vlanId: 50   # Vpn VLAN
+            dhcp: false
+            mtu: 1500
+  install:
+    diskSelector:
+      serial: AA202302171T21213049
+---
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: longhorn
+provisioning:
+  diskSelector:
+    match: disk.serial == "50026B7383950E6D"
+  minSize: 300GiB
+  grow: true
