@@ -2,19 +2,19 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  # # renovate: datasource=github-releases depName=kubernetes-csi/external-snapshotter versioning=semver
-  # - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.6.0/client/config/crd/groupsnapshot.storage.k8s.io_volumegroupsnapshotclasses.yaml
-  # # renovate: datasource=github-releases depName=kubernetes-csi/external-snapshotter versioning=semver
-  # - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.6.0/client/config/crd/groupsnapshot.storage.k8s.io_volumegroupsnapshotcontents.yaml
-  # # renovate: datasource=github-releases depName=kubernetes-csi/external-snapshotter versioning=semver
-  # - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.6.0/client/config/crd/groupsnapshot.storage.k8s.io_volumegroupsnapshots.yaml
-  # # renovate: datasource=github-releases depName=kubernetes-csi/external-snapshotter versioning=semver
-  # - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.6.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshotclasses.yaml
-  # # renovate: datasource=github-releases depName=kubernetes-csi/external-snapshotter versioning=semver
-  # - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.6.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshotcontents.yaml
-  # # renovate: datasource=github-releases depName=kubernetes-csi/external-snapshotter versioning=semver
-  # - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.6.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshots.yaml
-  # # renovate: datasource=github-releases depName=kubernetes-csi/external-snapshotter versioning=semver
-  # - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.6.0/deploy/kubernetes/snapshot-controller/rbac-snapshot-controller.yaml
+  # renovate: datasource=github-releases depName=kubernetes-csi/external-snapshotter versioning=semver
+  - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.6.0/client/config/crd/groupsnapshot.storage.k8s.io_volumegroupsnapshotclasses.yaml
+  # renovate: datasource=github-releases depName=kubernetes-csi/external-snapshotter versioning=semver
+  - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.6.0/client/config/crd/groupsnapshot.storage.k8s.io_volumegroupsnapshotcontents.yaml
+  # renovate: datasource=github-releases depName=kubernetes-csi/external-snapshotter versioning=semver
+  - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.6.0/client/config/crd/groupsnapshot.storage.k8s.io_volumegroupsnapshots.yaml
+  # renovate: datasource=github-releases depName=kubernetes-csi/external-snapshotter versioning=semver
+  - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.6.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshotclasses.yaml
+  # renovate: datasource=github-releases depName=kubernetes-csi/external-snapshotter versioning=semver
+  - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.6.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshotcontents.yaml
+  # renovate: datasource=github-releases depName=kubernetes-csi/external-snapshotter versioning=semver
+  - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.6.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshots.yaml
+  # renovate: datasource=github-releases depName=kubernetes-csi/external-snapshotter versioning=semver
+  - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.6.0/deploy/kubernetes/snapshot-controller/rbac-snapshot-controller.yaml
   - ./snapshot.yaml
 
