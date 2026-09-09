@@ -8,4 +8,4 @@ components:
   - ../../components/namespace
 resources:
   - ./kopiur/ks.yaml
-  - ./r2-sync/ks.yaml
+  # - ./r2-sync/ks.yaml
