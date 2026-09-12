@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/name: technitium
     app.kubernetes.io/instance: technitium
   annotations:
-    internal-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+    external-dns.kubernetes.io/target: internal.${SECRET_DOMAIN}
 spec:
   parentRefs:
     - name: envoy-internal
