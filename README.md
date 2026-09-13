@@ -28,12 +28,12 @@ There is a template at [onedr0p/cluster-template](https://github.com/onedr0p/clu
 - [cilium](https://github.com/cilium/cilium): eBPF-based networking for my workloads.
 - [cloudflared](https://github.com/cloudflare/cloudflared): Enables Cloudflare secure access to my routes.
 - [external-dns](https://github.com/kubernetes-sigs/external-dns): Automatically syncs ingress DNS records to a DNS provider.
-- [external-secrets](https://github.com/external-secrets/external-secrets): Managed Kubernetes secrets using [akeyless](https://github.com/akeylesslabs/helm-charts).
+- [external-secrets](https://github.com/external-secrets/external-secrets): Managed Kubernetes secrets using [bitwarden-sdk](https://github.com/bitwarden/sdk-sm).
 - [multus](https://github.com/k8snetworkplumbingwg/multus-cni): Multi-homed pod networking.
 - [longhorn](https://github.com/longhorn/longhorn): Distributed block storage for peristent storage.
 - [spegel](https://github.com/spegel-org/spegel): Stateless cluster local OCI registry mirror.
 - [envoy-gateway](https://github.com/envoyproxy/gateway): Gateway API management for my HTTProutes.
-- [volsync](https://github.com/backube/volsync): Backup and recovery of persistent volume claims.
+- [kopiur](https://github.com/home-operations/kopiur): Backup and recovery of persistent volume claims.
 
 ### GitOps
 

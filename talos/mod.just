@@ -30,19 +30,19 @@ reset-node ip:
     talhelper gencommand reset --node "{{ ip }}" \
         --extra-flags="--reboot --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --graceful=false --wait=false" | bash
 
-[confirm("This ALSO wipes the Longhorn data disk (/dev/nvme0n1) on every node — ALL storage is destroyed. Continue? [y/N]")]
-[doc('Reset all nodes AND wipe the Longhorn data disk /dev/nvme0n1 (DESTRUCTIVE — for a clean V2 rebuild)')]
+[confirm("This ALSO wipes both NVMe data disks (/dev/nvme0n1 and /dev/nvme1n1) on every node — ALL storage is destroyed. Continue? [y/N]")]
+[doc('Reset all nodes AND wipe both NVMe data disks (DESTRUCTIVE — for a clean V2 rebuild)')]
 [group('talos')]
 reset-wipe-data:
     talhelper gencommand reset \
-        --extra-flags="--reboot --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --user-disks-to-wipe /dev/nvme0n1 --graceful=false --wait=false" | bash
+        --extra-flags="--reboot --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --user-disks-to-wipe /dev/nvme0n1 --user-disks-to-wipe /dev/nvme1n1 --graceful=false --wait=false" | bash
 
-[confirm("This ALSO wipes the Longhorn data disk (/dev/nvme0n1) on the node — its storage is destroyed. Continue? [y/N]")]
-[doc('Reset a single node AND wipe its Longhorn data disk /dev/nvme0n1 (DESTRUCTIVE)')]
+[confirm("This ALSO wipes both NVMe data disks (/dev/nvme0n1 and /dev/nvme1n1) on the node — its storage is destroyed. Continue? [y/N]")]
+[doc('Reset a single node AND wipe both its NVMe data disks (DESTRUCTIVE)')]
 [group('talos')]
 reset-node-wipe-data ip:
     talhelper gencommand reset --node "{{ ip }}" \
-        --extra-flags="--reboot --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --user-disks-to-wipe /dev/nvme0n1 --graceful=false --wait=false" | bash
+        --extra-flags="--reboot --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --user-disks-to-wipe /dev/nvme0n1 --user-disks-to-wipe /dev/nvme1n1 --graceful=false --wait=false" | bash
 
 [doc('Upgrade Kubernetes')]
 [group('talos')]

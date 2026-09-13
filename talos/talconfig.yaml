@@ -51,6 +51,7 @@ nodes:
   - hostname: "aje"
     ipAddress: "172.24.20.13"
     installDiskSelector:
+      # TODO: replace with new PM983 serial after swapping the Netac (etcdHighCommitDurations / slow fsync)
       serial: AA202302171T21213049
     machineSpec:
       secureboot: false
@@ -60,6 +61,7 @@ nodes:
       - name: longhorn
         provisioning:
           diskSelector:
+            # TODO: replace with new PM963 serial after swapping the Kingston Longhorn disk
             match: disk.serial == "50026B7383950E6D"
           minSize: "300GiB"
           grow: true
