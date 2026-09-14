@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/codewithcj/sparkyfitness-server
-              tag: v1.6.5@sha256:0a365e3d5561ad58ebe1e6cba1d132c7e968958d632bfd9f6a39cd736c3dc9d7
+              tag: v1.7.1@sha256:dd340607b2748941032a5c0db679363eb736ad810e26df10d93810a2b1518d5e
             env:
               TZ: "America/Los_Angeles"
               SPARKY_FITNESS_EMAIL_SECURE: false
