@@ -84,7 +84,7 @@ spec:
           app:
             image:
               repository: ghcr.io/codewithcj/sparkyfitness-frontend
-              tag: v1.6.5@sha256:4e836f23fa92a762335dcf4552f76696ca77bde16c7d5c14c49946a3e5faf83a
+              tag: v1.7.1@sha256:4dd132cf1db66d6c4f4669bd04d9558ffe5006e40e8b7ee33c0859d52d9de379
             env:
               PROMETHEUS_ENABLED: "true"
               SPARKY_FITNESS_LOG_LEVEL: debug
