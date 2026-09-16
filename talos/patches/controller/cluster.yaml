@@ -37,11 +37,8 @@ configuration:
     enforce-version: latest
     warn: privileged
     warn-version: latest
-  exemptions:
-    namespaces:
-      - kube-system
-    runtimeClasses: []
-    usernames: []
+  # exemptions inherited from the generated base (kube-system); omitted here to
+  # avoid list-merge duplicating the namespace (apiserver rejects duplicates).
 ---
 apiVersion: v1alpha1
 kind: KubeControllerManagerConfig
