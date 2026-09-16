@@ -1,0 +1,14 @@
+# Longhorn v2 (SPDK) block disk (v2-only cluster).
+# The entire Kingston data disk on each node is an UNFORMATTED partition Talos
+# exposes at a stable, node-independent path: /dev/disk/by-partlabel/r-longhornv2
+# — referenced from node.longhorn.io/default-disks-config (machine-nodelabel.yaml)
+# as a diskType:block disk.
+---
+apiVersion: v1alpha1
+kind: RawVolumeConfig
+name: longhornv2
+provisioning:
+  diskSelector:
+    match: disk.model == "KINGSTON OM8PGP41024N-A0"
+  minSize: 500GiB
+  grow: true

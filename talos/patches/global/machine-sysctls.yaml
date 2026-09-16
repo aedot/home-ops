@@ -27,3 +27,4 @@ machine:
     vm.dirty_ratio: "20"                        # Cap dirty page buildup
     vm.dirty_expire_centisecs: "3000"           # Expire dirty data after 30s
     vm.dirty_writeback_centisecs: "500"         # Flush dirty pages every 5s
+    vm.nr_hugepages: "1024"                     # Longhorn v2 (SPDK): 2GiB of 2MiB hugepages

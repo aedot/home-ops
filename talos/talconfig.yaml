@@ -21,18 +21,11 @@ nodes:
   - hostname: "oya"
     ipAddress: "172.24.20.12"
     installDiskSelector:
-      serial: A0D6073B184B00007040
+      serial: S46YNA0M907053
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/metal-installer/8af8cf71310e5eeddc32fa523441d6a0f181e0fb859e66bf7dbed7affb2e73c9
+    talosImageURL: factory.talos.dev/metal-installer/688503147151b0e7d97ee8e1ea87a44ae76beafb62878764b28e179b06c61a28
     controlPlane: true
-    userVolumes:
-      - name: longhorn
-        provisioning:
-          diskSelector:
-            match: disk.serial == "50026B73839504FD"
-          minSize: "300GiB"
-          grow: true
     networkInterfaces:
       - interface: bond0
         bond:
@@ -51,20 +44,11 @@ nodes:
   - hostname: "aje"
     ipAddress: "172.24.20.13"
     installDiskSelector:
-      # TODO: replace with new PM983 serial after swapping the Netac (etcdHighCommitDurations / slow fsync)
-      serial: AA202302171T21213049
+      serial: S46YNA0M906633
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/metal-installer/8af8cf71310e5eeddc32fa523441d6a0f181e0fb859e66bf7dbed7affb2e73c9
+    talosImageURL: factory.talos.dev/metal-installer/688503147151b0e7d97ee8e1ea87a44ae76beafb62878764b28e179b06c61a28
     controlPlane: true
-    userVolumes:
-      - name: longhorn
-        provisioning:
-          diskSelector:
-            # TODO: replace with new PM963 serial after swapping the Kingston Longhorn disk
-            match: disk.serial == "50026B7383950E6D"
-          minSize: "300GiB"
-          grow: true
     networkInterfaces:
       - interface: bond0
         bond:
@@ -79,18 +63,11 @@ nodes:
   - hostname: "oba"
     ipAddress: "172.24.20.14"
     installDiskSelector:
-      serial: AA230711NV01KG10664
+      serial: S46YNA0M907048
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/metal-installer/8af8cf71310e5eeddc32fa523441d6a0f181e0fb859e66bf7dbed7affb2e73c9
+    talosImageURL: factory.talos.dev/metal-installer/688503147151b0e7d97ee8e1ea87a44ae76beafb62878764b28e179b06c61a28
     controlPlane: true
-    userVolumes:
-      - name: longhorn
-        provisioning:
-          diskSelector:
-            match: disk.serial == "50026B7383951A37"
-          minSize: "300GiB"
-          grow: true
     networkInterfaces:
       - interface: bond0
         bond:
@@ -113,6 +90,7 @@ patches:
   - "@./patches/global/machine-time.yaml"
   # - "@./patches/global/machine-udev.yaml"
   - "@./patches/global/machine-nodelabel.yaml"
+  - "@./patches/global/longhorn-v2-volume.yaml"
 
 # Controller patches
 controlPlane:
@@ -139,6 +117,7 @@ controlPlane:
           - siderolabs/iscsi-tools
           - siderolabs/mei
           - siderolabs/nfsrahead
+          - siderolabs/thunderbolt
           - siderolabs/util-linux-tools
           - siderolabs/xe
 

@@ -19,13 +19,13 @@ spec:
         enable: true
         jobList: '[{"name":"recurring-fs-trim", "isGroup":false}]'
     defaultSettings:
-      # V1 (iSCSI) data engine. Reverted from the V2/SPDK build, which hit a
-      # v2 NVMe-TCP device-number-reuse race in Longhorn v1.12.0 (frontend flips
-      # app ext4 read-only). Data disk is a filesystem userVolume at
-      # /var/mnt/longhorn (talconfig.yaml + machine-nodelabel.yaml).
-      v2DataEngine: false
-      defaultDataEngine: v1
-      defaultDataPath: "/var/mnt/longhorn"
+      # V2 (SPDK) data engine only — no v1 disks/StorageClasses. Previously
+      # reverted at v1.12.0 for a v2 NVMe-TCP stale-device race that flipped app
+      # ext4 read-only; fixed in v1.12.1 (longhorn #13332 + #13482). Each node's
+      # whole data disk is a v2 block disk (/dev/disk/by-partlabel/r-longhornv2)
+      # — see talconfig.yaml, machine-nodelabel.yaml and longhorn-v2-volume.yaml.
+      v2DataEngine: true
+      defaultDataEngine: v2
       replicaDiskSoftAntiAffinity: false
       createDefaultDiskLabeledNodes: true
       defaultDataLocality: best-effort
