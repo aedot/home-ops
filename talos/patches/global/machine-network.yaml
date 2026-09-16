@@ -1,6 +1,12 @@
-machine:
-  network:
-    disableSearchDomain: true
-    nameservers:
-      - 172.24.20.21
-      - 172.24.20.22
+# Talos 1.14: static DNS moved from machine.network.nameservers /
+# disableSearchDomain into the ResolverConfig document.
+---
+apiVersion: v1alpha1
+kind: ResolverConfig
+nameservers:
+  - address: 172.24.20.21
+  - address: 172.24.20.22
+hostDNS:
+  enabled: true
+  forwardKubeDNSToHost: true
+  resolveMemberNames: true

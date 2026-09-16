@@ -3,10 +3,6 @@ machine:
   features:
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
-    hostDNS:
-      enabled: true
-      forwardKubeDNSToHost: true
-      resolveMemberNames: true
     kubePrism:
       enabled: true
       port: 7445
