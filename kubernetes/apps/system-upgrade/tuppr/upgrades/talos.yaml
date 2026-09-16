@@ -9,6 +9,8 @@ spec:
     version: v1.14.1
   policy:
     rebootMode: powercycle
+    stage: true
+    waitForVolumeDetach: true
   healthChecks:
     - apiVersion: kopiur.home-operations.com/v1alpha1
       kind: Snapshot
