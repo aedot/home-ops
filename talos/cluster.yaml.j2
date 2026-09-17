@@ -1,9 +1,9 @@
 ---
 version: v1alpha1
 machine:
-  token: bws://kubernetes/talos/MACHINE_TOKEN
+  token: sops://trustdinfo.token
   ca:
-    crt: bws://kubernetes/talos/MACHINE_CA_CRT
+    crt: sops://certs.os.crt
   features:
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
@@ -13,8 +13,8 @@ cluster:
   controlPlane:
     endpoint: https://k8s.internal:6443
   ca:
-    crt: bws://kubernetes/talos/CLUSTER_CA_CRT
-  token: bws://kubernetes/talos/CLUSTER_TOKEN
+    crt: sops://certs.k8s.crt
+  token: sops://secrets.bootstraptoken
 ---
 apiVersion: v1alpha1
 kind: ResolverConfig
@@ -35,8 +35,8 @@ endpoint: https://discovery.talos.dev/
 ---
 apiVersion: v1alpha1
 kind: DiscoveryIdentityConfig
-clusterID: bws://kubernetes/talos/CLUSTER_ID
-clusterSecret: bws://kubernetes/talos/CLUSTER_SECRET
+clusterID: sops://cluster.id
+clusterSecret: sops://cluster.secret
 ---
 apiVersion: v1alpha1
 kind: UnattendedInstallConfig

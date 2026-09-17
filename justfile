@@ -15,9 +15,9 @@ mod? talos 'talos'
 default:
     just -l
 
-[doc('Render a Jinja2 template and resolve bws:// secret refs')]
+[doc('Render a Jinja2 template and resolve sops:// secret refs')]
 template file *args:
-    minijinja-cli --env --autoescape=none "{{ file }}" {{ args }} | "{{ justfile_directory() }}/scripts/bws-inject.sh"
+    minijinja-cli --env --autoescape=none "{{ file }}" {{ args }} | "{{ justfile_directory() }}/scripts/sops-inject.sh"
 
 [private]
 log lvl msg *args:
