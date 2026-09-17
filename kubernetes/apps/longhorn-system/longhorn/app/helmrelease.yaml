@@ -14,6 +14,9 @@ spec:
       jobEnabled: false
       upgradeVersionCheck: false
     persistence:
+      # v2-only: the chart's default `longhorn` StorageClass takes its engine
+      # from here (not defaultSettings.defaultDataEngine), so pin it to v2.
+      dataEngine: v2
       defaultDataLocality: best-effort
       recurringJobSelector:
         enable: true
