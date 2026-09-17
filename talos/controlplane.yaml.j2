@@ -31,8 +31,6 @@ apiVersion: v1alpha1
 kind: KubeAPIServerConfig
 image: registry.k8s.io/kube-apiserver:{{ kubernetesVersion }}
 certExtraSANs:
-  - 127.0.0.1
-  - 172.24.20.11
   - k8s.internal
 extraArgs:
   enable-aggregator-routing: "true"

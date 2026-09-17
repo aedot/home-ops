@@ -4,9 +4,6 @@ machine:
   token: sops://trustdinfo.token
   ca:
     crt: sops://certs.os.crt
-  certSANs:
-    - 127.0.0.1
-    - 172.24.20.11
   features:
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
@@ -141,6 +138,7 @@ params:
   net.ipv4.ping_group_range: 0 2147483647     # Allow Ping
   net.ipv4.tcp_congestion_control: bbr        # 10Gb/s
   net.ipv4.tcp_fastopen: "3"                  # Send and accept data in the opening SYN packet
+  net.ipv4.tcp_max_syn_backlog: "8192"        # Larger SYN queue for bursty connection rates
   net.ipv4.tcp_mtu_probing: "1"               # 10Gb/s | Jumbo frames
   net.ipv4.tcp_notsent_lowat: "131072"        # Allow Ping
   net.ipv4.tcp_rmem: 4096 87380 33554432      # 10Gb/s
@@ -150,6 +148,10 @@ params:
   sunrpc.tcp_slot_table_entries: "128"        # 10Gb/s | NFS
   sunrpc.tcp_max_slot_table_entries: "128"    # 10Gb/s | NFS
   user.max_user_namespaces: "11255"           # User Namespaces
+  vm.dirty_background_bytes: "268435456"      # 256MiB | Byte-based writeback start; protect etcd fdatasync on shared NVMe
+  vm.dirty_bytes: "536870912"                 # 512MiB | Cap dirty buildup (ratio 5%/20% on 134GB RAM allowed multi-GB flush storms)
+  vm.dirty_expire_centisecs: "3000"           # Expire dirty data after 30s
+  vm.dirty_writeback_centisecs: "500"         # Flush dirty pages every 5s
   vm.nr_hugepages: "1024"                     # Longhorn v2 (SPDK): 2GiB of 2MiB hugepages
 ---
 apiVersion: v1alpha1
