@@ -15,6 +15,8 @@ apply-node node *args:
 [doc('Render the merged Talos machine config for a node')]
 [group('talos')]
 render-config node:
+    #!/usr/bin/env bash
+    set -euo pipefail
     TYPE="$(just talos machine-type {{ node }})"
     export SCHEMATIC="$(just talos schematic-id)"
     talosctl machineconfig patch <(just template "{{ source_directory() }}/cluster.yaml.j2" "{{ source_directory() }}/talenv.yaml") \

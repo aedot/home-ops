@@ -4,6 +4,9 @@ machine:
   token: sops://trustdinfo.token
   ca:
     crt: sops://certs.os.crt
+  certSANs:
+    - 127.0.0.1
+    - 172.24.20.11
   features:
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
