@@ -7,10 +7,10 @@ components:
   - ../../components/sops
   - ../../components/namespace
 
-resources:
-  - ./actual/ks.yaml
-  - ./atuin/ks.yaml
-  - ./bambuddy/ks.yaml
-  - ./lubelog/ks.yaml
-  - ./sparkyfitness/ks.yaml
-  - ./teslamate/ks.yaml
+resources: []
+  # - ./actual/ks.yaml
+  # - ./atuin/ks.yaml
+  # - ./bambuddy/ks.yaml
+  # - ./lubelog/ks.yaml
+  # - ./sparkyfitness/ks.yaml
+  # - ./teslamate/ks.yaml

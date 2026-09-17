@@ -7,8 +7,8 @@ components:
   - ../../components/sops
   - ../../components/namespace
 
-resources:
-  - ./home-assistant/ks.yaml
-  - ./matter-server/ks.yaml
-  - ./scrypted/ks.yaml
-  - ./zigbee/ks.yaml
+resources: []
+  # - ./home-assistant/ks.yaml
+  # - ./matter-server/ks.yaml
+  # - ./scrypted/ks.yaml
+  # - ./zigbee/ks.yaml

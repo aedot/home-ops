@@ -7,11 +7,11 @@ components:
   - ../../components/sops
   - ../../components/namespace
 
-resources:
-  - ./prowlarr/ks.yaml
-  - ./qbittorrent/ks.yaml
-  - ./qui/ks.yaml
-  - ./radarr/ks.yaml
-  - ./recyclarr/ks.yaml
-  - ./sabnzbd/ks.yaml
-  - ./sonarr/ks.yaml
+resources: []
+  # - ./prowlarr/ks.yaml
+  # - ./qbittorrent/ks.yaml
+  # - ./qui/ks.yaml
+  # - ./radarr/ks.yaml
+  # - ./recyclarr/ks.yaml
+  # - ./sabnzbd/ks.yaml
+  # - ./sonarr/ks.yaml

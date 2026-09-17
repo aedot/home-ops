@@ -6,7 +6,7 @@ namespace: dbms
 components:
   - ../../components/sops
   - ../../components/namespace
-resources:
-  - ./cnpg/ks.yaml
-  - ./dragonfly/ks.yaml
-  - ./mosquitto/ks.yaml
+resources: []
+  # - ./cnpg/ks.yaml
+  # - ./dragonfly/ks.yaml
+  # - ./mosquitto/ks.yaml
