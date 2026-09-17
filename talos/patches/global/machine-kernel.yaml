@@ -1,7 +1,0 @@
-machine:
-  kernel:
-    modules:
-      - name: nbd
-      # - name: thunderbolt
-      - name: nvme_tcp                          # Longhorn v2 frontend (NVMe-TCP)
-      - name: vfio_pci                           # Longhorn v2 (SPDK)
