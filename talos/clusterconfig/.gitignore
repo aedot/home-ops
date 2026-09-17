@@ -1,4 +1,2 @@
-talosconfig
-k8s-gitops-oya.yaml
-k8s-gitops-aje.yaml
-k8s-gitops-oba.yaml
+*
+!.gitignore
