@@ -10,6 +10,8 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/downloads/prowlarr/app
   dependsOn:
+    - name: longhorn
+      namespace: longhorn-system
     - name: bitwarden-stores
       namespace: external-secrets
   prune: true

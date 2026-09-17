@@ -5,6 +5,9 @@ kind: Kustomization
 metadata:
   name: gatus-sidecar
 spec:
+  dependsOn:
+    - name: longhorn
+      namespace: longhorn-system
   interval: 1h
   path: ./kubernetes/apps/observability/gatus-sidecar/app
   postBuild:
