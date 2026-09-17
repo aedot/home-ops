@@ -1,0 +1,177 @@
+---
+version: v1alpha1
+machine:
+  token: sops://trustdinfo.token
+  ca:
+    crt: sops://certs.os.crt
+  certSANs:
+    - 127.0.0.1
+    - 172.24.20.11
+  features:
+    apidCheckExtKeyUsage: true
+    diskQuotaSupport: true
+    rbac: true
+cluster:
+  clusterName: main
+  controlPlane:
+    endpoint: https://k8s.internal:6443
+  ca:
+    crt: sops://certs.k8s.crt
+  token: sops://secrets.bootstraptoken
+---
+apiVersion: v1alpha1
+kind: ResolverConfig
+hostDNS:
+  enabled: true
+  forwardKubeDNSToHost: true # Requires Cilium socketLB features
+  resolveMemberNames: true
+searchDomains:
+  disableDefault: true # 1.14 derives search domains from the hostname FQDN; keep node resolv.conf clean
+nameservers:
+  - address: 172.24.20.21
+  - address: 172.24.20.22
+---
+apiVersion: v1alpha1
+kind: DiscoveryServiceConfig
+name: default
+endpoint: https://discovery.talos.dev/
+---
+apiVersion: v1alpha1
+kind: DiscoveryIdentityConfig
+clusterID: sops://cluster.id
+clusterSecret: sops://cluster.secret
+---
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+installer:
+  image: factory.talos.dev/metal-installer/{{ ENV.SCHEMATIC }}:{{ talosVersion }}
+provisioning:
+  wipe: false
+---
+apiVersion: v1alpha1
+kind: FilesystemTrimConfig
+interval: 168h0m0s
+---
+apiVersion: v1alpha1
+kind: FilesystemScrubConfig
+interval: 168h0m0s
+---
+apiVersion: v1alpha1
+kind: WatchdogTimerConfig
+device: /dev/watchdog0
+timeout: 5m
+---
+# Longhorn v2 (SPDK) block disk (v2-only cluster).
+apiVersion: v1alpha1
+kind: RawVolumeConfig
+name: longhornv2
+provisioning:
+  diskSelector:
+    match: disk.model == "KINGSTON OM8PGP41024N-A0"
+  minSize: 500GiB
+  grow: true
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: nbd
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: nvme_tcp                            # Longhorn v2 frontend (NVMe-TCP)
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: vfio_pci                            # Longhorn v2 (SPDK)
+---
+apiVersion: v1alpha1
+kind: TimeSyncConfig
+ntp:
+  servers:
+    - time.cloudflare.com
+---
+apiVersion: v1alpha1
+kind: KubeNetworkConfig
+dnsDomain: cluster.local
+podSubnets:
+  - 10.42.0.0/16
+serviceSubnets:
+  - 10.43.0.0/16
+---
+apiVersion: v1alpha1
+kind: KubePrismConfig
+port: 7445
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+nodeIP:
+  validSubnets:
+    - 172.24.20.0/24
+labels:
+  node.longhorn.io/create-default-disk: "config"
+  node.kubernetes.io/gpu: "true"
+  topology.kubernetes.io/region: main
+annotations:
+  node.longhorn.io/default-disks-config: '[{"path":"/dev/disk/by-partlabel/r-longhornv2","allowScheduling":true,"diskType":"block","diskDriver":"aio"}]'
+---
+apiVersion: v1alpha1
+kind: KubeletConfig
+image: ghcr.io/siderolabs/kubelet:{{ kubernetesVersion }}
+defaultRuntimeSeccompProfileEnabled: true
+config:
+  serializeImagePulls: false
+  imageMaximumGCAge: 168h
+  maxParallelImagePulls: 3
+  shutdownGracePeriod: 90s
+  crashLoopBackOff:
+    maxContainerRestartPeriod: 60s
+---
+apiVersion: v1alpha1
+kind: SysctlConfig
+params:
+  fs.inotify.max_user_watches: "1048576"      # Watchdog
+  fs.inotify.max_user_instances: "8192"       # Watchdog
+  net.core.default_qdisc: fq                  # 10Gb/s
+  net.core.somaxconn: "8192"                  # Raise listen backlog for burst handling
+  net.core.netdev_max_backlog: "16384"        # Raise kernel ingress queue depth
+  net.core.rmem_max: "67108864"               # 10Gb/s | Cloudflared / QUIC
+  net.core.wmem_max: "67108864"               # 10Gb/s | Cloudflared / QUIC
+  net.ipv4.neigh.default.gc_thresh1: "4096"   # Prevent ARP cache overflows
+  net.ipv4.neigh.default.gc_thresh2: "8192"   # Prevent ARP cache overflows
+  net.ipv4.neigh.default.gc_thresh3: "16384"  # Prevent ARP cache overflows
+  net.ipv4.ping_group_range: 0 2147483647     # Allow Ping
+  net.ipv4.tcp_congestion_control: bbr        # 10Gb/s
+  net.ipv4.tcp_fastopen: "3"                  # Send and accept data in the opening SYN packet
+  net.ipv4.tcp_mtu_probing: "1"               # 10Gb/s | Jumbo frames
+  net.ipv4.tcp_notsent_lowat: "131072"        # Allow Ping
+  net.ipv4.tcp_rmem: 4096 87380 33554432      # 10Gb/s
+  net.ipv4.tcp_wmem: 4096 65536 33554432      # 10Gb/s
+  net.ipv4.tcp_slow_start_after_idle: "0"     # Allow Ping
+  net.ipv4.tcp_window_scaling: "1"            # 10Gb/s
+  sunrpc.tcp_slot_table_entries: "128"        # 10Gb/s | NFS
+  sunrpc.tcp_max_slot_table_entries: "128"    # 10Gb/s | NFS
+  user.max_user_namespaces: "11255"           # User Namespaces
+  vm.nr_hugepages: "1024"                     # Longhorn v2 (SPDK): 2GiB of 2MiB hugepages
+---
+apiVersion: v1alpha1
+kind: EtcFileConfig
+name: nfsmount.conf
+mode: 0o644
+contents: |
+  [ NFSMount_Global_Options ]
+  nfsvers=4.2
+  hard=True
+  nconnect=16
+  noatime=True
+---
+apiVersion: v1alpha1
+kind: CRICustomizationConfig
+name: containerd
+content: |
+  [plugins."io.containerd.cri.v1.images"]
+    discard_unpacked_layers = false
+  [plugins."io.containerd.cri.v1.runtime"]
+    device_ownership_from_security_context = true
+---
+apiVersion: v1alpha1
+kind: OOMConfig
+triggerExpression: "false"

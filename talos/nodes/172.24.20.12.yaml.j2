@@ -1,0 +1,19 @@
+---
+machine:
+  type: controlplane
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: oya
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: bond0mem0
+selector:
+  match: mac(link.permanent_addr) == "58:47:ca:7b:e6:e4"
+---
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+provisioning:
+  diskSelector:
+    match: disk.serial == "S46YNA0M907053"

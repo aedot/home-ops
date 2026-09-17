@@ -1,9 +1,0 @@
-machine:
-  nodeAnnotations:
-    # v2-only: single block disk (raw partition r-longhornv2, aio driver)
-    node.longhorn.io/default-disks-config: '[{"path":"/dev/disk/by-partlabel/r-longhornv2","allowScheduling":true,"diskType":"block","diskDriver":"aio"}]'
-  nodeLabels:
-    node.longhorn.io/create-default-disk: "config"
-    node.kubernetes.io/gpu: "true"
-    topology.kubernetes.io/region: k8s
-    topology.kubernetes.io/zone: m

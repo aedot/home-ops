@@ -1,0 +1,32 @@
+---
+# Single-member active-backup bond over the NIC aliased per-node (see nodes/*).
+apiVersion: v1alpha1
+kind: BondConfig
+name: bond0
+links:
+  - bond0mem0
+bondMode: active-backup
+---
+apiVersion: v1alpha1
+kind: DHCPv4Config
+name: bond0
+clientIdentifier: mac
+---
+apiVersion: v1alpha1
+kind: VLANConfig
+name: bond0.40   # IoT VLAN
+vlanID: 40
+parent: bond0
+mtu: 1500
+---
+apiVersion: v1alpha1
+kind: VLANConfig
+name: bond0.50   # Vpn VLAN
+vlanID: 50
+parent: bond0
+mtu: 1500
+---
+apiVersion: v1alpha1
+kind: Layer2VIPConfig
+name: 172.24.20.11
+link: bond0
