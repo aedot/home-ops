@@ -1,0 +1,79 @@
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: listenarr
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: listenarr
+  values:
+    controllers:
+      listenarr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/therobbiedavis/listenarr
+              tag: canary-1.3.4@sha256:99b4ae68cf7478dd364c19c3ae379d115ec3b127dfdae5666b0a480de75d8f34
+            env:
+              LISTENARR__LOG__LEVEL: info
+              TZ: America/Los_Angeles
+              LISTENARR_PUBLIC_URL: "https://{{ .Release.Name }}.${SECRET_DOMAIN}"
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: &port 4545
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /app/config
+      data:
+        type: nfs
+        server: yemoja.internal
+        path: /mnt/alaafin/data
+        globalMounts:
+          - path: /data
+      tmp:
+        type: emptyDir
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    service:
+      app:
+        ports:
+          http:
+            port: *port
