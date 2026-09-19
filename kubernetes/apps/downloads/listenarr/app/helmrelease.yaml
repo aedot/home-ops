@@ -17,7 +17,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/therobbiedavis/listenarr
+              repository: ghcr.io/listenarrs/listenarr
               tag: canary-1.3.4@sha256:99b4ae68cf7478dd364c19c3ae379d115ec3b127dfdae5666b0a480de75d8f34
             env:
               LISTENARR__LOG__LEVEL: info
