@@ -58,7 +58,6 @@ spec:
               - /bin/sh
               - -c
               - |
-                install -d -m 700 /home/coder/.ssh
                 install -m 600 /secrets/id_rsa /home/coder/.ssh/id_rsa
                 printf 'Host github.com\n  StrictHostKeyChecking accept-new\n' > /home/coder/.ssh/config
     defaultPodOptions:
