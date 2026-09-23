@@ -1,0 +1,84 @@
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: esphome
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: esphome
+  values:
+    controllers:
+      esphome:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/home-operations/esphome
+              tag: 2026.9.0@sha256:591508393e9862d30fb455775b72a97bb96906bdc787f5c499ef5c636d3069e5
+            env:
+              TZ: America/Los_Angeles
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 3Gi
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+            [{
+              "name": "iot",
+              "namespace": "kube-system",
+              "ips": ["172.24.40.24/24"]
+            }]
+    service:
+      app:
+        ports:
+          http:
+            port: &port 6052
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - name: "{{ .Release.Name }}"
+                port: *port
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        advancedMounts:
+          esphome:
+            app:
+              - path: /config
+      secrets:
+        type: secret
+        name: esphome-secret
+        globalMounts:
+          - path: /config/secrets.yaml
+            subPath: secrets.yaml
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          esphome:
+            app:
+              - path: /cache
+                subPath: cache
+              - path: /tmp
+                subPath: esphome-tmp
