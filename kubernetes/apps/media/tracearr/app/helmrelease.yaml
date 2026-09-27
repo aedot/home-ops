@@ -21,6 +21,8 @@ spec:
             env:
               TZ: America/Los_Angeles
               CORS_ORIGIN: https://tracearr.${SECRET_DOMAIN}
+              HOST: "0.0.0.0"
+              NODE_ENV: production
               PORT: &port 3000
               TRUST_PROXY: true
               REDIS_URL: "redis://{{ .Release.Name }}-dragonfly:6379"
@@ -48,9 +50,10 @@ spec:
               readiness: *probes
             resources:
               requests:
-                cpu: 10m
+                cpu: 20m
+                memory: 256Mi
               limits:
-                memory: 2Gi
+                memory: 512Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
