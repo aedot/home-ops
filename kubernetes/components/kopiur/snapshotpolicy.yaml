@@ -18,7 +18,7 @@ spec:
     name: nas
   retention:
     keepLatest: 3
-    keepHourly: 24
+    keepHourly: 6
     keepDaily: 7
     keepWeekly: 4
   sources:

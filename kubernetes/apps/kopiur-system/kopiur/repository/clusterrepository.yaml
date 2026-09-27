@@ -36,6 +36,6 @@ spec:
       quick:
         cron: 0 6 * * * # daily: compacts indexes (filesystem readdir, no S3 LIST)
       full:
-        cron: 0 4 * * 1 # weekly: GC + unreferenced blob reclaim
+        cron: 0 4 * * * # daily: GC + unreferenced blob reclaim
   scheduleDefaults:
     timezone: America/Los_Angeles
