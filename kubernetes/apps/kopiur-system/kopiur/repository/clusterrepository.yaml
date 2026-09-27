@@ -39,3 +39,4 @@ spec:
         cron: 0 4 * * * # daily: GC + unreferenced blob reclaim
   scheduleDefaults:
     timezone: America/Los_Angeles
+  suspend: true
