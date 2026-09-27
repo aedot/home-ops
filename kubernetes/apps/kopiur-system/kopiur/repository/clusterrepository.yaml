@@ -4,6 +4,8 @@ apiVersion: kopiur.home-operations.com/v1alpha1
 kind: ClusterRepository
 metadata:
   name: nas
+  annotations:
+    kopiur.home-operations.com/allow-reinitialize: a6ca15c731c9cbaad37126e1fff705e39fb9386ff271d89941be2b24ce45a298
 spec:
   allowedNamespaces:
     all: true
@@ -39,4 +41,3 @@ spec:
         cron: 0 4 * * * # daily: GC + unreferenced blob reclaim
   scheduleDefaults:
     timezone: America/Los_Angeles
-  suspend: true
