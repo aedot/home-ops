@@ -24,7 +24,6 @@ spec:
   sources:
     - pvc:
         name: ${APP}
-  suspend: true
   verification:
     deep:
       schedule:
