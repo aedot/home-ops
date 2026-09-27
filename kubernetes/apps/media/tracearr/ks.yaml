@@ -16,6 +16,25 @@ spec:
       kind: Cluster
       failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
       current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
+  patches:
+    - target:
+        kind: Cluster
+      patch: |
+        - op: add
+          path: /spec/postgresql/shared_preload_libraries
+          value: [timescaledb]
+        - op: add
+          path: /spec/postgresql/parameters/timescaledb.license
+          value: timescale
+        - op: add
+          path: /spec/postgresql/parameters/timescaledb.telemetry_level
+          value: "off"
+        - op: add
+          path: /spec/postgresql/extensions
+          value:
+            - name: timescaledb
+              image:
+                reference: ghcr.io/inomotech-foss/timescaledb-cnpg:2.28.3-pg18@sha256:33a23e3e4d10ce27e9f69ccd29133be6ae9c6bc19197fb03b9807ac9ae8de92f
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
