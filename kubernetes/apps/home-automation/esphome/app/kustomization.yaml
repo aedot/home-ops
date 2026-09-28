@@ -6,3 +6,13 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+patches:
+  - target:
+      kind: SnapshotPolicy
+    patch: |
+      - op: add
+        path: /spec/files
+        value:
+          ignoreRules:
+            - /lost+found
+            - /.cache

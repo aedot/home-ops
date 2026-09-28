@@ -5,3 +5,19 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+patches:
+  - target:
+      kind: SnapshotPolicy
+    patch: |
+      - op: add
+        path: /spec/files
+        value:
+          ignoreRules:
+            - /lost+found
+            - /Library/Application Support/Plex Media Server/Cache
+            - /Library/Application Support/Plex Media Server/Logs
+            - /Library/Application Support/Plex Media Server/Crash Reports
+            - /Library/Application Support/Plex Media Server/Updates
+            - /Library/Application Support/Plex Media Server/Codecs
+            - /Library/Application Support/Plex Media Server/Drivers
+            - /Library/Application Support/Plex Media Server/Plug-in Support/Databases/*.db-20*
