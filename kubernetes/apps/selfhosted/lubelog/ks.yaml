@@ -12,6 +12,8 @@ spec:
       namespace: longhorn-system
     - name: cnpg-barman-cloud
       namespace: dbms
+    - name: bitwarden-stores
+      namespace: external-secrets
   components:
     - ../../../../components/kopiur
     - ../../../../components/postgres

@@ -5,6 +5,9 @@ kind: Kustomization
 metadata:
   name: nut-exporter
 spec:
+  dependsOn:
+    - name: bitwarden-stores
+      namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/observability/nut-exporter/app
   prune: true

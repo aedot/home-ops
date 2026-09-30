@@ -15,6 +15,8 @@ spec:
       namespace: kube-system
     - name: longhorn
       namespace: longhorn-system
+    - name: bitwarden-stores
+      namespace: external-secrets
   prune: true
   sourceRef:
     kind: GitRepository
