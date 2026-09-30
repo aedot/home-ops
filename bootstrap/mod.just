@@ -4,6 +4,8 @@ set shell := ['bash', '-euo', 'pipefail', '-c']
 set script-interpreter := ['bash', '-euo', 'pipefail']
 
 kubernetes_dir := justfile_dir() + '/kubernetes'
+controller := `talosctl config info -o yaml | yq -e '.endpoints[0]'`
+nodes := `talosctl config info -o yaml | yq -e '.nodes | join(" ")'`
 
 [private]
 default:
@@ -11,12 +13,13 @@ default:
 
 [doc('Bootstrap the Talos cluster')]
 [group('bootstrap')]
-talos: talos-secret talos-config talos-apply talos-bootstrap talos-kubeconfig
+talos: talos-secret talos-apply talos-bootstrap (talos-kubeconfig "node")
 
 [doc('Bootstrap apps into the Talos cluster')]
 [group('bootstrap')]
 apps: apps-ready apps-namespaces apps-secrets apps-crds apps-helm
     just log info "Cluster is bootstrapped — Flux will start syncing the Git repository"
+    just log info "Once the kube-api LoadBalancer is up, run 'just bootstrap talos-kubeconfig' to switch to k8s.internal"
 
 [private]
 [script]
@@ -24,32 +27,41 @@ apps: apps-ready apps-namespaces apps-secrets apps-crds apps-helm
 talos-secret:
     just log info "Generating talsecret"
     if [ ! -f talsecret.sops.yaml ]; then
-        talhelper gensecret | sops --filename-override talsecret.sops.yaml --encrypt /dev/stdin > talsecret.sops.yaml
+        talosctl gen secrets -o - | sops --filename-override talsecret.sops.yaml --encrypt /dev/stdin > talsecret.sops.yaml
     fi
 
 [private]
-[working-directory('../talos')]
-talos-config:
-    just log info "Generating talos config"
-    talhelper genconfig
-
-[private]
-[working-directory('../talos')]
+[script]
 talos-apply:
     just log info "Applying talos config"
-    talhelper gencommand apply --extra-flags="--insecure" | bash
+    for n in {{ nodes }}; do
+        if ! op=$(just --yes talos apply-node "$n" --insecure 2>&1); then
+            if [[ "$op" == *"certificate required"* ]]; then
+                just log info "Talos already configured, skipping apply of config" node "$n"
+                continue
+            fi
+            just log fatal "Failed to apply Talos configuration" node "$n" output "$op"
+        fi
+    done
 
 [private]
-[working-directory('../talos')]
+[script]
 talos-bootstrap:
     just log info "Bootstrapping talos"
-    until talhelper gencommand bootstrap | bash; do sleep 10; done
+    until op=$(talosctl -n "{{ controller }}" bootstrap 2>&1 || true) && [[ "$op" == *"AlreadyExists"* ]]; do
+        just log info "Talos bootstrap in progress. Retrying in 10 seconds..."
+        sleep 10
+    done
 
+# k8s.internal resolves to a Cilium LoadBalancer IP, so until Cilium is up use lb=node to target the controller directly.
 [private]
-[working-directory('../talos')]
-talos-kubeconfig:
+[script]
+talos-kubeconfig lb="cilium":
     just log info "Fetching kubeconfig"
-    until talhelper gencommand kubeconfig --extra-flags="{{ justfile_dir() }} --force" | bash; do sleep 10; done
+    until talosctl kubeconfig -n "{{ controller }}" --force "{{ justfile_dir() }}"; do sleep 10; done
+    if [[ "{{ lb }}" != "cilium" ]]; then
+        kubectl config set-cluster "$(kubectl config view --minify -o jsonpath='{.clusters[0].name}')" --server "https://{{ controller }}:6443"
+    fi
 
 [private]
 [script]

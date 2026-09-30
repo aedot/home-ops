@@ -304,8 +304,7 @@ yamlfmt -d kubernetes/
 
 ### Validate Talos Configuration (if modifying Talos)
 ```bash
-# Using talhelper
-talhelper genconfig
+just talos validate-config <node-ip>
 ```
 
 ## Code Review Process
