@@ -26,6 +26,8 @@ metadata:
 spec:
   dependsOn:
     - name: kopiur
+    - name: bitwarden-stores
+      namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/kopiur-system/kopiur/repository
   postBuild:

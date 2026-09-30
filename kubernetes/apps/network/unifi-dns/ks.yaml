@@ -5,6 +5,9 @@ kind: Kustomization
 metadata:
   name: unifi-dns
 spec:
+  dependsOn:
+    - name: bitwarden-stores
+      namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/network/unifi-dns/app
   postBuild:

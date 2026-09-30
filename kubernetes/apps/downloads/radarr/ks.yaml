@@ -11,6 +11,8 @@ spec:
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
+    - name: bitwarden-stores
+      namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/downloads/radarr/app
   prune: true

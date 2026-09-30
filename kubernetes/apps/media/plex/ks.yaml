@@ -16,6 +16,8 @@ spec:
       namespace: longhorn-system
     - name: intel-gpu-resource-driver
       namespace: kube-system
+    - name: bitwarden-stores
+      namespace: external-secrets
   prune: true
   sourceRef:
     kind: GitRepository

@@ -19,10 +19,10 @@ render-config node:
     set -euo pipefail
     TYPE="$(just talos machine-type {{ node }})"
     export SCHEMATIC="$(just talos schematic-id)"
-    talosctl machineconfig patch <(just template "{{ source_directory() }}/cluster.yaml.j2" "{{ source_directory() }}/talenv.yaml") \
+    talosctl machineconfig patch <(just template "{{ source_directory() }}/cluster.yaml.j2") \
         -p @<(just template "{{ source_directory() }}/networking.yaml.j2") \
         -p @<(just template "{{ source_directory() }}/nodes/{{ node }}.yaml.j2") \
-        -p @<(just template "{{ source_directory() }}/${TYPE}.yaml.j2" "{{ source_directory() }}/talenv.yaml")
+        -p @<(just template "{{ source_directory() }}/${TYPE}.yaml.j2")
 
 [doc('Validate the merged Talos machine config for a node')]
 [group('talos')]
@@ -59,13 +59,13 @@ reset-node-wipe-data node *args:
         --reboot --graceful=false --wait=false {{ args }}
 
 [confirm('Upgrade Kubernetes on the cluster — continue? [y/N]')]
-[doc('Upgrade Kubernetes to the version in talenv.yaml')]
+[doc('Upgrade Kubernetes to the kubelet version in cluster.yaml.j2')]
 [group('talos')]
 upgrade-k8s:
-    talosctl upgrade-k8s --to "$(yq -r -e '.kubernetesVersion' "{{ source_directory() }}/talenv.yaml")"
+    talosctl upgrade-k8s --to "$(just template "{{ source_directory() }}/cluster.yaml.j2" | yq -r -e 'select(.kind == "KubeletConfig") | .image | split(":") | .[1]')"
 
 [confirm('Upgrade Talos on ' + node + ' — continue? [y/N]')]
-[doc('Upgrade Talos on a single node to the schematic + version in talenv.yaml')]
+[doc('Upgrade Talos on a single node to the installer image in cluster.yaml.j2')]
 [group('talos')]
 upgrade-node node *args:
     talosctl -n {{ node }} upgrade -i "$(just talos machine-image)" -m powercycle --timeout=10m {{ args }}
@@ -81,4 +81,4 @@ machine-type node:
 
 [private]
 machine-image:
-    echo "factory.talos.dev/metal-installer/$(just talos schematic-id):$(yq -r -e '.talosVersion' "{{ source_directory() }}/talenv.yaml")"
+    SCHEMATIC="$(just talos schematic-id)" just template "{{ source_directory() }}/cluster.yaml.j2" | yq -r -e 'select(.kind == "UnattendedInstallConfig") | .installer.image'

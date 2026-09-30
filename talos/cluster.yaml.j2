@@ -41,7 +41,7 @@ clusterSecret: sops://cluster.secret
 apiVersion: v1alpha1
 kind: UnattendedInstallConfig
 installer:
-  image: factory.talos.dev/metal-installer/{{ ENV.SCHEMATIC }}:{{ talosVersion }}
+  image: factory.talos.dev/metal-installer/{{ ENV.SCHEMATIC }}:v1.14.1
 provisioning:
   wipe: false
 ---
@@ -112,7 +112,7 @@ annotations:
 ---
 apiVersion: v1alpha1
 kind: KubeletConfig
-image: ghcr.io/siderolabs/kubelet:{{ kubernetesVersion }}
+image: ghcr.io/siderolabs/kubelet:v1.37.1
 defaultRuntimeSeccompProfileEnabled: true
 config:
   serializeImagePulls: false
