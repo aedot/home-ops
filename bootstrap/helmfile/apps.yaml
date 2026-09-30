@@ -46,6 +46,11 @@ releases:
     inherit:
       - template: default
     needs: ["cert-manager/cert-manager"]
+    # Its TLS Certificate is applied by Flux, so the pod can't start before Flux exists.
+    values:
+      - ./templates/values.yaml.gotmpl
+      - bitwarden-sdk-server:
+          enabled: false
 
   - name: flux-operator
     namespace: flux-system
