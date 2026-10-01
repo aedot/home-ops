@@ -1,0 +1,105 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app grampsweb
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: grampsweb
+  interval: 30m
+  values:
+    controllers:
+      grampsweb:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image: &image
+              repository: ghcr.io/gramps-project/grampsweb
+              tag: 26.9.1@sha256:ac4db1ba963f5d2604e6b9a34be50c5a2c37271699f5a6df93c9492ecc8870e5
+            env: &env
+              TZ: America/Los_Angeles
+              GRAMPSWEB_TREE: Gramps Web
+              GRAMPSWEB_BASE_URL: https://gramps.${SECRET_DOMAIN}
+              GRAMPSWEB_EMAIL_USE_SSL: "false"
+              GRAMPSWEB_EMAIL_USE_STARTTLS: "true"
+              GRAMPSWEB_CELERY_CONFIG__broker_url: redis://{{ .Release.Name }}-dragonfly:6379/0
+              GRAMPSWEB_CELERY_CONFIG__result_backend: redis://{{ .Release.Name }}-dragonfly:6379/0
+              GRAMPSWEB_RATELIMIT_STORAGE_URI: redis://{{ .Release.Name }}-dragonfly:6379/0
+            envFrom: &envFrom
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+          celery:
+            image: *image
+            args:
+              - celery
+              - -A
+              - gramps_webapi.celery
+              - worker
+              - --loglevel=INFO
+              - --concurrency=2
+            env: *env
+            envFrom: *envFrom
+            resources:
+              requests:
+                cpu: 25m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: &port 5000
+    route:
+      app:
+        hostnames: ["gramps.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /app/users
+            subPath: users
+          - path: /app/indexdir
+            subPath: indexdir
+          - path: /app/thumbnail_cache
+            subPath: thumbnail_cache
+          - path: /app/cache
+            subPath: cache
+          - path: /app/secret
+            subPath: secret
+          - path: /root/.gramps/grampsdb
+            subPath: grampsdb
+          - path: /app/media
+            subPath: media
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
