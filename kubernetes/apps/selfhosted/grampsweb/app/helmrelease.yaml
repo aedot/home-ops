@@ -21,6 +21,7 @@ spec:
               tag: 26.9.1@sha256:ac4db1ba963f5d2604e6b9a34be50c5a2c37271699f5a6df93c9492ecc8870e5
             env: &env
               TZ: America/Los_Angeles
+              GUNICORN_NUM_WORKERS: 2
               GRAMPSWEB_TREE: Gramps Web
               GRAMPSWEB_BASE_URL: https://gramps.${SECRET_DOMAIN}
               GRAMPSWEB_EMAIL_USE_SSL: "false"
