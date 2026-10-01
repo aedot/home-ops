@@ -50,6 +50,7 @@ spec:
                   secretKeyRef:
                     name: "{{ .Release.Name }}-db-app"
                     key: fqdn-uri
+              GRAMPSWEB_TREE: Gramps Web
               GRAMPSWEB_BASE_URL: https://gramps.${SECRET_DOMAIN}
               GRAMPSWEB_EMAIL_USE_SSL: "false"
               GRAMPSWEB_EMAIL_USE_STARTTLS: "true"
