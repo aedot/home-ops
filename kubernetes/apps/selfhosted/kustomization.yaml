@@ -11,7 +11,7 @@ resources:
   - ./actual/ks.yaml
   - ./atuin/ks.yaml
   - ./bambuddy/ks.yaml
-  - ./grampsweb/ks.yaml
+  # - ./grampsweb/ks.yaml
   - ./lubelog/ks.yaml
   - ./sparkyfitness/ks.yaml
   - ./teslamate/ks.yaml
