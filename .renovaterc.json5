@@ -1,53 +1,14 @@
 {
-  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: [
-    'config:recommended',
-    'docker:enableMajor',
-    'helpers:pinGitHubActionDigests',
-    'github>aedot/home-ops//.renovate/autoMerge.json5',
-    'github>aedot/home-ops//.renovate/changelogs.json5',
-    'github>aedot/home-ops//.renovate/customManagers.json5',
-    'github>aedot/home-ops//.renovate/cnpg.json5',
-    'github>aedot/home-ops//.renovate/grafanaDashboards.json5',
-    'github>aedot/home-ops//.renovate/groups.json5',
-    'github>aedot/home-ops//.renovate/labels.json5',
-    'github>aedot/home-ops//.renovate/oci.json5',
-    'github>aedot/home-ops//.renovate/overrides.json5',
-    'github>aedot/home-ops//.renovate/semanticCommits.json5',
-    'github>aedot/home-ops//.renovate/talosFactory.json5',
-    ':automergeBranch',
-    ':dependencyDashboard',
-    ':disableRateLimiting',
-    ':semanticCommits',
-    ':timezone(America/Los_Angeles)',
+    "github>home-operations/renovate-presets#8.1.0",
+    "github>home-operations/renovate-presets//apps/grafanaDashboards.json5#8.1.0",
+    "github>home-operations/renovate-presets//apps/talosFactory.json5#8.1.0",
+    "github>home-operations/renovate-presets//apps/cnpg.json5#8.1.0",
+    "github>aedot/home-ops//.renovate/autoMerge.json5",
+    "github>aedot/home-ops//.renovate/groups.json5",
+    "github>aedot/home-ops//.renovate/labels.json5",
+    ":semanticCommits",
+    ":timezone(America/Los_Angeles)",
   ],
-  dependencyDashboardTitle: 'Renovate Dashboard 🤖',
-  suppressNotifications: [
-    "prEditedNotification",
-    "prIgnoreNotification"
-  ],
-  ignorePaths: [
-    "**/resources/**",
-    "**/*.sops.*"
-  ],
-  flux: {
-    managerFilePatterns: [
-      "/\\.yaml(?:\\.j2)?$/"
-    ]
-  },
-  "helm-values": {
-    managerFilePatterns: [
-      "/\\.yaml(?:\\.j2)?$/"
-    ]
-  },
-  kubernetes: {
-    managerFilePatterns: [
-      "/\\.yaml(?:\\.j2)?$/"
-    ]
-  },
-  helmfile: {
-    managerFilePatterns: [
-      "/helmfile\\.yaml$/"
-    ]
-  },
 }
