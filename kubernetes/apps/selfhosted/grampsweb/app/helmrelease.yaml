@@ -22,16 +22,43 @@ spec:
             env: &env
               TZ: America/Los_Angeles
               GUNICORN_NUM_WORKERS: 2
-              GRAMPSWEB_TREE: "Gramps Web"
+              GRAMPSWEB_TREE: "*"
+              GRAMPSWEB_MEDIA_PREFIX_TREE: "true"
+              GRAMPSWEB_NEW_DB_BACKEND: sharedpostgresql
+              GRAMPSWEB_POSTGRES_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.Name }}-db-app"
+                    key: host
+              GRAMPSWEB_POSTGRES_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.Name }}-db-app"
+                    key: port
+              GRAMPSWEB_POSTGRES_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.Name }}-db-app"
+                    key: user
+              GRAMPSWEB_POSTGRES_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.Name }}-db-app"
+                    key: password
+              GRAMPSWEB_SEARCH_INDEX_DB_URI:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.Name }}-db-app"
+                    key: fqdn-uri
               GRAMPSWEB_BASE_URL: https://gramps.${SECRET_DOMAIN}
               GRAMPSWEB_EMAIL_USE_SSL: "false"
               GRAMPSWEB_EMAIL_USE_STARTTLS: "true"
               GRAMPSWEB_CELERY_CONFIG__broker_url: redis://{{ .Release.Name }}-dragonfly.selfhosted.svc.cluster.local:6379/0
               GRAMPSWEB_CELERY_CONFIG__result_backend: redis://{{ .Release.Name }}-dragonfly.selfhosted.svc.cluster.local:6379/0
               GRAMPSWEB_RATELIMIT_STORAGE_URI: redis://{{ .Release.Name }}-dragonfly.selfhosted.svc.cluster.local:6379/1
-            # envFrom: &envFrom
-            #   - secretRef:
-            #       name: "{{ .Release.Name }}-secret"
+            envFrom: &envFrom
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness:
                 enabled: true
@@ -58,7 +85,7 @@ spec:
               - --loglevel=INFO
               - --concurrency=2
             env: *env
-            # envFrom: *envFrom
+            envFrom: *envFrom
             resources:
               requests:
                 cpu: 25m
