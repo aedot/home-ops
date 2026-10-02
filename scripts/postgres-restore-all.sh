@@ -40,7 +40,6 @@ declare -A NS=(
   [sparkyfitness]=selfhosted
   [teslamate]=selfhosted
   [tracearr]=media
-  [readmeabook]=media
 )
 declare -A HAS_DUMP=(
   [baby-tracker]=yes
@@ -48,7 +47,6 @@ declare -A HAS_DUMP=(
   [sparkyfitness]=yes
   [teslamate]=yes
   [tracearr]=no      # no dump on the NFS share — comes up empty
-  [readmeabook]=yes
 )
 
 FLUX_NS="${FLUX_NS:-}"   # override the Flux Kustomization namespace; empty = use
@@ -57,7 +55,7 @@ FLUX_NS="${FLUX_NS:-}"   # override the Flux Kustomization namespace; empty = us
 CLUSTER_READY_TIMEOUT="${CLUSTER_READY_TIMEOUT:-600}"   # seconds
 RESTORE_TIMEOUT="${RESTORE_TIMEOUT:-3600}"              # seconds (teslamate is big)
 
-APPS="baby-tracker lubelog sparkyfitness teslamate tracearr readmeabook"
+APPS="baby-tracker lubelog sparkyfitness teslamate tracearr"
 ASSUME_YES=0; DRY_RUN=0
 
 while [[ $# -gt 0 ]]; do
