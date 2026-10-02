@@ -23,6 +23,7 @@ spec:
               TZ: America/Los_Angeles
               GUNICORN_NUM_WORKERS: 2
               GRAMPSWEB_TREE: "*"
+              GRAMPSWEB_REGISTRATION_DISABLED: "true"
               GRAMPSWEB_MEDIA_PREFIX_TREE: "true"
               GRAMPSWEB_NEW_DB_BACKEND: sharedpostgresql
               GRAMPSWEB_POSTGRES_HOST:
