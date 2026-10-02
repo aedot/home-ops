@@ -117,10 +117,6 @@ spec:
             subPath: users
           - path: /app/indexdir
             subPath: indexdir
-          - path: /app/thumbnail_cache
-            subPath: thumbnail_cache
-          - path: /app/cache
-            subPath: cache
           - path: /app/secret
             subPath: secret
           - path: /root/.gramps/grampsdb
@@ -131,3 +127,10 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /tmp
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /app/thumbnail_cache
+            subPath: thumbnail_cache
+          - path: /app/cache
+            subPath: cache
