@@ -58,7 +58,7 @@ spec:
                     key: fqdn-uri
               GRAMPSWEB_BASE_URL: https://gramps.${SECRET_DOMAIN}
               GRAMPSWEB_OIDC_ENABLED: "true"
-              GRAMPSWEB_OIDC_NAME: Pocket ID
+              GRAMPSWEB_OIDC_NAME: Xtm ID
               GRAMPSWEB_OIDC_ISSUER: https://sso.${SECRET_DOMAIN}
               GRAMPSWEB_EMAIL_USE_SSL: "false"
               GRAMPSWEB_EMAIL_USE_STARTTLS: "true"
