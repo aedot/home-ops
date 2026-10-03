@@ -22,6 +22,8 @@ spec:
             env: &env
               TZ: America/Los_Angeles
               GUNICORN_NUM_WORKERS: 2
+              GRAMPSWEB_TREE: Gramps Web
+              GRAMPSWEB_TREE_ID: 2fff588f-1d54-471d-b665-5986760e6b1c
               GRAMPSWEB_REGISTRATION_DISABLED: "true"
               GRAMPSWEB_MEDIA_PREFIX_TREE: "true"
               GRAMPSWEB_NEW_DB_BACKEND: sharedpostgresql
