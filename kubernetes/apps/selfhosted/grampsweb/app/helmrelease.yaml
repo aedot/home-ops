@@ -57,6 +57,9 @@ spec:
                     name: "{{ .Release.Name }}-db-app"
                     key: fqdn-uri
               GRAMPSWEB_BASE_URL: https://gramps.${SECRET_DOMAIN}
+              GRAMPSWEB_OIDC_ENABLED: "true"
+              GRAMPSWEB_OIDC_NAME: Pocket ID
+              GRAMPSWEB_OIDC_ISSUER: https://sso.${SECRET_DOMAIN}
               GRAMPSWEB_EMAIL_USE_SSL: "false"
               GRAMPSWEB_EMAIL_USE_STARTTLS: "true"
               GRAMPSWEB_CELERY_CONFIG__broker_url: redis://{{ .Release.Name }}-dragonfly.selfhosted.svc.cluster.local:6379/0
