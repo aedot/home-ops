@@ -27,10 +27,6 @@ spec:
               TZ: America/Los_Angeles
               DB_CONNECTION_STRING: file:/data/pocket-id.db?_pragma=journal_mode(WAL)&_pragma=busy_timeout(2500)&_txlock=immediate
               GEOLITE_DB_PATH: /data/GeoLite2-City.mmdb
-              METRICS_ENABLED: "true"
-              OTEL_METRICS_EXPORTER: prometheus
-              OTEL_EXPORTER_PROMETHEUS_HOST: 0.0.0.0
-              OTEL_EXPORTER_PROMETHEUS_PORT: &metricsPort 9464
               SMTP_TLS: starttls
             envFrom:
               - secretRef:
@@ -69,17 +65,6 @@ spec:
         ports:
           http:
             port: *port
-          metrics:
-            port: *metricsPort
-    serviceMonitor:
-      app:
-        serviceName: *app
-        endpoints:
-          - port: metrics
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
     route:
       app:
         hostnames: ["sso.${SECRET_DOMAIN}"]
@@ -92,4 +77,4 @@ spec:
         advancedMounts:
           pocket-id:
             app:
-              - path: /app/data
+              - path: /data
