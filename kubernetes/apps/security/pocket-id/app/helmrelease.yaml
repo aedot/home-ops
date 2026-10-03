@@ -27,6 +27,7 @@ spec:
               TZ: America/Los_Angeles
               DB_CONNECTION_STRING: file:/data/pocket-id.db?_pragma=journal_mode(WAL)&_pragma=busy_timeout(2500)&_txlock=immediate
               GEOLITE_DB_PATH: /data/GeoLite2-City.mmdb
+              UPLOAD_PATH: /data/uploads
               SMTP_TLS: starttls
             envFrom:
               - secretRef:
