@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: pocket-id
+  name: &app pocket-id
 spec:
   chartRef:
     kind: OCIRepository
@@ -23,8 +23,15 @@ spec:
               ANALYTICS_DISABLED: true
               APP_URL: https://sso.${SECRET_DOMAIN}
               PORT: &port 1411
-              TRUST_PROXY: 10.42.0.0/16
+              TRUST_PROXY: true
               TZ: America/Los_Angeles
+              DB_CONNECTION_STRING: file:/data/pocket-id.db?_pragma=journal_mode(WAL)&_pragma=busy_timeout(2500)&_txlock=immediate
+              GEOLITE_DB_PATH: /data/GeoLite2-City.mmdb
+              METRICS_ENABLED: "true"
+              OTEL_METRICS_EXPORTER: prometheus
+              OTEL_EXPORTER_PROMETHEUS_HOST: 0.0.0.0
+              OTEL_EXPORTER_PROMETHEUS_PORT: &metricsPort 9464
+              SMTP_TLS: starttls
             envFrom:
               - secretRef:
                   name: pocket-id-secret
@@ -62,11 +69,22 @@ spec:
         ports:
           http:
             port: *port
+          metrics:
+            port: *metricsPort
+    serviceMonitor:
+      app:
+        serviceName: *app
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
     route:
       app:
         hostnames: ["sso.${SECRET_DOMAIN}"]
         parentRefs:
-          - name: envoy-internal
+          - name: envoy-external
             namespace: network
     persistence:
       data:
