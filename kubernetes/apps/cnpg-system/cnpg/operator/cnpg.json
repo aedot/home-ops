@@ -1232,7 +1232,7 @@
                   "index": 0,
                   "text": "Invalid date"
                 },
-                "to": 1e+42
+                "to": 1E+42
               },
               "type": "range"
             },
@@ -1497,7 +1497,7 @@
             },
             {
               "options": {
-                "from": -1e+22,
+                "from": -1E+22,
                 "result": {
                   "color": "text",
                   "index": 1,
@@ -2133,7 +2133,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "max((1 - cnpg_pg_replication_in_recovery{namespace=~\"$namespace\", pod=~\"$instances\"}) * (time() - timestamp(cnpg_pg_stat_archiver_seconds_since_last_archival{namespace=~\"$namespace\", pod=~\"$instances\"}) +\ncnpg_pg_stat_archiver_seconds_since_last_archival{namespace=~\"$namespace\", pod=~\"$instances\"}))",
+          "expr": "max(\n  (1 - cnpg_pg_replication_in_recovery{namespace=~\"$namespace\", pod=~\"$instances\"})\n  * (time() - timestamp(cnpg_pg_stat_archiver_seconds_since_last_archival{namespace=~\"$namespace\", pod=~\"$instances\"}) + cnpg_pg_stat_archiver_seconds_since_last_archival{namespace=~\"$namespace\", pod=~\"$instances\"})\n  * on(namespace, pod) clamp_max(cnpg_collector_pg_wal_archive_status{value=\"ready\", namespace=~\"$namespace\", pod=~\"$instances\"}, 1)\n)",
           "hide": false,
           "instant": false,
           "legendFormat": "WAL",
@@ -2373,7 +2373,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "clamp_max(max(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"backup\"}), 1)",
+          "expr": "clamp_max(ceil(max(increase(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"backup\"}[$__rate_interval]))), 1)",
           "hide": true,
           "legendFormat": "__auto",
           "range": true,
@@ -2385,7 +2385,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "clamp_max(max(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"cluster\"}), 1)",
+          "expr": "clamp_max(ceil(max(increase(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"cluster\"}[$__rate_interval]))), 1)",
           "hide": true,
           "legendFormat": "__auto",
           "range": true,
@@ -2397,7 +2397,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "clamp_max(max(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"pooler\"}), 1)",
+          "expr": "clamp_max(ceil(max(increase(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"pooler\"}[$__rate_interval]))), 1)",
           "hide": true,
           "legendFormat": "__auto",
           "range": true,
@@ -2409,7 +2409,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "clamp_max(max(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=~\"scheduledbackup|scheduled-backup\"}), 1)",
+          "expr": "clamp_max(ceil(max(increase(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=~\"scheduledbackup|scheduled-backup\"}[$__rate_interval]))), 1)",
           "hide": true,
           "legendFormat": "__auto",
           "range": true,
@@ -7374,7 +7374,7 @@
               "color": "rgba(255,0,255,0.7)"
             },
             "filterValues": {
-              "le": 1e-9
+              "le": 1E-9
             },
             "legend": {
               "show": false
@@ -8254,7 +8254,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "max(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"cluster\"})",
+              "expr": "ceil(max(increase(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"cluster\"}[$__rate_interval])))",
               "hide": false,
               "instant": true,
               "legendFormat": "Cluster Reconcile Errors",
@@ -8355,7 +8355,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "max(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"backup\"})",
+              "expr": "ceil(max(increase(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"backup\"}[$__rate_interval])))",
               "hide": false,
               "instant": true,
               "legendFormat": "Backup Reconcile Errors",
@@ -8456,7 +8456,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "max(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=~\"scheduledbackup|scheduled-backup\"})",
+              "expr": "ceil(max(increase(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=~\"scheduledbackup|scheduled-backup\"}[$__rate_interval])))",
               "hide": false,
               "instant": true,
               "legendFormat": "Scheduled Backup Reconcile Errors",
@@ -8557,7 +8557,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "max(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"pooler\"})",
+              "expr": "ceil(max(increase(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"pooler\"}[$__rate_interval])))",
               "hide": false,
               "instant": true,
               "legendFormat": "Pooler Reconcile Errors",
@@ -8803,7 +8803,7 @@
                 "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
-              "expr": "max(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"cluster\"})",
+              "expr": "ceil(max(increase(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"cluster\"}[$__rate_interval])))",
               "hide": false,
               "legendFormat": "Cluster Reconcile Errors",
               "range": true,
@@ -8931,7 +8931,7 @@
                 "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
-              "expr": "max(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"backup\"})",
+              "expr": "ceil(max(increase(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"backup\"}[$__rate_interval])))",
               "hide": false,
               "legendFormat": "Backup Reconcile Errors",
               "range": true,
@@ -9060,7 +9060,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "max(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=~\"scheduledbackup|scheduled-backup\"})",
+              "expr": "ceil(max(increase(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=~\"scheduledbackup|scheduled-backup\"}[$__rate_interval])))",
               "hide": false,
               "instant": false,
               "legendFormat": "Scheduled Backup Reconcile Errors",
@@ -9189,7 +9189,7 @@
                 "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
-              "expr": "max(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"pooler\"})",
+              "expr": "ceil(max(increase(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"pooler\"}[$__rate_interval])))",
               "hide": false,
               "legendFormat": "Pooler Reconcile Errors",
               "range": true,
