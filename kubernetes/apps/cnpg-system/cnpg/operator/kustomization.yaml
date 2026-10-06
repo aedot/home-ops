@@ -6,3 +6,11 @@ resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
   - ./prometheusrule.yaml
+configMapGenerator:
+  - name: cnpg-dashboard
+    files:
+      - cnpg.json=./cnpg.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
