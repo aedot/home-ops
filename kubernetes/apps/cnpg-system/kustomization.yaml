@@ -2,10 +2,9 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: dbms
+namespace: cnpg-system
 components:
   - ../../components/sops
   - ../../components/namespace
 resources:
-  - ./dragonfly/ks.yaml
-  - ./mosquitto/ks.yaml
+  - ./cnpg/ks.yaml

@@ -20,7 +20,7 @@ spec:
     - name: bitwarden-stores
       namespace: external-secrets
     - name: cnpg-barman-cloud
-      namespace: dbms
+      namespace: cnpg-system
   prune: true
   sourceRef:
     kind: GitRepository

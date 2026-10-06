@@ -5,9 +5,9 @@ kind: Kustomization
 metadata:
   name: cnpg-operator
 spec:
-  targetNamespace: dbms
+  targetNamespace: cnpg-system
   interval: 30m
-  path: "./kubernetes/apps/dbms/cnpg/operator"
+  path: "./kubernetes/apps/cnpg-system/cnpg/operator"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -27,7 +27,7 @@ spec:
   dependsOn:
     - name: cnpg-operator
   interval: 1h
-  path: ./kubernetes/apps/dbms/cnpg/barman-cloud
+  path: ./kubernetes/apps/cnpg-system/cnpg/barman-cloud
   postBuild:
     substituteFrom:
       - name: cluster-secrets
@@ -41,6 +41,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: dbms
+  targetNamespace: cnpg-system
   timeout: 5m
   wait: true
