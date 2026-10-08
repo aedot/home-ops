@@ -8,7 +8,8 @@ Reusable Kustomize component that provisions a dedicated per-app CloudNativePG (
 |---|---|---|
 | `Cluster` | `${APP}-db` | 3-instance CNPG cluster (PG 18) |
 | `ExternalSecret` | `${APP}-postgres` | R2 credentials for WAL archiving |
-| `ScheduledBackup` | `${APP}-db-daily` | Daily base backup at 03:00 PST |
+| `ScheduledBackup` | `${APP}-db-daily` | Daily base backup at 11:`PG_BACKUP_MINUTE` UTC |
+| `NetworkPolicy` | `${APP}-db-allow-*` | Ingress to the cluster only from its namespace, the CNPG operator and Prometheus |
 | `CronJob` | `${APP}-postgres-backup` | Local dump to NFS every 12h |
 | `CronJob` | `${APP}-postgres-restore` | Suspended restore job (manual trigger only) |
 
@@ -153,3 +154,9 @@ The `uri` points at the cluster's read-write primary service `${APP}-rw`. There 
 | `APP` | ✅ | — | App name — used for cluster, secret, and DB names |
 | `PG_VER` | ❌ | `18` | PostgreSQL major version for local backup image |
 | `CLOUDFLARE_ACCOUNT_ID` | ✅ | — | From `cluster-secrets` — R2 endpoint |
+| `PG_INSTANCES` | ❌ | `3` | Instances per cluster (anti-affinity is required, so keep it at or below the node count) |
+| `PG_STORAGE_SIZE` | ❌ | `5Gi` | PVC size per instance |
+| `PG_STORAGE_CLASS` | ❌ | `longhorn-postgres` | Single-replica Longhorn class; CNPG provides the redundancy. Only affects newly created PVCs |
+| `PG_MEMORY_REQUEST` | ❌ | `512Mi` | Memory request per instance |
+| `PG_MEMORY_LIMIT` | ❌ | `1Gi` | Memory limit per instance |
+| `PG_BACKUP_MINUTE` | ❌ | `0` | Minute of the daily 11:00 UTC backup; stagger per app |

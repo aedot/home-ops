@@ -12,16 +12,26 @@ metadata:
     # system_identifier and writes new WAL on a new timeline (no name collisions).
     cnpg.io/skipEmptyWalArchiveCheck: enabled
 spec:
-  instances: 3
+  instances: ${PG_INSTANCES:=3}
   imageName: ghcr.io/cloudnative-pg/postgresql:18.6-system-trixie@sha256:e689407a7a51bdf26ff3166d6ebbe134bdeff00ac10f36edc9fc49d49a8ee3f5
   primaryUpdateStrategy: unsupervised
   enableSuperuserAccess: true
-  # minSyncReplicas: 1
-  # maxSyncReplicas: 1
+  affinity:
+    podAntiAffinityType: required
+  resources:
+    requests:
+      cpu: 100m
+      memory: ${PG_MEMORY_REQUEST:=512Mi}
+    limits:
+      memory: ${PG_MEMORY_LIMIT:=1Gi}
   storage:
-    storageClass: longhorn
-    size: 5Gi
+    storageClass: ${PG_STORAGE_CLASS:=longhorn-postgres}
+    size: ${PG_STORAGE_SIZE:=5Gi}
   postgresql:
+    synchronous:
+      method: any
+      number: 1
+      dataDurability: preferred
     parameters:
       max_connections: "200"
       max_wal_size: "256MB"

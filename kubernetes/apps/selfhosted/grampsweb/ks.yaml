@@ -38,3 +38,4 @@ spec:
         kind: Secret
     substitute:
       APP: grampsweb
+      PG_BACKUP_MINUTE: "40"
