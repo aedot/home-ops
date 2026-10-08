@@ -11,6 +11,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   filter:
     name: Image Pull - Filter
@@ -48,12 +51,14 @@ jobs:
       - name: Extract Images
         id: extract
         run: |
-          echo 'images<<EOF' >> $GITHUB_OUTPUT
-          flate diff images -p ./kubernetes/flux/cluster -o json >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
+          delimiter="EOF_$(openssl rand -hex 16)"
+          echo "images<<${delimiter}" >> "$GITHUB_OUTPUT"
+          flate diff images -p ./kubernetes/flux/cluster -o json >> "$GITHUB_OUTPUT"
+          echo "${delimiter}" >> "$GITHUB_OUTPUT"
 
   pull:
-    if: ${{ needs.extract.outputs.images != '[]' }}
+    # The runner holds Talos os:admin credentials; never run fork PR code on it.
+    if: ${{ needs.extract.outputs.images != '[]' && github.event.pull_request.head.repo.full_name == github.repository }}
     needs: extract
     name: Image Pull - Pull Images
     runs-on: ${{ github.event.repository.name }}-runner
@@ -68,12 +73,12 @@ jobs:
         with:
           cache: false
           tool_versions: |
-            talosctl latest
+            talosctl 1.14.2
 
       - name: Pull Image
         env:
           IMAGE: ${{ matrix.image }}
-        run: talosctl --nodes "$NODE" image pull "$IMAGE"
+        run: talosctl --nodes "$NODE" image pull -- "$IMAGE"
 
   success:
     if: ${{ !cancelled() }}

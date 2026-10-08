@@ -1,0 +1,5 @@
+rules:
+  github-app:
+    ignore:
+      # Renovate needs the app's full installation permissions (contents, PRs, issues, workflows, statuses).
+      - renovate.yaml:49
