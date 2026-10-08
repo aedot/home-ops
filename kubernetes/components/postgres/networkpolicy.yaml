@@ -61,3 +61,48 @@ spec:
           protocol: TCP
   policyTypes:
     - Ingress
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/networking.k8s.io/networkpolicy_v1.json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ${APP}-db-allow-cluster
+spec:
+  podSelector:
+    matchLabels:
+      cnpg.io/cluster: ${APP}-db
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              cnpg.io/cluster: ${APP}-db
+      ports:
+        - port: 5432
+          protocol: TCP
+        - port: 8000
+          protocol: TCP
+  policyTypes:
+    - Ingress
+---
+# Cilium sees CoreDNS replies (source 10.43.0.10:53) as new flows, so without
+# this they are dropped and lookups from the DB pods time out. Replies target
+# ephemeral ports, so no port restriction is possible.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/networking.k8s.io/networkpolicy_v1.json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ${APP}-db-allow-dns
+spec:
+  podSelector:
+    matchLabels:
+      cnpg.io/cluster: ${APP}-db
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: coredns
+  policyTypes:
+    - Ingress
