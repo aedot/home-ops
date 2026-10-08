@@ -1,20 +1,16 @@
-- Delete an entry from gatus db if you don't want to monitor it anymore
-```
-kubectl exec -it <postgres-pod-name> -n <namespace> -- bash
-psql -U <username> -d <database-name>
-select * from endpoints;
-delete from endpoints where name = 'whatever';
-or
-delete from endpoints where endpoint_id = '5';
-```
+# Postgres notes
 
-- List all tables
-```
-\dt
-```
+Per-app CNPG clusters are defined by the [postgres component](../kubernetes/components/postgres/README.md). Cluster names are `<app>-db`, in the app's namespace.
 
-- Trigger a manual backup
-```
-kubectl annotate cluster postgres17 -n database postgresql.cnpg.io/backup=true --overwrite
-kubectl annotate cluster immich -n database postgresql.cnpg.io/backup=true --overwrite
-```
+- Trigger a manual S3 base backup
+  ```
+  kubectl annotate cluster <app>-db -n <namespace> postgresql.cnpg.io/backup=true --overwrite
+  ```
+- Open a psql shell on the primary
+  ```
+  kubectl exec -it -n <namespace> <app>-db-1 -c postgres -- psql -U postgres -d <app>
+  ```
+- List tables
+  ```
+  \dt
+  ```

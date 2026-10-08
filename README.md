@@ -17,7 +17,7 @@ This is a repository for my home infrastructure and Kubernetes cluster. I try to
 
 ## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f331/512.gif" alt="🌱" width="20" height="20"> Kubernetes
 
-This semi hyper-converged cluster operates on [Talos Linux](https://github.com/siderolabs/talos), an immutable and ephemeral Linux distribution tailored for [Kubernetes](https://github.com/kubernetes/kubernetes). [Longhorn](https://github.com/longhorn/longhorn) supplies my workloads with persistent block, object, and file storage.
+This semi hyper-converged cluster operates on [Talos Linux](https://github.com/siderolabs/talos), an immutable and ephemeral Linux distribution tailored for [Kubernetes](https://github.com/kubernetes/kubernetes). [Longhorn](https://github.com/longhorn/longhorn) supplies my workloads with persistent block storage.
 
 There is a template at [onedr0p/cluster-template](https://github.com/onedr0p/cluster-template) if you want to follow along with some of the practices I use here.
 
@@ -30,7 +30,7 @@ There is a template at [onedr0p/cluster-template](https://github.com/onedr0p/clu
 - [external-dns](https://github.com/kubernetes-sigs/external-dns): Automatically syncs ingress DNS records to a DNS provider.
 - [external-secrets](https://github.com/external-secrets/external-secrets): Managed Kubernetes secrets using [bitwarden-sdk](https://github.com/bitwarden/sdk-sm).
 - [multus](https://github.com/k8snetworkplumbingwg/multus-cni): Multi-homed pod networking.
-- [longhorn](https://github.com/longhorn/longhorn): Distributed block storage for peristent storage.
+- [longhorn](https://github.com/longhorn/longhorn): Distributed block storage for persistent storage.
 - [spegel](https://github.com/spegel-org/spegel): Stateless cluster local OCI registry mirror.
 - [envoy-gateway](https://github.com/envoyproxy/gateway): Gateway API management for my HTTProutes.
 - [kopiur](https://github.com/home-operations/kopiur): Backup and recovery of persistent volume claims.
@@ -53,8 +53,6 @@ This Git repository contains the following directories under [kubernetes](./kube
 ├─📁 components    # Re-usable kustomize components
 └─📁 flux          # Flux system configuration
 ```
-
-### Networking
 
 ---
 
