@@ -13,3 +13,10 @@ resources:
   - ./matter-server/ks.yaml
   - ./scrypted/ks.yaml
   - ./zigbee/ks.yaml
+patches:
+  - target:
+      kind: Namespace
+    patch: |-
+      - op: add
+        path: /metadata/labels/resource.kubernetes.io~1admin-access
+        value: "true"
