@@ -21,7 +21,6 @@ spec:
               TZ: America/Los_Angeles
               UP_UNIFI_DEFAULT_ROLE: home-ops
               UP_UNIFI_DEFAULT_URL: https://unifi.internal
-              UP_UNIFI_DEFAULT_VERIFY_SSL: false
               UP_PROMETHEUS_HTTP_LISTEN: 0.0.0.0:80
               UP_INFLUXDB_DISABLE: true
             envFrom:
@@ -30,26 +29,7 @@ spec:
             probes:
               liveness: &probes
                 enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: &port 80
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 5
-                  failureThreshold: 3
               readiness: *probes
-              startup:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: *port
-                  periodSeconds: 5
-                  timeoutSeconds: 5
-                  failureThreshold: 60
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -68,8 +48,13 @@ spec:
       app:
         ports:
           http:
-            port: *port
+            port: 80
     serviceMonitor:
       app:
+        serviceName: unpoller
         endpoints:
           - port: http
+            scheme: http
+            path: /metrics
+            interval: 2m # Unifi API only polls at 2m intervals
+            scrapeTimeout: 10s
