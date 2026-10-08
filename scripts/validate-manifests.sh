@@ -32,6 +32,7 @@ for path in "${paths[@]}"; do
     fi
 
     # Flux substitutes ${SECRET_DOMAIN} at apply time; use a valid hostname here.
+    # shellcheck disable=SC2016
     if ! result=$(echo "${rendered}" \
         | sed 's/\${SECRET_DOMAIN}/example.com/g' \
         | kubeconform -strict -skip Secret -summary \
