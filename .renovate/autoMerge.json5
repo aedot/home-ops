@@ -60,8 +60,8 @@
         "patch"
       ],
       automerge: true,
-      automergeType: "branch",
-      ignoreTests: true,
+      automergeType: "pr",
+      ignoreTests: false,
     },
   ],
 }
