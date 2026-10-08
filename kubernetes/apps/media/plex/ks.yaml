@@ -12,6 +12,8 @@ spec:
     - ../../../../components/zeroscaler
     - ../../../../components/kopiur
   dependsOn:
+    - name: kopiur-repository
+      namespace: kopiur-system
     - name: longhorn
       namespace: longhorn-system
     - name: intel-gpu-resource-driver

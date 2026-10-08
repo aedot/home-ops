@@ -5,11 +5,13 @@ kind: CronJob
 metadata:
   name: &name ${APP}-postgres-backup
 spec:
-  schedule: "0 */12 * * *" # Every 12 hours
+  schedule: "${PG_BACKUP_MINUTE:=0} */12 * * *" # Every 12 hours, staggered per app
   concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
-      ttlSecondsAfterFinished: 30
+      ttlSecondsAfterFinished: 86400 # keep failed jobs visible for alerting and debugging
       template:
         spec:
           securityContext:
@@ -22,8 +24,17 @@ spec:
               - 65539
           containers:
             - name: *name
-              image: docker.io/prodrigestivill/postgres-backup-local:${PG_VER:=18}
+              image: docker.io/prodrigestivill/postgres-backup-local:18@sha256:f70742ebe42b2277689b028d1fd15aa80f77cffa01da163cc9f85a6ff1866e7f
               imagePullPolicy: IfNotPresent
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities: { drop: ["ALL"] }
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 64Mi
+                limits:
+                  memory: 512Mi
               command:
                 - /backup.sh
               env:

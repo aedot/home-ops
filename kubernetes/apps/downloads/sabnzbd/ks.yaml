@@ -11,6 +11,8 @@ spec:
     - ../../../../components/zeroscaler
     - ../../../../components/kopiur
   dependsOn:
+    - name: kopiur-repository
+      namespace: kopiur-system
     - name: multus-networks
       namespace: kube-system
     - name: longhorn

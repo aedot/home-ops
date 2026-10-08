@@ -1,5 +1,7 @@
 # Rebuilding the cluster on Longhorn V2 (SPDK / NVMe-TCP)
 
+> **Historical note.** Written for the migration from the old `talconfig.yaml` / VolSync setup. Paths and recipes below have since changed: Talos config is in `talos/*.j2`, backups use kopiur, the wipe recipe is `just talos reset-node-wipe-data <node>` and the extra kernel module is `vfio_pci`. Use it for the reasoning, not as a runbook.
+
 This is a **greenfield** build: the cluster is destroyed and rebuilt with Longhorn
 running **only** the V2 data engine. There is no in-place migration — application
 data comes back from your existing backups (volsync → R2) into fresh V2 PVCs.

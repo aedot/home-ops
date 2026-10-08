@@ -6,6 +6,28 @@ metadata:
   name: kube-prometheus-stack-additional
 spec:
   groups:
+    - name: cert-manager.rules
+      rules:
+        - alert: CertificateExpiringSoon
+          expr: |-
+            certmanager_certificate_expiration_timestamp_seconds - time() < 14 * 86400
+          for: 15m
+          annotations:
+            summary: >-
+              Certificate {{ $labels.namespace }}/{{ $labels.name }} expires in less than 14 days. cert-manager should have renewed it already.
+          labels:
+            severity: critical
+
+        - alert: CertificateNotReady
+          expr: |-
+            max by (namespace, name) (certmanager_certificate_ready_status{condition="False"}) == 1
+          for: 30m
+          annotations:
+            summary: >-
+              Certificate {{ $labels.namespace }}/{{ $labels.name }} has not been Ready for 30 minutes.
+          labels:
+            severity: critical
+
     - name: dockerhub.rules
       rules:
         - alert: DockerhubRateLimitRisk

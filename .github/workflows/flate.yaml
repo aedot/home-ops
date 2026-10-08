@@ -50,7 +50,7 @@ jobs:
         with:
           cache: false
           tool_versions: |
-            github:home-operations/flate latest
+            github:home-operations/flate 0.6.5
 
       - name: Run Flate
         id: flate
@@ -59,9 +59,10 @@ jobs:
           FLATE_PATH: ./kubernetes/flux/cluster
           KIND: ${{ matrix.resource }}
         run: |-
-          echo 'diff<<EOF' >> $GITHUB_OUTPUT
-          flate diff $KIND >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
+          delimiter="EOF_$(openssl rand -hex 16)"
+          echo "diff<<${delimiter}" >> "$GITHUB_OUTPUT"
+          flate diff "$KIND" >> "$GITHUB_OUTPUT"
+          echo "${delimiter}" >> "$GITHUB_OUTPUT"
 
       - if: ${{ steps.flate.outputs.diff != '' }}
         name: Generate Token

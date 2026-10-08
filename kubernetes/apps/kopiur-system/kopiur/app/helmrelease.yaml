@@ -30,6 +30,7 @@ spec:
             dashboards: grafana
       prometheusRule:
         enabled: true
+        backupStaleAfterSeconds: 21600 # snapshots are hourly
       serviceMonitor:
         enabled: true
     podSecurityContext:

@@ -13,6 +13,8 @@ spec:
     routes:
       - receiver: blackhole
         matchers: [{name: alertname, value: InfoInhibitor, matchType: =}]
+      - receiver: blackhole
+        matchers: [{name: alertname, value: Watchdog, matchType: =}]
       - receiver: pushover
         matchers: [{name: severity, value: critical, matchType: =}]
   inhibitRules:
