@@ -15,6 +15,11 @@ mapfile -t paths < <(
         kubernetes/apps/*/*/ks.yaml | grep '^\./' | sort -u
 )
 
+# Namespace-level kustomizations (components, namespace, Flux Kustomizations)
+for ns_dir in kubernetes/apps/*/; do
+    [[ -f "${ns_dir}kustomization.yaml" ]] && paths+=("./${ns_dir%/}")
+done
+
 for path in "${paths[@]}"; do
     # Flux generates a kustomization.yaml for directories that lack one.
     if [[ ! -f "${path}/kustomization.yaml" ]]; then

@@ -6,6 +6,7 @@ namespace: selfhosted
 components:
   - ../../components/sops
   - ../../components/namespace
+  - ../../components/netpol
 
 resources:
   - ./actual/ks.yaml
