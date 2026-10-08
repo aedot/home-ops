@@ -35,4 +35,5 @@ spec:
         kind: Secret
     substitute:
       APP: lubelog
+      PG_BACKUP_MINUTE: "30"
       KOPIUR_CAPACITY: 1Gi

@@ -7,4 +7,5 @@ resources:
   - ./grafanadashboard.yaml
   - ./grafanadatasource.yaml
   - ./helmrelease.yaml
+  - ./networkpolicy.yaml
   - ./ocirepository.yaml

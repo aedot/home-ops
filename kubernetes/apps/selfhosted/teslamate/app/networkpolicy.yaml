@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/networking.k8s.io/networkpolicy_v1.json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: teslamate-db-allow-grafana
+spec:
+  podSelector:
+    matchLabels:
+      cnpg.io/cluster: teslamate-db
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: observability
+          podSelector:
+            matchLabels:
+              app: grafana
+      ports:
+        - port: 5432
+          protocol: TCP
+  policyTypes:
+    - Ingress

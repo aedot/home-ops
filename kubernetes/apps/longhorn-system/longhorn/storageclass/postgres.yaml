@@ -1,0 +1,18 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+reclaimPolicy: Delete
+provisioner: driver.longhorn.io
+parameters:
+  # CNPG already replicates across instances, so a single Longhorn replica
+  # avoids storing every block 3x3. best-effort keeps the replica on the
+  # instance's node.
+  dataEngine: v2
+  dataLocality: best-effort
+  numberOfReplicas: "1"
+  replicaAutoBalance: disabled
+  staleReplicaTimeout: "30"
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer
+metadata:
+  name: longhorn-postgres

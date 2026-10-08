@@ -35,3 +35,4 @@ spec:
         kind: Secret
     substitute:
       APP: sparkyfitness
+      PG_BACKUP_MINUTE: "10"

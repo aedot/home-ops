@@ -77,3 +77,54 @@ spec:
               Replica {{ $labels.pod }} is failing to replicate
           labels:
             severity: critical
+
+        - alert: CNPGBackupStale
+          expr: |-
+            time() - max by (exported_namespace, cluster) (cnpg_backup_stopped_timestamp_seconds{phase="completed"}) > 129600
+          for: 15m
+          annotations:
+            summary: >
+              No successful backup for cluster {{ $labels.cluster }} in over 36 hours
+          labels:
+            severity: critical
+
+        - alert: CNPGBackupFailed
+          expr: |-
+            time() - max by (exported_namespace, cluster) (cnpg_backup_stopped_timestamp_seconds{phase="failed"}) < 86400
+          annotations:
+            summary: >
+              A backup for cluster {{ $labels.cluster }} failed in the last 24 hours
+          labels:
+            severity: critical
+
+        - alert: CNPGInstanceDown
+          expr: |-
+            cnpg_collector_up == 0
+          for: 5m
+          annotations:
+            summary: >
+              PostgreSQL is not running on pod {{ $labels.pod }}
+          labels:
+            severity: critical
+
+        - alert: CNPGReplicasMissing
+          expr: |-
+            (cnpg_pg_replication_streaming_replicas < 2)
+            and on (namespace, pod) (cnpg_pg_replication_in_recovery == 0)
+          for: 10m
+          annotations:
+            summary: >
+              Primary {{ $labels.pod }} has only {{ $value }} streaming replicas
+          labels:
+            severity: warning
+
+        - alert: CNPGLowDiskSpace
+          expr: |-
+            kubelet_volume_stats_available_bytes{persistentvolumeclaim=~".+-db-[0-9]+"}
+              / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=~".+-db-[0-9]+"} < 0.15
+          for: 10m
+          annotations:
+            summary: >
+              Volume {{ $labels.persistentvolumeclaim }} has less than 15% free space
+          labels:
+            severity: critical

@@ -7,7 +7,7 @@ metadata:
 spec:
   cluster:
     name: ${APP}-db
-  schedule: "0 0 11 * * *" # Every day at 0300 PST / 0400 PDT
+  schedule: "0 ${PG_BACKUP_MINUTE:=0} 11 * * *" # Daily at 11:MM UTC (0300 PST / 0400 PDT); stagger MM per app
   immediate: true
   backupOwnerReference: self
   method: plugin

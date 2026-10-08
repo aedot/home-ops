@@ -1,0 +1,63 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/networking.k8s.io/networkpolicy_v1.json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ${APP}-db-allow-namespace
+spec:
+  podSelector:
+    matchLabels:
+      cnpg.io/cluster: ${APP}-db
+  ingress:
+    - from:
+        - podSelector: {}
+      ports:
+        - port: 5432
+          protocol: TCP
+  policyTypes:
+    - Ingress
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/networking.k8s.io/networkpolicy_v1.json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ${APP}-db-allow-operator
+spec:
+  podSelector:
+    matchLabels:
+      cnpg.io/cluster: ${APP}-db
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: cnpg-system
+      ports:
+        - port: 5432
+          protocol: TCP
+        - port: 8000
+          protocol: TCP
+  policyTypes:
+    - Ingress
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/networking.k8s.io/networkpolicy_v1.json
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ${APP}-db-allow-prometheus
+spec:
+  podSelector:
+    matchLabels:
+      cnpg.io/cluster: ${APP}-db
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: observability
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: prometheus
+      ports:
+        - port: 9187
+          protocol: TCP
+  policyTypes:
+    - Ingress
