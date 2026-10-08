@@ -23,6 +23,7 @@ spec:
                 "ips": ["172.24.40.21/24"]
               }]
           securityContext:
+            runAsNonRoot: true
             runAsUser: 1000
             runAsGroup: 1000
             fsGroup: 1000
@@ -39,6 +40,9 @@ spec:
                 enabled: true
               readiness:
                 enabled: true
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
             resources:
               claims:
                 - name: gpu
