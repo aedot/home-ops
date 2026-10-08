@@ -21,6 +21,13 @@ kube-state-metrics:
         verbs:
           - list
           - watch
+      - apiGroups:
+          - postgresql.cnpg.io
+        resources:
+          - backups
+        verbs:
+          - list
+          - watch
   customResourceState:
     enabled: true
     config:
@@ -362,3 +369,30 @@ kube-state-metrics:
                   webhook_path:
                     - status
                     - webhookPath
+          - groupVersionKind:
+              group: postgresql.cnpg.io
+              version: v1
+              kind: Backup
+            metricNamePrefix: cnpg
+            metrics:
+              - name: backup_stopped_timestamp_seconds
+                help: Unix time a CloudNativePG Backup finished, by phase.
+                each:
+                  type: Gauge
+                  gauge:
+                    path:
+                      - status
+                    valueFrom:
+                      - stoppedAt
+                    labelsFromPath:
+                      cluster:
+                        - spec
+                        - cluster
+                        - name
+                      phase:
+                        - status
+                        - phase
+                labelsFromPath:
+                  exported_namespace:
+                    - metadata
+                    - namespace
