@@ -44,6 +44,9 @@ spec:
             env:
               TZ: America/Los_Angeles
               HOME: /home/coder
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m

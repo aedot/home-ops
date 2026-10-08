@@ -52,6 +52,9 @@ spec:
                   secretKeyRef:
                     name: "{{ .Release.Name }}-db-app"
                     key: password
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 memory: 250Mi
