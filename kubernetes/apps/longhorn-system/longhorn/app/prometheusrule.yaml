@@ -23,13 +23,24 @@ spec:
           annotations:
             description:
               Longhorn volume {{$labels.volume}} on {{$labels.node}} is Fault for
-              more than 2 minutes.
+              more than 5 minutes.
             summary: Longhorn volume {{$labels.volume}} is Fault
           expr: longhorn_volume_robustness == 3
           for: 5m
           labels:
             issue: Longhorn volume {{$labels.volume}} is Fault.
             severity: critical
+        - alert: LonghornVolumeRecentlyFaulted
+          annotations:
+            description:
+              Longhorn volume {{$labels.volume}} (PVC {{$labels.pvc_namespace}}/{{$labels.pvc}}) was Fault within the
+              last 30 minutes. It may report healthy again, but the filesystem of the pod using it can stay mounted
+              read-only until that pod is restarted.
+            summary: Longhorn volume was Fault recently; restart its pod
+          expr: max by (volume, node, pvc, pvc_namespace) (max_over_time(longhorn_volume_robustness[30m])) == 3
+          labels:
+            issue: Longhorn volume {{$labels.volume}} was Fault recently.
+            severity: warning
         - alert: LonghornVolumeStatusWarning
           annotations:
             description:
