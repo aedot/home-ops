@@ -32,7 +32,6 @@ spec:
     substitute:
       APP: teslamate
       PG_BACKUP_MINUTE: "20"
-      DATABASE_SUPERUSER: SUPERUSER
     substituteFrom:
       - name: cluster-secrets
         kind: Secret

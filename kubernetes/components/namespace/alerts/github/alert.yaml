@@ -3,7 +3,7 @@
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
 metadata:
-  name: githubtatus
+  name: githubstatus
 spec:
   providerRef:
     name: github

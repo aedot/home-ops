@@ -19,6 +19,8 @@ spec:
               cpu: 100m
             limits:
               memory: 1Gi
+      envoyPDB:
+        maxUnavailable: 1
       envoyService:
         externalTrafficPolicy: Cluster
   shutdown:
@@ -69,7 +71,19 @@ spec:
       port: 443
       allowedRoutes:
         namespaces:
-          from: All
+          from: Selector
+          selector:
+            matchExpressions:
+              - key: kubernetes.io/metadata.name
+                operator: In
+                values:
+                  - flux-system
+                  - home-automation
+                  - media
+                  - network
+                  - observability
+                  - security
+                  - selfhosted
       tls:
         certificateRefs:
           - kind: Secret

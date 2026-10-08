@@ -26,7 +26,7 @@ spec:
       # reverted at v1.12.0 for a v2 NVMe-TCP stale-device race that flipped app
       # ext4 read-only; fixed in v1.12.1 (longhorn #13332 + #13482). Each node's
       # whole data disk is a v2 block disk (/dev/disk/by-partlabel/r-longhornv2)
-      # — see talconfig.yaml, machine-nodelabel.yaml and longhorn-v2-volume.yaml.
+      # — see talos/cluster.yaml.j2 (RawVolumeConfig and KubeNodeConfig).
       v2DataEngine: true
       defaultDataEngine: v2
       replicaDiskSoftAntiAffinity: false

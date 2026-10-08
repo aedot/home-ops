@@ -17,6 +17,7 @@ spec:
         key: AWS_SECRET_ACCESS_KEY
     data:
       compression: bzip2
+      immediateCheckpoint: true
     wal:
       compression: bzip2
       maxParallel: 4

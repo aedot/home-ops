@@ -12,3 +12,10 @@ resources:
   - ./seerr/ks.yaml
   - ./tautulli/ks.yaml
   - ./tracearr/ks.yaml
+patches:
+  - target:
+      kind: Namespace
+    patch: |-
+      - op: add
+        path: /metadata/labels/resource.kubernetes.io~1admin-access
+        value: "true"

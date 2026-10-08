@@ -115,6 +115,12 @@ kind: KubeletConfig
 image: ghcr.io/siderolabs/kubelet:v1.37.1
 defaultRuntimeSeccompProfileEnabled: true
 config:
+  kubeReserved:
+    cpu: 200m
+    memory: 1Gi
+  systemReserved:
+    cpu: 200m
+    memory: 512Mi
   serializeImagePulls: false
   imageMaximumGCAge: 168h
   maxParallelImagePulls: 3
@@ -140,10 +146,10 @@ params:
   net.ipv4.tcp_fastopen: "3"                  # Send and accept data in the opening SYN packet
   net.ipv4.tcp_max_syn_backlog: "8192"        # Larger SYN queue for bursty connection rates
   net.ipv4.tcp_mtu_probing: "1"               # 10Gb/s | Jumbo frames
-  net.ipv4.tcp_notsent_lowat: "131072"        # Allow Ping
+  net.ipv4.tcp_notsent_lowat: "131072"        # Limit unsent data queued per socket
   net.ipv4.tcp_rmem: 4096 87380 33554432      # 10Gb/s
   net.ipv4.tcp_wmem: 4096 65536 33554432      # 10Gb/s
-  net.ipv4.tcp_slow_start_after_idle: "0"     # Allow Ping
+  net.ipv4.tcp_slow_start_after_idle: "0"     # Keep cwnd after idle (long-lived connections)
   net.ipv4.tcp_window_scaling: "1"            # 10Gb/s
   sunrpc.tcp_slot_table_entries: "128"        # 10Gb/s | NFS
   sunrpc.tcp_max_slot_table_entries: "128"    # 10Gb/s | NFS

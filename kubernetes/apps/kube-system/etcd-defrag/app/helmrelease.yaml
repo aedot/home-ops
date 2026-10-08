@@ -42,11 +42,11 @@ spec:
               limits:
                 memory: 128Mi
             securityContext:
-              privileged: true
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
     defaultPodOptions:
       automountServiceAccountToken: true
       hostNetwork: true
-      hostPID: true
       securityContext:
         runAsGroup: 0
         runAsNonRoot: false

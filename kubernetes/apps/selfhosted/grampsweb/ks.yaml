@@ -12,6 +12,8 @@ spec:
     - ../../../../components/postgres
     - ../../../../components/dragonfly
   dependsOn:
+    - name: kopiur-repository
+      namespace: kopiur-system
     - name: longhorn
       namespace: longhorn-system
     - name: dragonfly

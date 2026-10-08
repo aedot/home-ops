@@ -12,6 +12,8 @@ spec:
   path: ./kubernetes/apps/media/agregarr/app
   prune: true
   dependsOn:
+    - name: kopiur-repository
+      namespace: kopiur-system
     - name: longhorn
       namespace: longhorn-system
   sourceRef:
