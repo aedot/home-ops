@@ -5,7 +5,9 @@ namespace: media
 components:
   - ../../components/sops
   - ../../components/namespace
+  - ../../components/netpol
 resources:
+  - ./networkpolicy.yaml
   - ./agregarr/ks.yaml
   - ./imagemaid/ks.yaml
   - ./plex/ks.yaml

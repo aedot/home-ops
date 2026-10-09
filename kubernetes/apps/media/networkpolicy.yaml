@@ -1,0 +1,49 @@
+---
+# Plex is a LoadBalancer service (172.24.30.81) reached from the LAN and, through a port
+# forward, from the internet. Both arrive as `world`. Traffic via Envoy is covered by
+# the ingress-gateway policy.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: plex-world
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: plex
+  ingress:
+    - fromEntities:
+        - world
+      toPorts:
+        - ports:
+            - port: "32400"
+              protocol: TCP
+---
+# Seerr and Agregarr open connections to Sonarr and Radarr (downloads). Cilium does not
+# treat the replies as part of the connection, so they have to be allowed by identity
+# (same as CoreDNS and Mosquitto replies).
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: arr-replies
+spec:
+  endpointSelector:
+    matchExpressions:
+      - key: app.kubernetes.io/name
+        operator: In
+        values:
+          - seerr
+          - agregarr
+  ingress:
+    - fromEndpoints:
+        - matchExpressions:
+            - key: io.kubernetes.pod.namespace
+              operator: In
+              values:
+                - downloads
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+                - sonarr
+                - radarr
