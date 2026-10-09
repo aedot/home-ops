@@ -41,10 +41,19 @@ spec:
                 enabled: true
               startup:
                 enabled: true
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               limits:
                 cpu: 300m
                 memory: 200Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
     service:
       app:
         ports:

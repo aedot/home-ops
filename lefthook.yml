@@ -4,10 +4,14 @@ pre-commit:
   jobs:
     - name: sops files are encrypted
       glob: "*.sops.{yaml,yml}"
+      exclude: ".sops.yaml"
       run: |
         for f in {staged_files}; do
           grep -q '^sops:' "$f" || { echo "$f is not SOPS encrypted"; exit 1; }
         done
+    - name: shellcheck
+      glob: "scripts/*.sh"
+      run: shellcheck {staged_files}
     - name: zizmor
       glob: ".github/workflows/*.{yaml,yml}"
       run: zizmor --offline .github/workflows

@@ -62,7 +62,7 @@ Components are attached to a Flux Kustomization via the `components:` field in `
 - `kopiur` - PVC with restore-on-create plus hourly snapshot policy and schedule (Kopia repository on the NAS)
 - `postgres` - per-app CloudNativePG cluster `${APP}-db` with Barman backups to R2, local dump CronJobs, network policies. Label the app's Kustomization `components.postgres/cnpg: init` for a brand-new database. Set `PG_SUPERUSER: "true"` only if the app needs the superuser secret.
 - `dragonfly` - Dragonfly (Redis-compatible) instance
-- `gpu` - Intel GPU ResourceClaimTemplate (DRA); the namespace needs `resource.kubernetes.io/admin-access` (only `media` has it)
+- `gpu` - Intel GPU ResourceClaimTemplate (DRA); the namespace needs `resource.kubernetes.io/admin-access` (patched in for `media`, `home-automation` and `kube-system`, the namespaces that request GPU admin access)
 - `zeroscaler` - HPA that scales to zero when the NFS probe fails
 
 ### Variable Substitution
