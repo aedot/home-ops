@@ -8,13 +8,25 @@ spec:
   groups:
     - name: cert-manager.rules
       rules:
-        - alert: CertificateExpiringSoon
+        # Certificates here are short-lived (Let's Encrypt `shortlived` profile, 7d internal
+        # certs), so alert on missed renewals and imminent expiry, not on a fixed lead time.
+        - alert: CertificateRenewalOverdue
           expr: |-
-            certmanager_certificate_expiration_timestamp_seconds - time() < 14 * 86400
+            time() - certmanager_certificate_renewal_timestamp_seconds > 6 * 3600
           for: 15m
           annotations:
             summary: >-
-              Certificate {{ $labels.namespace }}/{{ $labels.name }} expires in less than 14 days. cert-manager should have renewed it already.
+              Certificate {{ $labels.namespace }}/{{ $labels.name }} is more than 6 hours past its renewal time. cert-manager is failing to renew it.
+          labels:
+            severity: critical
+
+        - alert: CertificateExpiringSoon
+          expr: |-
+            certmanager_certificate_expiration_timestamp_seconds - time() < 12 * 3600
+          for: 15m
+          annotations:
+            summary: >-
+              Certificate {{ $labels.namespace }}/{{ $labels.name }} expires in less than 12 hours.
           labels:
             severity: critical
 
