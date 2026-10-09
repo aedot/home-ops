@@ -46,7 +46,7 @@ Renovate (hourly workflow) opens PRs from `.renovaterc.json5` and `.renovate/`. 
 | Cluster lost | `just bootstrap talos`, then `just bootstrap apps`; Flux restores everything from Git. PVCs restore from kopiur on first create; Postgres clusters recover from Barman. |
 | Single app data lost | Delete the PVC; Flux recreates it and kopiur restores the latest snapshot. |
 | Postgres lost | Remove the `components.postgres/cnpg: init` label (it is only for brand-new databases) so the cluster bootstraps from the Barman archive, or restore a logical dump with the `<app>-postgres-restore` CronJob. |
-| NAS lost | PVC snapshots and logical dumps are gone; Postgres WAL and base backups in R2 survive. An off-site copy of the Kopia repository is an open item. |
+| NAS lost | The Kopia repository (`k8s/kopiur`) is snapshotted on the NAS and uploaded to Cloudflare R2 by an rclone User Script on the NAS (see `docs/notes/rclone.md`; not in this repo). Restore it from R2, then let kopiur restore the PVCs. The Postgres logical dumps (`k8s/postgres`) are not off-site; Postgres recovers from the WAL and base backups that CNPG writes to R2 directly. `OffsiteBackupStale` alerts if the upload stops. |
 | Lost age key | `*.sops.yaml` files cannot be decrypted. Keep an offline backup of the key. |
 
 ## Tools used in this repository

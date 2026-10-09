@@ -89,3 +89,22 @@ echo "Backup completed successfully"
 ```
 
 This script will grab a ZFS snapshot, rclone sync that to the remote bucket, and then destroy the snapshot. This ensures the data isn't written to mid-flight. It will also delete any removed files in the meantime.
+
+## Heartbeat for monitoring
+
+The cluster scrapes the NAS node-exporter (`yemoja.internal:9100`). Have the script write a timestamp after each
+successful upload so `OffsiteBackupStale` (36h) and `OffsiteBackupMetricMissing` (12h) in
+`kubernetes/apps/observability/kube-prometheus-stack/app/prometheusrule.yaml` can fire when it stops.
+Set `TEXTFILE_DIR` to the directory passed to node-exporter's `--collector.textfile.directory`
+and adjust the 36h threshold if the script runs less often than daily.
+
+```sh
+TEXTFILE_DIR=/path/to/node-exporter/textfile   # same directory node-exporter reads
+
+# run only after rclone exits 0, in the same script
+tmp="$(mktemp "$TEXTFILE_DIR/.rclone_r2.XXXXXX")"
+printf '# TYPE rclone_r2_last_success_timestamp_seconds gauge\nrclone_r2_last_success_timestamp_seconds %s\n' "$(date +%s)" > "$tmp"
+chmod 644 "$tmp"
+mv "$tmp" "$TEXTFILE_DIR/rclone_r2.prom"
+```
+

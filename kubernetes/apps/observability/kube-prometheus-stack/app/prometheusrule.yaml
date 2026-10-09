@@ -6,6 +6,31 @@ metadata:
   name: kube-prometheus-stack-additional
 spec:
   groups:
+    - name: offsite-backup.rules
+      rules:
+        # rclone_r2_last_success_timestamp_seconds is written by the rclone User Script
+        # on the NAS (node-exporter textfile collector), see docs/notes/rclone.md.
+        - alert: OffsiteBackupStale
+          expr: |-
+            time() - rclone_r2_last_success_timestamp_seconds > 36 * 3600
+          for: 15m
+          annotations:
+            summary: >-
+              The last successful rclone upload of the Kopia repository to R2 was more than 36 hours ago.
+          labels:
+            severity: critical
+
+        - alert: OffsiteBackupMetricMissing
+          expr: |-
+            absent(rclone_r2_last_success_timestamp_seconds)
+          for: 12h
+          annotations:
+            summary: >-
+              No rclone_r2_last_success_timestamp_seconds metric from the NAS for 12 hours. The User Script has not
+              written its heartbeat file, or the node-exporter textfile directory is not being read.
+          labels:
+            severity: warning
+
     - name: cert-manager.rules
       rules:
         # Certificates here are short-lived (Let's Encrypt `shortlived` profile, 7d internal
