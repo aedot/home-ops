@@ -48,9 +48,9 @@ spec:
       automountServiceAccountToken: true
       hostNetwork: true
       securityContext:
-        runAsGroup: 0
-        runAsNonRoot: false
-        runAsUser: 0
+        runAsGroup: 60
+        runAsNonRoot: true
+        runAsUser: 60
     persistence:
       certs:
         type: hostPath
