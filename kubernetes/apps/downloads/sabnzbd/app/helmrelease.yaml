@@ -56,13 +56,6 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
     defaultPodOptions:
-      annotations:
-        k8s.v1.cni.cncf.io/networks: |
-          [{
-            "name": "vpn",
-            "namespace": "kube-system",
-            "ips": ["172.24.50.22/24"]
-          }]
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
