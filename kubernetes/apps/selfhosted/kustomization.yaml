@@ -16,3 +16,12 @@ resources:
   - ./lubelog/ks.yaml
   - ./sparkyfitness/ks.yaml
   - ./teslamate/ks.yaml
+patches:
+  # Trial: the allow-all egress policy from the netpol component did not fix the
+  # reply drops it was added for (see docs/network-policy.md); selfhosted runs without it.
+  - patch: |-
+      $patch: delete
+      apiVersion: cilium.io/v2
+      kind: CiliumNetworkPolicy
+      metadata:
+        name: egress-allow-all
