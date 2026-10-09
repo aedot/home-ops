@@ -384,15 +384,17 @@ kube-state-metrics:
                       - status
                     valueFrom:
                       - stoppedAt
-                    labelsFromPath:
-                      cluster:
-                        - spec
-                        - cluster
-                        - name
-                      phase:
-                        - status
-                        - phase
                 labelsFromPath:
                   exported_namespace:
                     - metadata
                     - namespace
+                  name:
+                    - metadata
+                    - name
+                  cluster:
+                    - spec
+                    - cluster
+                    - name
+                  phase:
+                    - status
+                    - phase
