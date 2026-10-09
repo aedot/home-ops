@@ -1,0 +1,17 @@
+---
+# Home Assistant and Zigbee2MQTT open MQTT connections to Mosquitto (dbms). Cilium does not
+# treat the replies as part of the connection, so allow them by identity (same as the
+# Teslamate fix in #1374). Traffic on the Multus IoT interface (net1) is not subject to
+# Cilium policy at all.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: mosquitto-replies
+spec:
+  endpointSelector: {}
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: dbms
+            app.kubernetes.io/name: mosquitto
