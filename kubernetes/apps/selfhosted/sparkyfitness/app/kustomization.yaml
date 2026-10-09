@@ -6,3 +6,32 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+patches:
+  # The app runs migrations as the superuser, so new tables are owned by postgres and
+  # the app role cannot dump them (permission denied, RLS). Not in ks.yaml: cluster-apps
+  # overwrites spec.patches on every child Kustomization.
+  - target:
+      kind: CronJob
+    patch: |
+      apiVersion: batch/v1
+      kind: CronJob
+      metadata:
+        name: ${APP}-postgres-backup
+      spec:
+        jobTemplate:
+          spec:
+            template:
+              spec:
+                containers:
+                  - name: ${APP}-postgres-backup
+                    env:
+                      - name: POSTGRES_USER
+                        valueFrom:
+                          secretKeyRef:
+                            name: ${APP}-db-superuser
+                            key: username
+                      - name: POSTGRES_PASSWORD
+                        valueFrom:
+                          secretKeyRef:
+                            name: ${APP}-db-superuser
+                            key: password

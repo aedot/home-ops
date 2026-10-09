@@ -24,34 +24,6 @@ spec:
       kind: Cluster
       failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
       current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
-  patches:
-    # The app runs migrations as the superuser, so new tables are owned by postgres and
-    # the app role cannot dump them (permission denied, RLS).
-    - target:
-        kind: CronJob
-      patch: |
-        apiVersion: batch/v1
-        kind: CronJob
-        metadata:
-          name: ${APP}-postgres-backup
-        spec:
-          jobTemplate:
-            spec:
-              template:
-                spec:
-                  containers:
-                    - name: ${APP}-postgres-backup
-                      env:
-                        - name: POSTGRES_USER
-                          valueFrom:
-                            secretKeyRef:
-                              name: ${APP}-db-superuser
-                              key: username
-                        - name: POSTGRES_PASSWORD
-                          valueFrom:
-                            secretKeyRef:
-                              name: ${APP}-db-superuser
-                              key: password
   prune: true
   sourceRef:
     kind: GitRepository
