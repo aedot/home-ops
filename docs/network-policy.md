@@ -16,14 +16,16 @@ Derived from Hubble flows (about 14k flows across all nodes), for the app namesp
 
 Not covered: pod secondary interfaces from Multus (IoT and VPN VLANs) bypass Cilium. Home Assistant, Scrypted, Matter and the VPN downloaders are only partly protected until their primary interface is the only path in.
 
-## Rollout order
+## Rollout status
 
-1. **selfhosted** (this change). Only cross-namespace sources seen: CoreDNS, Envoy, Prometheus, node probes.
-2. **security** (Pocket-ID), **downloads**. Same sources. qBittorrent and SABnzbd also receive replies from the VPN VLAN only on the Multus interface.
-3. **media**. Add `kubernetes/components/netpol/examples/plex.yaml` first: Plex is a LoadBalancer service reached from the LAN and the internet as `world`.
-4. **home-automation**. Verify Home Assistant, Scrypted and Matter before enabling; they depend on the Multus interface for devices.
-5. **dbms**. Add `examples/mosquitto.yaml` first (LAN devices and home-automation clients). Dragonfly operator traffic is already covered by the Dragonfly component.
-6. Infrastructure namespaces (`flux-system`, `cert-manager`, `external-secrets`, `cnpg-system`, `kopiur-system`, `system-upgrade`, `actions-runner-system`) need webhook and controller-specific rules. Do them last, one at a time.
+Enforced: `selfhosted`, `downloads`, `media`, `home-automation`, `dbms` (once its PR merges). `security` is empty (Pocket-ID is disabled). Not yet: the infrastructure namespaces (`flux-system`, `cert-manager`, `external-secrets`, `cnpg-system`, `kopiur-system`, `system-upgrade`, `actions-runner-system`, `longhorn-system`, `kube-system`, `network`, `observability`), which need webhook and controller-specific rules. Do them one at a time, last.
+
+Lessons from the rollout, to repeat for any namespace:
+
+- Cilium here does not treat the replies to a connection a pod opens as part of that connection, so **an ingress baseline drops replies from other namespaces** (CoreDNS, Mosquitto, Sonarr and Radarr, the Dragonfly instances). Allow them by identity: a `CiliumNetworkPolicy` on the pod that opens the connection, `fromEndpoints` the service it calls. The `egress-allow-all` policy in the component does **not** fix this.
+- Services reached through a LoadBalancer address arrive as `world` (Plex, Mosquitto): allow `world` on the specific port.
+- Traffic on Multus secondary interfaces is not subject to Cilium policy at all (Home Assistant, ESPHome, Matter, Scrypted IoT side; qBittorrent VPN side).
+- A short Hubble buffer cannot see slow or long-lived connections. Run a live watch of the namespace boundary for the full window before merging, and then check `just kube drops <namespace>`.
 
 ## Applying and checking a namespace
 
