@@ -22,7 +22,7 @@ Enforced: `selfhosted`, `downloads`, `media`, `home-automation`, `dbms` (once it
 
 Lessons from the rollout, to repeat for any namespace:
 
-- Cilium here does not treat the replies to a connection a pod opens as part of that connection, so **an ingress baseline drops replies from other namespaces** (CoreDNS, Mosquitto, Sonarr and Radarr, the Dragonfly instances). Allow them by identity: a `CiliumNetworkPolicy` on the pod that opens the connection, `fromEndpoints` the service it calls. The `egress-allow-all` policy in the component does **not** fix this.
+- Cilium here does not treat the replies to a connection a pod opens as part of that connection, so **an ingress baseline drops replies from other namespaces** (CoreDNS, Mosquitto, Sonarr and Radarr, the Dragonfly instances). Allow them by identity: a `CiliumNetworkPolicy` on the pod that opens the connection, `fromEndpoints` the service it calls. An allow-all egress policy was tried to make Cilium track these connections and made no difference, so it was removed.
 - Services reached through a LoadBalancer address arrive as `world` (Plex, Mosquitto): allow `world` on the specific port.
 - Traffic on Multus secondary interfaces is not subject to Cilium policy at all (Home Assistant, ESPHome, Matter, Scrypted IoT side; qBittorrent VPN side).
 - A short Hubble buffer cannot see slow or long-lived connections. Run a live watch of the namespace boundary for the full window before merging, and then check `just kube drops <namespace>`.

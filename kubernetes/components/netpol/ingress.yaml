@@ -45,17 +45,3 @@ spec:
             io.kubernetes.pod.namespace: network
             app.kubernetes.io/name: envoy
             app.kubernetes.io/managed-by: envoy-gateway
----
-# Enforcing egress (even allow-all) makes Cilium track connections that pods open, so
-# replies from other pods and from the LAN (e.g. Mosquitto, ICMP) are not treated as new
-# ingress flows and dropped by the ingress baseline. Narrow this in the egress phase.
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: egress-allow-all
-spec:
-  endpointSelector: {}
-  egress:
-    - toEntities:
-        - all
