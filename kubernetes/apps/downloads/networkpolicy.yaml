@@ -1,0 +1,24 @@
+---
+# Seerr (media) polls Sonarr and Radarr for request status and sends new requests.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-seerr
+spec:
+  endpointSelector:
+    matchExpressions:
+      - key: app.kubernetes.io/name
+        operator: In
+        values:
+          - sonarr
+          - radarr
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: media
+            app.kubernetes.io/name: seerr
+      toPorts:
+        - ports:
+            - port: "80"
+              protocol: TCP

@@ -6,8 +6,10 @@ namespace: downloads
 components:
   - ../../components/sops
   - ../../components/namespace
+  - ../../components/netpol
 
 resources:
+  - ./networkpolicy.yaml
   - ./listenarr/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
