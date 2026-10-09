@@ -1,0 +1,49 @@
+---
+# Mosquitto is a LoadBalancer service (172.24.30.92) used by LAN devices (`world`), and
+# in-cluster by Home Assistant and Zigbee2MQTT (home-automation) and Teslamate (selfhosted).
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: mosquitto-clients
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: mosquitto
+  ingress:
+    - fromEntities:
+        - world
+      toPorts:
+        - ports:
+            - port: "1883"
+              protocol: TCP
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: home-automation
+        - matchLabels:
+            io.kubernetes.pod.namespace: selfhosted
+            app.kubernetes.io/name: teslamate
+      toPorts:
+        - ports:
+            - port: "1883"
+              protocol: TCP
+---
+# The Dragonfly operator opens connections to the Dragonfly instances in media and
+# selfhosted. Cilium does not treat the replies as part of them, so allow them by identity.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: dragonfly-operator-replies
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: dragonfly-operator
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: media
+            app.kubernetes.io/name: dragonfly
+        - matchLabels:
+            io.kubernetes.pod.namespace: selfhosted
+            app.kubernetes.io/name: dragonfly
