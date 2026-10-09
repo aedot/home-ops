@@ -21,3 +21,21 @@ spec:
           protocol: TCP
   policyTypes:
     - Ingress
+---
+# Teslamate opens the MQTT connection to Mosquitto (dbms). With the ingress baseline in
+# place, Mosquitto's replies arrive as new ingress flows from another namespace and are
+# denied, same as CoreDNS replies, so allow them by identity.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: teslamate-mqtt-replies
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: teslamate
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: dbms
+            app.kubernetes.io/name: mosquitto
