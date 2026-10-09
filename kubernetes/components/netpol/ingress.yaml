@@ -1,0 +1,47 @@
+---
+# Ingress baseline for a namespace. A CiliumNetworkPolicy that selects a pod
+# switches that pod to default-deny for ingress, so everything the namespace
+# legitimately receives has to be listed here (derived from Hubble flows).
+# Selectors without a namespace label are scoped to the policy's own namespace.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: ingress-baseline
+spec:
+  endpointSelector: {}
+  ingress:
+    # Pods in the same namespace
+    - fromEndpoints:
+        - {}
+    # Kubelet probes and node-local traffic. kube-apiserver shares the host
+    # identity on these control-plane nodes.
+    - fromEntities:
+        - host
+        - remote-node
+        - kube-apiserver
+    # Prometheus, Gatus, blackbox-exporter and Grafana
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: observability
+    # Cilium treats CoreDNS replies to pod lookups as new flows, so without
+    # this DNS lookups from pods that have an ingress policy time out.
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+---
+# Envoy Gateway proxies (internal and external) forwarding to HTTPRoute backends.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: ingress-gateway
+spec:
+  endpointSelector: {}
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: network
+            app.kubernetes.io/name: envoy
+            app.kubernetes.io/managed-by: envoy-gateway
