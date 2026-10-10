@@ -12,6 +12,7 @@ resources:
   - ./actual/ks.yaml
   - ./atuin/ks.yaml
   - ./bambuddy/ks.yaml
+  - ./ghostfolio/ks.yaml
   - ./grampsweb/ks.yaml
   - ./lubelog/ks.yaml
   - ./sparkyfitness/ks.yaml
