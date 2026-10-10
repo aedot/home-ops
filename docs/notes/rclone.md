@@ -46,6 +46,7 @@ SNAPSHOT_NAME="rclone-kopiur-backup-$(date +%Y%m%d-%H%M%S)"
 SUBDIR_TO_SYNC="kopiur"
 RCLONE_REMOTE="cloudflare-r2:kopiur-2g8x"
 LOGFILE="/var/log/kopiur-r2-backup.log"
+TEXTFILE_DIR="/mnt/user/appdata/scripts/node-exporter/textfile"   # node-exporter --collector.textfile.directory
 
 exec 9>/var/run/kopiur-r2-backup.lock
 flock -n 9 || { echo "Another run in progress; exiting."; exit 0; }
@@ -85,6 +86,12 @@ rclone copy "$SRC" "$RCLONE_REMOTE" "${OPTS[@]}"
 # Pass 2: reconcile deletions.
 rclone sync "$SRC" "$RCLONE_REMOTE" "${OPTS[@]}" --delete-after
 
+# Heartbeat for monitoring, only reached if both passes exit 0 (set -e).
+tmp="$(mktemp "$TEXTFILE_DIR/.rclone_r2.XXXXXX")"
+printf '# TYPE rclone_r2_last_success_timestamp_seconds gauge\nrclone_r2_last_success_timestamp_seconds %s\n' "$(date +%s)" > "$tmp"
+chmod 644 "$tmp"
+mv "$tmp" "$TEXTFILE_DIR/rclone_r2.prom"
+
 echo "Backup completed successfully"
 ```
 
@@ -92,19 +99,23 @@ This script will grab a ZFS snapshot, rclone sync that to the remote bucket, and
 
 ## Heartbeat for monitoring
 
-The cluster scrapes the NAS node-exporter (`yemoja.internal:9100`). Have the script write a timestamp after each
+The cluster scrapes the NAS node-exporter (`yemoja.internal:9100`). The script above writes a timestamp after each
 successful upload so `OffsiteBackupStale` (36h) and `OffsiteBackupMetricMissing` (12h) in
 `kubernetes/apps/observability/kube-prometheus-stack/app/prometheusrule.yaml` can fire when it stops.
-Set `TEXTFILE_DIR` to the directory passed to node-exporter's `--collector.textfile.directory`
-and adjust the 36h threshold if the script runs less often than daily.
+Adjust the 36h threshold if the script runs less often than daily.
+
+node-exporter only serves the file if it is started with the textfile directory flag, which is off by default:
 
 ```sh
-TEXTFILE_DIR=/path/to/node-exporter/textfile   # same directory node-exporter reads
-
-# run only after rclone exits 0, in the same script
-tmp="$(mktemp "$TEXTFILE_DIR/.rclone_r2.XXXXXX")"
-printf '# TYPE rclone_r2_last_success_timestamp_seconds gauge\nrclone_r2_last_success_timestamp_seconds %s\n' "$(date +%s)" > "$tmp"
-chmod 644 "$tmp"
-mv "$tmp" "$TEXTFILE_DIR/rclone_r2.prom"
+prometheus_node_exporter --collector.textfile.directory=/mnt/user/appdata/scripts/node-exporter/textfile
 ```
 
+`TEXTFILE_DIR` in the script must match that path. The flag must also be set in whatever starts node-exporter at
+boot, or the metric disappears after a reboot. Verify with:
+
+```sh
+curl -s localhost:9100/metrics | grep -E 'node_textfile_scrape_error|rclone_r2'
+```
+
+The "There was nothing to transfer" line at the end of the rclone log is normal: it comes from the `sync` pass,
+which has nothing left to do after the `copy` pass.
