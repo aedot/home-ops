@@ -47,6 +47,7 @@ SUBDIR_TO_SYNC="kopiur"
 RCLONE_REMOTE="cloudflare-r2:kopiur-2g8x"
 LOGFILE="/var/log/kopiur-r2-backup.log"
 TEXTFILE_DIR="/mnt/user/appdata/scripts/node-exporter/textfile"   # node-exporter --collector.textfile.directory
+MAX_DELETE=500   # above the most files Kopia maintenance removes in one run; tune from "Deleted:" counts in the log
 
 exec 9>/var/run/kopiur-r2-backup.lock
 flock -n 9 || { echo "Another run in progress; exiting."; exit 0; }
@@ -56,12 +57,27 @@ SNAPSHOT_PATH="$MOUNTPOINT/.zfs/snapshot/$SNAPSHOT_NAME"
 SRC="$SNAPSHOT_PATH/$SUBDIR_TO_SYNC"
 
 cleanup() {
+  rc=$?
+  if [ "$rc" -ne 0 ]; then
+    echo "FAILED (exit $rc); last rclone log lines:"
+    tail -n 30 "$LOGFILE" 2>/dev/null || true
+  fi
   if zfs list -H -t snapshot "$DATASET@$SNAPSHOT_NAME" >/dev/null 2>&1; then
     echo "Destroying snapshot $DATASET@$SNAPSHOT_NAME"
     zfs destroy "$DATASET@$SNAPSHOT_NAME" || echo "WARN: snapshot destroy failed"
   fi
 }
-trap cleanup EXIT INT TERM
+# INT/TERM must exit; a bare trap handler would let the script continue with the snapshot gone.
+trap cleanup EXIT
+trap 'exit 143' INT TERM
+
+# Snapshots leaked by a killed or crashed earlier run; the lock above guarantees none is in use.
+zfs list -H -t snapshot -o name -d 1 "$DATASET" | { grep "^$DATASET@rclone-kopiur-backup-" || true; } |
+  while read -r stale; do
+    zfs destroy "$stale" || echo "WARN: could not destroy stale snapshot $stale"
+  done
+
+: > "$LOGFILE"   # /var/log is tmpfs on unRaid; keep only the current run
 
 echo "Creating snapshot $DATASET@$SNAPSHOT_NAME"
 zfs snapshot "$DATASET@$SNAPSHOT_NAME"
@@ -69,6 +85,7 @@ zfs snapshot "$DATASET@$SNAPSHOT_NAME"
 ls "$SNAPSHOT_PATH" >/dev/null 2>&1 || true   # trigger automount
 [ -d "$SRC" ] || { echo "FATAL: $SRC missing"; exit 1; }
 [ -n "$(ls -A "$SRC")" ] || { echo "FATAL: source empty, refusing to sync"; exit 1; }
+[ -f "$SRC/kopia.repository" ] || { echo "FATAL: $SRC is not a Kopia repository, refusing to sync"; exit 1; }
 
 OPTS=(
   --fast-list
@@ -83,8 +100,8 @@ OPTS=(
 # Pass 1: additive only. New pack files land before anything is removed.
 rclone copy "$SRC" "$RCLONE_REMOTE" "${OPTS[@]}"
 
-# Pass 2: reconcile deletions.
-rclone sync "$SRC" "$RCLONE_REMOTE" "${OPTS[@]}" --delete-after
+# Pass 2: reconcile deletions. Exceeding --max-delete aborts the run (non-zero exit, no heartbeat).
+rclone sync "$SRC" "$RCLONE_REMOTE" "${OPTS[@]}" --delete-after --max-delete="$MAX_DELETE"
 
 # Heartbeat for monitoring, only reached if both passes exit 0 (set -e).
 tmp="$(mktemp "$TEXTFILE_DIR/.rclone_r2.XXXXXX")"
