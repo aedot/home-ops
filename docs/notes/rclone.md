@@ -85,7 +85,7 @@ zfs snapshot "$DATASET@$SNAPSHOT_NAME"
 ls "$SNAPSHOT_PATH" >/dev/null 2>&1 || true   # trigger automount
 [ -d "$SRC" ] || { echo "FATAL: $SRC missing"; exit 1; }
 [ -n "$(ls -A "$SRC")" ] || { echo "FATAL: source empty, refusing to sync"; exit 1; }
-[ -f "$SRC/kopia.repository" ] || { echo "FATAL: $SRC is not a Kopia repository, refusing to sync"; exit 1; }
+[ -f "$SRC/kopia.repository.f" ] || { echo "FATAL: $SRC is not a Kopia repository, refusing to sync"; exit 1; }
 
 OPTS=(
   --fast-list
