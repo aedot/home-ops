@@ -37,6 +37,10 @@ spec:
       guaranteedEngineManagerCPU: "20"
       guaranteedReplicaManagerCPU: "20"
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
+      # Postgres volumes run a single Longhorn replica (CNPG replicates), so the
+      # default block-if-contains-last-replica keeps the instance-manager PDBs
+      # in place and stalls every node drain, even once the volume is detached.
+      nodeDrainPolicy: allow-if-replica-is-stopped
       orphanAutoDeletion: replica-data;instance
       # Auto-balance disabled: on a 3-node/3-replica cluster replicas are already
       # fully spread, so rebalancing is pure churn.
