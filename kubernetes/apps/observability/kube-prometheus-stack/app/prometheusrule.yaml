@@ -20,6 +20,28 @@ spec:
           labels:
             severity: critical
 
+        - alert: OffsiteBackupFailed
+          expr: |-
+            rclone_r2_last_exit_code != 0
+          for: 15m
+          annotations:
+            summary: >-
+              The last rclone upload of the Kopia repository to R2 exited with code {{ $value }}. Code 7 usually
+              means the --max-delete guard tripped; see the User Script output on the NAS.
+          labels:
+            severity: warning
+
+        - alert: OffsiteBackupDrift
+          expr: |-
+            rclone_r2_remote_extra_objects > clamp_min(0.02 * rclone_r2_source_objects, 100)
+          for: 15m
+          annotations:
+            summary: >-
+              The R2 bucket holds {{ $value }} more objects than the Kopia repository on the NAS after a clean
+              sync. Deletions are not reaching R2.
+          labels:
+            severity: warning
+
         - alert: OffsiteBackupMetricMissing
           expr: |-
             absent(rclone_r2_last_success_timestamp_seconds)

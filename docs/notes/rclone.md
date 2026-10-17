@@ -37,80 +37,9 @@ rclone ls cloudflare-r2:<bucketname>
 
 Create the script and save it somewhere notable (or for unRaid, use User Scripts plugin)
 
-```sh
-#!/bin/bash
-set -euo pipefail
-
-DATASET="alaafin/k8s"
-SNAPSHOT_NAME="rclone-kopiur-backup-$(date +%Y%m%d-%H%M%S)"
-SUBDIR_TO_SYNC="kopiur"
-RCLONE_REMOTE="cloudflare-r2:kopiur-2g8x"
-LOGFILE="/var/log/kopiur-r2-backup.log"
-TEXTFILE_DIR="/mnt/user/appdata/scripts/node-exporter/textfile"   # node-exporter --collector.textfile.directory
-MAX_DELETE=500   # above the most files Kopia maintenance removes in one run; tune from "Deleted:" counts in the log
-
-exec 9>/var/run/kopiur-r2-backup.lock
-flock -n 9 || { echo "Another run in progress; exiting."; exit 0; }
-
-MOUNTPOINT=$(zfs get -H -o value mountpoint "$DATASET")
-SNAPSHOT_PATH="$MOUNTPOINT/.zfs/snapshot/$SNAPSHOT_NAME"
-SRC="$SNAPSHOT_PATH/$SUBDIR_TO_SYNC"
-
-cleanup() {
-  rc=$?
-  if [ "$rc" -ne 0 ]; then
-    echo "FAILED (exit $rc); last rclone log lines:"
-    tail -n 30 "$LOGFILE" 2>/dev/null || true
-  fi
-  if zfs list -H -t snapshot "$DATASET@$SNAPSHOT_NAME" >/dev/null 2>&1; then
-    echo "Destroying snapshot $DATASET@$SNAPSHOT_NAME"
-    zfs destroy "$DATASET@$SNAPSHOT_NAME" || echo "WARN: snapshot destroy failed"
-  fi
-}
-# INT/TERM must exit; a bare trap handler would let the script continue with the snapshot gone.
-trap cleanup EXIT
-trap 'exit 143' INT TERM
-
-# Snapshots leaked by a killed or crashed earlier run; the lock above guarantees none is in use.
-zfs list -H -t snapshot -o name -d 1 "$DATASET" | { grep "^$DATASET@rclone-kopiur-backup-" || true; } |
-  while read -r stale; do
-    zfs destroy "$stale" || echo "WARN: could not destroy stale snapshot $stale"
-  done
-
-: > "$LOGFILE"   # /var/log is tmpfs on unRaid; keep only the current run
-
-echo "Creating snapshot $DATASET@$SNAPSHOT_NAME"
-zfs snapshot "$DATASET@$SNAPSHOT_NAME"
-
-ls "$SNAPSHOT_PATH" >/dev/null 2>&1 || true   # trigger automount
-[ -d "$SRC" ] || { echo "FATAL: $SRC missing"; exit 1; }
-[ -n "$(ls -A "$SRC")" ] || { echo "FATAL: source empty, refusing to sync"; exit 1; }
-[ -f "$SRC/kopia.repository.f" ] || { echo "FATAL: $SRC is not a Kopia repository, refusing to sync"; exit 1; }
-
-OPTS=(
-  --fast-list
-  --transfers=16 --checkers=16
-  --s3-chunk-size=32M --s3-upload-concurrency=4
-  --s3-no-check-bucket
-  --retries=5 --low-level-retries=20
-  --stats=1m --stats-one-line
-  --log-file="$LOGFILE" --log-level INFO
-)
-
-# Pass 1: additive only. New pack files land before anything is removed.
-rclone copy "$SRC" "$RCLONE_REMOTE" "${OPTS[@]}"
-
-# Pass 2: reconcile deletions. Exceeding --max-delete aborts the run (non-zero exit, no heartbeat).
-rclone sync "$SRC" "$RCLONE_REMOTE" "${OPTS[@]}" --delete-after --max-delete="$MAX_DELETE"
-
-# Heartbeat for monitoring, only reached if both passes exit 0 (set -e).
-tmp="$(mktemp "$TEXTFILE_DIR/.rclone_r2.XXXXXX")"
-printf '# TYPE rclone_r2_last_success_timestamp_seconds gauge\nrclone_r2_last_success_timestamp_seconds %s\n' "$(date +%s)" > "$tmp"
-chmod 644 "$tmp"
-mv "$tmp" "$TEXTFILE_DIR/rclone_r2.prom"
-
-echo "Backup completed successfully"
-```
+The script lives in the repo at [`scripts/kopiur-r2-backup.sh`](../../scripts/kopiur-r2-backup.sh) so it is linted
+(`shellcheck` runs on `scripts/*.sh` in the pre-commit hook). Copy it to the NAS as the User Script and `diff` the
+two after any edit; the repo copy is the source of truth.
 
 This script will grab a ZFS snapshot, rclone sync that to the remote bucket, and then destroy the snapshot. This ensures the data isn't written to mid-flight. It will also delete any removed files in the meantime.
 
@@ -133,6 +62,18 @@ boot, or the metric disappears after a reboot. Verify with:
 ```sh
 curl -s localhost:9100/metrics | grep -E 'node_textfile_scrape_error|rclone_r2'
 ```
+
+The script writes three groups of textfile metrics, used by the rules in the same `prometheusrule.yaml`:
+
+- `rclone_r2_last_success_timestamp_seconds` (`rclone_r2.prom`): only after a clean run. `OffsiteBackupStale`.
+- `rclone_r2_last_exit_code` (`rclone_r2_exit.prom`): every run; 0 on success, 7 when the `--max-delete` guard or
+  another rclone fatal error aborted the sync. `OffsiteBackupFailed`.
+- `rclone_r2_source_objects` and `rclone_r2_remote_extra_objects` (`rclone_r2_drift.prom`): after a clean run, the
+  bucket's object count minus the source's. It should be 0; a persistent surplus means deletions are not reaching
+  R2. `OffsiteBackupDrift`. It is only refreshed on a clean run, so a run that aborts leaves the previous value.
+
+`DRY_RUN=1` compares only and writes no metrics; it cannot catch R2 permission errors because a dry run never
+attempts the writes.
 
 The "There was nothing to transfer" line at the end of the rclone log is normal: it comes from the `sync` pass,
 which has nothing left to do after the `copy` pass.
