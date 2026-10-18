@@ -22,6 +22,7 @@ spec:
       namespace: cnpg-system
     - name: bitwarden-stores
       namespace: external-secrets
+    - name: grampsweb-postgres
   healthCheckExprs:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
