@@ -99,7 +99,7 @@ kubectl create job -n <ns> --from=cronjob/<app>-postgres-backup <app>-backup-$(d
 | `PG_INSTANCES` | no | `3` | Instances per cluster (anti-affinity is required, so keep it at or below the node count) |
 | `PG_STORAGE_SIZE` | no | `5Gi` | PVC size per instance |
 | `PG_STORAGE_CLASS` | no | `longhorn-postgres` | Single-replica Longhorn class; CNPG provides the redundancy. Only affects new PVCs |
-| `PG_MEMORY_REQUEST` | no | `256Mi` | Memory request per instance |
+| `PG_MEMORY_REQUEST` | no | `512Mi` | Memory request per instance |
 | `PG_MEMORY_LIMIT` | no | `1Gi` | Memory limit per instance |
 | `PG_BACKUP_MINUTE` | no | `0` | Minute for the daily S3 backup (11:MM UTC) and the 12-hourly dump; stagger per app |
 | `PG_SUPERUSER` | no | `false` | Set `"true"` to create the `${APP}-db-superuser` secret (needed by sparkyfitness) |
