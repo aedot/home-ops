@@ -21,6 +21,7 @@ spec:
       namespace: external-secrets
     - name: cnpg-barman-cloud
       namespace: cnpg-system
+    - name: teslamate-postgres
   prune: true
   sourceRef:
     kind: GitRepository

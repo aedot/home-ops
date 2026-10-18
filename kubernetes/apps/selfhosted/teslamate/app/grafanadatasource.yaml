@@ -13,13 +13,13 @@ spec:
     - targetPath: secureJsonData.password
       valueFrom:
         secretKeyRef:
-          name: teslamate-db-app
-          key: password
+          name: teslamate-secret
+          key: DATABASE_PASS
   datasource:
     name: TeslaMate
     type: postgres
     access: proxy
-    url: teslamate-db-r.selfhosted.svc.cluster.local:5432
+    url: postgres-r.dbms.svc.cluster.local:5432
     user: teslamate
     database: teslamate
     secureJsonData:

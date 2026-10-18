@@ -42,16 +42,6 @@ spec:
                 value: *app
               - name: DATABASE_NAME
                 value: *app
-              - name: DATABASE_HOST
-                valueFrom:
-                  secretKeyRef:
-                    name: "{{ .Release.Name }}-db-app"
-                    key: host
-              - name: DATABASE_PASS
-                valueFrom:
-                  secretKeyRef:
-                    name: "{{ .Release.Name }}-db-app"
-                    key: password
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
