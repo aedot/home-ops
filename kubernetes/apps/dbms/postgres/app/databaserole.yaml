@@ -1,4 +1,6 @@
 ---
+# pg_read_all_data does not bypass row-level security, and pg_dump fails on a table whose
+# policy would filter rows, so the dump role needs BYPASSRLS to read sparkyfitness.
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/databaserole_v1.json
 apiVersion: postgresql.cnpg.io/v1
 kind: DatabaseRole
@@ -11,6 +13,7 @@ spec:
   ensure: present
   login: true
   inherit: true
+  bypassrls: true
   connectionLimit: 2
   inRoles:
     - pg_read_all_data

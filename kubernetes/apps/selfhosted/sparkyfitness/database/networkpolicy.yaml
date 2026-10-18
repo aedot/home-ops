@@ -1,0 +1,21 @@
+---
+# Only the server opens database connections; the frontend does not.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: postgres-sparkyfitness
+spec:
+  endpointSelector:
+    matchLabels:
+      cnpg.io/cluster: postgres
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: selfhosted
+            app.kubernetes.io/name: sparkyfitness
+            app.kubernetes.io/controller: server
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP

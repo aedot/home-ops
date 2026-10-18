@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+  - ./networkpolicy.yaml
   - ./ocirepository.yaml
 patches:
   # The app runs migrations as the superuser, so new tables are owned by postgres and

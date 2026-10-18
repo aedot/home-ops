@@ -1,0 +1,13 @@
+---
+# The admin role owns the database, its schemas and every table: SparkyFitness runs its
+# migrations and manages row-level security as the owner.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: sparkyfitness
+spec:
+  cluster:
+    name: postgres
+  name: sparkyfitness
+  owner: sparkyfitness_admin

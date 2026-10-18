@@ -39,6 +39,8 @@ spec:
       - host gramps grampsweb all scram-sha-256
       - host grampsweb grampsweb all scram-sha-256
       - host teslamate teslamate all scram-sha-256
+      - host sparkyfitness sparkyfitness_admin all scram-sha-256
+      - host sparkyfitness sparkyfitness_app all scram-sha-256
       - host all all all reject
   monitoring:
     enablePodMonitor: true

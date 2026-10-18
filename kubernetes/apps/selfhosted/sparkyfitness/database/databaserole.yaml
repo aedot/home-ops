@@ -1,0 +1,37 @@
+---
+# Owner and migration role. Not a superuser and no CREATEROLE: the app role below is created
+# here, so SparkyFitness skips its own CREATE ROLE.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/databaserole_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: sparkyfitness-admin
+spec:
+  cluster:
+    name: postgres
+  name: sparkyfitness_admin
+  ensure: present
+  login: true
+  inherit: true
+  connectionLimit: 10
+  passwordSecret:
+    name: postgres-sparkyfitness-admin-secret
+  databaseRoleReclaimPolicy: retain
+---
+# Runtime role. Subject to the row-level security policies on every table.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/databaserole_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: sparkyfitness-app
+spec:
+  cluster:
+    name: postgres
+  name: sparkyfitness_app
+  ensure: present
+  login: true
+  inherit: true
+  connectionLimit: 30
+  passwordSecret:
+    name: postgres-sparkyfitness-app-secret
+  databaseRoleReclaimPolicy: retain
