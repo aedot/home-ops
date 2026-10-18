@@ -38,4 +38,5 @@ spec:
     substitute:
       APP: sparkyfitness
       PG_BACKUP_MINUTE: "10"
+      PG_INSTANCES: "1"
       PG_SUPERUSER: "true"

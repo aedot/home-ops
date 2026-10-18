@@ -38,5 +38,5 @@ spec:
     substitute:
       APP: lubelog
       PG_BACKUP_MINUTE: "30"
-      PG_INSTANCES: "2"
+      PG_INSTANCES: "1"
       KOPIUR_CAPACITY: 1Gi
