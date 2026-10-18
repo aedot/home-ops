@@ -1,6 +1,6 @@
 # Postgres notes
 
-Most apps use the shared CNPG cluster `postgres` in `dbms` (pocket-id, lubelog, grampsweb, teslamate); see its [README](../kubernetes/apps/dbms/postgres/README.md) for isolation and how to add a tenant. Apps that need superuser or an extension image keep a dedicated cluster from the [postgres component](../kubernetes/components/postgres/README.md) (tracearr, sparkyfitness); those clusters are named `<app>-db`, in the app's namespace.
+Most apps use the shared CNPG cluster `postgres` in `dbms` (pocket-id, lubelog, grampsweb, teslamate, sparkyfitness); see its [README](../kubernetes/apps/dbms/postgres/README.md) for isolation and how to add a tenant. Apps that need superuser or an extension image keep a dedicated cluster from the [postgres component](../kubernetes/components/postgres/README.md) (tracearr, which needs TimescaleDB); those clusters are named `<app>-db`, in the app's namespace.
 
 ## Shared cluster
 

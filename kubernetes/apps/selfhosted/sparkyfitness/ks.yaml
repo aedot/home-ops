@@ -12,19 +12,11 @@ spec:
       namespace: kopiur-system
     - name: longhorn
       namespace: longhorn-system
-    - name: cnpg-barman-cloud
-      namespace: cnpg-system
     - name: bitwarden-stores
       namespace: external-secrets
     - name: sparkyfitness-postgres
   components:
     - ../../../../components/kopiur
-    - ../../../../components/postgres
-  healthCheckExprs:
-    - apiVersion: postgresql.cnpg.io/v1
-      kind: Cluster
-      failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
-      current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
   prune: true
   sourceRef:
     kind: GitRepository
@@ -38,8 +30,6 @@ spec:
         kind: Secret
     substitute:
       APP: sparkyfitness
-      PG_BACKUP_MINUTE: "10"
-      PG_SUPERUSER: "true"
 ---
 # CNPG resources must live in the cluster's namespace, so this one deploys into dbms.
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
