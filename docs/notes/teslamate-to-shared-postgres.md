@@ -41,8 +41,9 @@ One-off migration runbook. Commands are fish. Teslamate already runs on Postgres
    ```fish
    set PW (kubectl get secret -n dbms postgres-teslamate-secret -o jsonpath='{.data.password}' | base64 -d)
    set PRIMARY (kubectl get cluster.postgresql.cnpg.io -n selfhosted teslamate-db -o jsonpath='{.status.currentPrimary}')
-   kubectl exec -n selfhosted $PRIMARY -c postgres -- pg_dump -Fc -d teslamate --exclude-extension=cube --exclude-extension=earthdistance | kubectl exec -i -n dbms postgres-1 -c postgres -- env PGPASSWORD=$PW pg_restore -h postgres-rw -U teslamate -d teslamate --no-owner --exit-on-error
+   kubectl exec -n selfhosted $PRIMARY -c postgres -- pg_dump -Fc -d teslamate --exclude-extension=cube --exclude-extension=earthdistance | kubectl exec -i -n dbms postgres-1 -c postgres -- env PGPASSWORD=$PW pg_restore -h postgres-rw -U teslamate -d teslamate --no-owner --no-privileges --clean --if-exists --exit-on-error
    ```
+   `--no-privileges` is required: the old database carries `ALTER DEFAULT PRIVILEGES FOR ROLE postgres`, which a non-superuser cannot restore. `--clean --if-exists` makes the command safe to rerun after a partial restore.
 
 3. Compare row counts for every table. The two files must be identical:
    ```fish
