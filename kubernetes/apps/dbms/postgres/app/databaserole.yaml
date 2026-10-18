@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/databaserole_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: backup
+spec:
+  cluster:
+    name: postgres
+  name: backup
+  ensure: present
+  login: true
+  inherit: true
+  connectionLimit: 2
+  inRoles:
+    - pg_read_all_data
+  passwordSecret:
+    name: postgres-backup
+  databaseRoleReclaimPolicy: retain

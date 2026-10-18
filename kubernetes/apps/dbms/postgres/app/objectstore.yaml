@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/barmancloud.cnpg.io/objectstore_v1.json
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: cloudflare-r2
+spec:
+  configuration:
+    destinationPath: s3://cnpg-6u9f
+    endpointURL: https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+    s3Credentials:
+      accessKeyId:
+        name: postgres-r2-secret
+        key: AWS_ACCESS_KEY_ID
+      secretAccessKey:
+        name: postgres-r2-secret
+        key: AWS_SECRET_ACCESS_KEY
+    data:
+      compression: bzip2
+      immediateCheckpoint: true
+    wal:
+      compression: bzip2
+      maxParallel: 4
+  retentionPolicy: 7d

@@ -1,0 +1,64 @@
+---
+# yaml-language-server: $schema=https://github.com/yannh/kubernetes-json-schema/raw/refs/heads/master/master/cronjob.json
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: &name postgres-backup
+spec:
+  schedule: "50 */12 * * *" # Every 12 hours, after the per-app dumps
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 86400 # keep failed jobs visible for alerting and debugging
+      template:
+        spec:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            runAsNonRoot: true
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups:
+              - 65539
+          containers:
+            - name: *name
+              image: docker.io/prodrigestivill/postgres-backup-local:18@sha256:f70742ebe42b2277689b028d1fd15aa80f77cffa01da163cc9f85a6ff1866e7f
+              imagePullPolicy: IfNotPresent
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities: { drop: ["ALL"] }
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 64Mi
+                limits:
+                  memory: 512Mi
+              command:
+                - /backup.sh
+              env:
+                - name: POSTGRES_HOST
+                  value: postgres-rw
+                # Comma-separated; append each tenant database when it moves in.
+                - name: POSTGRES_DB
+                  value: postgres
+                - name: POSTGRES_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-backup
+                      key: username
+                - name: POSTGRES_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-backup
+                      key: password
+              volumeMounts:
+                - mountPath: /backups
+                  name: backups
+          restartPolicy: OnFailure
+          volumes:
+            - name: backups
+              nfs:
+                server: yemoja.internal
+                path: /mnt/alaafin/k8s/postgres

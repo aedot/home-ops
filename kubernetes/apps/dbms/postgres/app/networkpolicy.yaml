@@ -1,0 +1,25 @@
+---
+# The dbms ingress baseline already admits pods in this namespace, Prometheus and CoreDNS.
+# This adds the CNPG operator and the application pods allowed to open connections.
+# Match client pods by namespace and app.kubernetes.io/name, not by namespace alone:
+# selfhosted and media hold many unrelated apps. Add each tenant's pods here when it
+# moves in, and add the matching pg_hba rule in cluster.yaml.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: postgres-clients
+spec:
+  endpointSelector:
+    matchLabels:
+      cnpg.io/cluster: postgres
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: cnpg-system
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP
+            - port: "8000"
+              protocol: TCP

@@ -11,3 +11,4 @@ resources:
   - ./networkpolicy.yaml
   - ./dragonfly/ks.yaml
   - ./mosquitto/ks.yaml
+  - ./postgres/ks.yaml
