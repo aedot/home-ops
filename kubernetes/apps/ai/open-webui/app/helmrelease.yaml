@@ -24,6 +24,13 @@ spec:
               PORT: &port 8080
               WEBUI_URL: https://chat.${SECRET_DOMAIN}
               OLLAMA_BASE_URL: http://oshun.internal:11434
+              OAUTH_PROVIDER_NAME: Pocket ID
+              OPENID_PROVIDER_URL: https://sso.${SECRET_DOMAIN}/.well-known/openid-configuration
+              OPENID_REDIRECT_URI: https://chat.${SECRET_DOMAIN}/oauth/oidc/callback
+              ENABLE_OAUTH_SIGNUP: "true"
+              # Pocket ID accounts are admin-managed, so its emails are trusted; this links
+              # an existing local account to the same email instead of creating a duplicate.
+              OAUTH_MERGE_ACCOUNTS_BY_EMAIL: "true"
               SCARF_NO_ANALYTICS: "true"
               DO_NOT_TRACK: "true"
               ANONYMIZED_TELEMETRY: "false"
