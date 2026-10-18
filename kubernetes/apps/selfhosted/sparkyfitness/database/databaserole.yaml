@@ -13,7 +13,8 @@ spec:
   ensure: present
   login: true
   inherit: true
-  connectionLimit: 10
+  # The server also opens its auth and migration pools as this role, each up to 10 connections.
+  connectionLimit: 30
   passwordSecret:
     name: postgres-sparkyfitness-admin-secret
   databaseRoleReclaimPolicy: retain
