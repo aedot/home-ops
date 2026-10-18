@@ -16,6 +16,7 @@ spec:
       namespace: longhorn-system
     - name: bitwarden-stores
       namespace: external-secrets
+    - name: pocket-id-postgres
   prune: true
   sourceRef:
     kind: GitRepository
