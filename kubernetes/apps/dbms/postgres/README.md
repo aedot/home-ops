@@ -1,6 +1,6 @@
 # postgres (shared CNPG cluster)
 
-One 3-instance CloudNativePG cluster, `postgres`, in `dbms` for apps that do not need superuser or a custom extension set. Reads and writes go to `postgres-rw.dbms.svc.cluster.local`. It is separate from the per-app `components/postgres` clusters.
+One 2-instance CloudNativePG cluster, `postgres`, in `dbms` for apps that do not need superuser or a custom extension set. Reads and writes go to `postgres-rw.dbms.svc.cluster.local`. It is separate from the per-app `components/postgres` clusters.
 
 Backups: Barman plugin to R2 (`serverName: postgres`, daily base backup at 11:50 UTC, continuous WAL) and a 12-hourly logical dump to NFS by the `backup` role.
 
