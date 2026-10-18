@@ -16,6 +16,7 @@ spec:
       namespace: cnpg-system
     - name: bitwarden-stores
       namespace: external-secrets
+    - name: sparkyfitness-postgres
   components:
     - ../../../../components/kopiur
     - ../../../../components/postgres
