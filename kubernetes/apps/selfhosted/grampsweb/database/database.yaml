@@ -1,0 +1,24 @@
+---
+# Tree data.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: grampsweb-gramps
+spec:
+  cluster:
+    name: postgres
+  name: gramps
+  owner: grampsweb
+---
+# User accounts and search index.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: grampsweb
+spec:
+  cluster:
+    name: postgres
+  name: grampsweb
+  owner: grampsweb
