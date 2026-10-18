@@ -9,7 +9,6 @@ spec:
   path: ./kubernetes/apps/selfhosted/grampsweb/app
   components:
     - ../../../../components/kopiur
-    - ../../../../components/postgres
     - ../../../../components/dragonfly
   dependsOn:
     - name: kopiur-repository
@@ -18,16 +17,9 @@ spec:
       namespace: longhorn-system
     - name: dragonfly
       namespace: dbms
-    - name: cnpg-barman-cloud
-      namespace: cnpg-system
     - name: bitwarden-stores
       namespace: external-secrets
     - name: grampsweb-postgres
-  healthCheckExprs:
-    - apiVersion: postgresql.cnpg.io/v1
-      kind: Cluster
-      failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
-      current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
   prune: true
   sourceRef:
     kind: GitRepository
@@ -41,7 +33,6 @@ spec:
         kind: Secret
     substitute:
       APP: grampsweb
-      PG_BACKUP_MINUTE: "40"
 ---
 # CNPG resources must live in the cluster's namespace, so this one deploys into dbms.
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
