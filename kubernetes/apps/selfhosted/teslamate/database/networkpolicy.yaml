@@ -1,0 +1,24 @@
+---
+# Match client pods by namespace and label, not by namespace alone. Grafana reads the
+# TeslaMate dashboards through the same role.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: postgres-teslamate
+spec:
+  endpointSelector:
+    matchLabels:
+      cnpg.io/cluster: postgres
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: selfhosted
+            app.kubernetes.io/name: teslamate
+        - matchLabels:
+            io.kubernetes.pod.namespace: observability
+            app: grafana
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP

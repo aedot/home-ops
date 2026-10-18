@@ -1,0 +1,18 @@
+---
+# earthdistance is not a trusted extension, so the operator creates both here. Teslamate's
+# own "CREATE EXTENSION IF NOT EXISTS" migrations then succeed without superuser.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: teslamate
+spec:
+  cluster:
+    name: postgres
+  name: teslamate
+  owner: teslamate
+  extensions:
+    - name: cube
+      ensure: present
+    - name: earthdistance
+      ensure: present

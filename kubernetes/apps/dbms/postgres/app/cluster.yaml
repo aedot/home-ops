@@ -38,6 +38,7 @@ spec:
       - host lubelog lubelog all scram-sha-256
       - host gramps grampsweb all scram-sha-256
       - host grampsweb grampsweb all scram-sha-256
+      - host teslamate teslamate all scram-sha-256
       - host all all all reject
   monitoring:
     enablePodMonitor: true
