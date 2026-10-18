@@ -23,11 +23,6 @@ spec:
               TZ: America/Los_Angeles
               LC_ALL: en_US.UTF-8
               LOGGING__LOGLEVEL__DEFAULT: debug
-              # POSTGRES_CONNECTION:
-              #   valueFrom:
-              #     secretKeyRef:
-              #       name: "{{ .Release.Name }}-db-app"
-              #       key: uri
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
