@@ -20,8 +20,8 @@ spec:
     podAntiAffinityType: required
   resources:
     requests:
-      cpu: 100m
-      memory: ${PG_MEMORY_REQUEST:=512Mi}
+      cpu: 50m
+      memory: ${PG_MEMORY_REQUEST:=256Mi}
     limits:
       memory: ${PG_MEMORY_LIMIT:=1Gi}
   storage:
