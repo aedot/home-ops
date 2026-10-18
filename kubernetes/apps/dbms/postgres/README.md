@@ -8,20 +8,20 @@ Not hosted here: sparkyfitness (superuser) and tracearr (TimescaleDB).
 
 ## Isolation
 
-1. **Network** - `networkpolicy.yaml` lists the pods allowed to reach port 5432. Match by namespace and `app.kubernetes.io/name`; never by namespace alone.
+1. **Network** - each tenant's `CiliumNetworkPolicy` lists the pods allowed to reach port 5432. Match by namespace and `app.kubernetes.io/name`; never by namespace alone.
 2. **Authentication** - `pg_hba` in `cluster.yaml` is an allow-list ending in `host all all all reject`. A role can connect only to the database named in its rule. `enableSuperuserAccess` is off.
 3. **Authorization** - each database is owned by its app role. Roles carry a `connectionLimit`.
 4. **Credentials** - each app has its own password; the app namespace never gets another app's secret.
 
 ## Adding a tenant
 
-All of these live in `dbms`, because CNPG resources must share the cluster's namespace.
+A tenant's manifests live next to its app, in `<app>/database/`, deployed by a second Flux Kustomization `<app>-postgres` with `targetNamespace: dbms` (CNPG resources must share the cluster's namespace). See `apps/security/pocket-id/database` for the pattern.
 
-1. `Database` (owner, extensions) and `DatabaseRole` (`login: true`, `connectionLimit`, `passwordSecret`) for the app.
-2. An ExternalSecret in `dbms` (`kubernetes.io/basic-auth`, keys `username` and `password`) for the role, and one in the app namespace exposing `host`, `port`, `username`, `password`, `dbname` and `uri`. Both read the same Bitwarden item.
-3. A `pg_hba` line **above** the final reject: `host <database> <role> all scram-sha-256`.
-4. A client rule in `networkpolicy.yaml` for the app's pods. The app namespace may also need an ingress rule for replies from the `postgres` pods, as with `teslamate-mqtt-replies`.
-5. Append the database to `POSTGRES_DB` in `backup.cronjob.yaml`.
+1. In `<app>/database/`: a `Database` (owner, extensions), a `DatabaseRole` (`login: true`, `connectionLimit`, `passwordSecret`), an ExternalSecret for the role password that reads only the password property of the app's Bitwarden item, and a `CiliumNetworkPolicy` allowing the app's pods on 5432.
+2. In the app's own namespace: an ExternalSecret exposing the connection details from the same Bitwarden item. The app Kustomization `dependsOn` `<app>-postgres`.
+3. Here in `cluster.yaml`: a `pg_hba` line **above** the final reject, `host <database> <role> all scram-sha-256`.
+4. Here in `backup.cronjob.yaml`: append the database to `POSTGRES_DB`.
+5. If the app namespace has an ingress baseline, add a rule for replies from the `postgres` pods, as with `teslamate-mqtt-replies`.
 
 ## Verifying isolation
 

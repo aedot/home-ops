@@ -42,7 +42,7 @@ spec:
                   value: postgres-rw
                 # Comma-separated; append each tenant database when it moves in.
                 - name: POSTGRES_DB
-                  value: postgres
+                  value: postgres,pocket_id
                 - name: POSTGRES_USER
                   valueFrom:
                     secretKeyRef:

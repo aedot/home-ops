@@ -34,6 +34,7 @@ spec:
     # Each tenant adds "host <database> <role> all scram-sha-256" above the reject.
     pg_hba:
       - host all backup all scram-sha-256
+      - host pocket_id pocket_id all scram-sha-256
       - host all all all reject
   monitoring:
     enablePodMonitor: true
