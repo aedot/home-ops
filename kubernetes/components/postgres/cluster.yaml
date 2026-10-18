@@ -21,7 +21,7 @@ spec:
   resources:
     requests:
       cpu: 100m
-      memory: ${PG_MEMORY_REQUEST:=512Mi}
+      memory: ${PG_MEMORY_REQUEST:=256Mi}
     limits:
       memory: ${PG_MEMORY_LIMIT:=1Gi}
   storage:
@@ -33,7 +33,7 @@ spec:
       number: 1
       dataDurability: preferred
     parameters:
-      max_connections: "200"
+      max_connections: "50"
       max_wal_size: "256MB"
       shared_buffers: "128MB"
   monitoring:

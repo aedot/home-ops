@@ -41,3 +41,4 @@ spec:
     substitute:
       APP: grampsweb
       PG_BACKUP_MINUTE: "40"
+      PG_INSTANCES: "2"
