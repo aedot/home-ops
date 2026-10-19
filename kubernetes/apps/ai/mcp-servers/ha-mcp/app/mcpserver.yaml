@@ -1,0 +1,51 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/toolhive.stacklok.dev/mcpserver_v1beta1.json
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPServer
+metadata:
+  name: ha
+spec:
+  image: ghcr.io/homeassistant-ai/ha-mcp:8.7.0@sha256:600677bbd7574dfb59682e40d6945f73fcc8852d3684b3671506602473942448
+  telemetryConfigRef:
+    name: prometheus
+    serviceName: ha-mcp
+  transport: streamable-http
+  proxyPort: 8080
+  mcpPort: 8086
+  env:
+    - name: HOMEASSISTANT_URL
+      value: https://hass.${SECRET_DOMAIN}
+  secrets:
+    - name: ha-mcp-secret
+      key: HOMEASSISTANT_TOKEN
+      targetEnvName: HOMEASSISTANT_TOKEN
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      memory: 128Mi
+  podTemplateSpec:
+    spec:
+      containers:
+        - name: mcp
+          command: ["ha-mcp-web"]
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: { drop: ["ALL"] }
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: state
+              mountPath: /home/mcpuser/.ha-mcp
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: state
+          emptyDir: {}
