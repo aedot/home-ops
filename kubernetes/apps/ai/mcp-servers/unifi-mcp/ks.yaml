@@ -6,7 +6,7 @@ metadata:
   name: unifi-mcp
 spec:
   interval: 1h
-  path: ./kubernetes/apps/ai/mcp/unifi-mcp/app
+  path: ./kubernetes/apps/ai/mcp-servers/unifi-mcp/app
   dependsOn:
     - name: toolhive
     - name: toolhive-config

@@ -15,8 +15,8 @@ spec:
   scrapeInterval: 30s
   relabelings:
     - action: Keep
-      sourceLabels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
-      regex: mcpserver
+      sourceLabels: [__meta_kubernetes_pod_label_toolhive]
+      regex: "true"
     - action: Replace
       sourceLabels: [__meta_kubernetes_pod_ip]
       targetLabel: __address__
