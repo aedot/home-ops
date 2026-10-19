@@ -6,7 +6,7 @@ metadata:
   name: ha-mcp
 spec:
   interval: 1h
-  path: ./kubernetes/apps/ai/mcp-servers/ha-mcp/app
+  path: ./kubernetes/apps/ai/mcp/ha-mcp/app
   dependsOn:
     - name: toolhive
     - name: toolhive-config

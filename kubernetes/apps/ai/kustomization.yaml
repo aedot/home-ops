@@ -8,10 +8,10 @@ components:
   - ../../components/namespace
   - ../../components/netpol
 resources:
-  - ./mcp-servers/flux-mcp/ks.yaml
-  - ./mcp-servers/grafana-mcp/ks.yaml
-  - ./mcp-servers/ha-mcp/ks.yaml
-  - ./mcp-servers/kubectl-mcp/ks.yaml
-  - ./mcp-servers/unifi-mcp/ks.yaml
+  - ./mcp/flux-mcp/ks.yaml
+  - ./mcp/grafana-mcp/ks.yaml
+  - ./mcp/ha-mcp/ks.yaml
+  - ./mcp/kubectl-mcp/ks.yaml
+  - ./mcp/unifi-mcp/ks.yaml
   - ./open-webui/ks.yaml
   - ./toolhive/ks.yaml
