@@ -40,5 +40,4 @@ spec:
         kind: Secret
     substitute:
       APP: tracearr
-      PG_INSTANCES: "2"
       PG_MEMORY_REQUEST: 384Mi
