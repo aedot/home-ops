@@ -1,0 +1,44 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/toolhive.stacklok.dev/mcpserver_v1beta1.json
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPServer
+metadata:
+  name: grafana
+spec:
+  image: docker.io/grafana/mcp-grafana:2.0.2@sha256:78d208116ec52b09b44f0eca66892073b39aefcb64483c54d43255c8eab7e97a
+  telemetryConfigRef:
+    name: prometheus
+    serviceName: grafana-mcp
+  transport: streamable-http
+  proxyPort: 8080
+  mcpPort: 8000
+  env:
+    # Grafana allows anonymous (Viewer) access, so no service account token is set.
+    - name: GRAFANA_URL
+      value: https://grafana.${SECRET_DOMAIN}
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      memory: 128Mi
+  podTemplateSpec:
+    spec:
+      containers:
+        - name: mcp
+          args:
+            - --transport=streamable-http
+            - --address=0.0.0.0:8000
+            # Host validation only allows loopback by default; the ToolHive proxy
+            # connects by pod/service name.
+            - --allowed-hosts=*
+            - --disable-write
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: { drop: ["ALL"] }

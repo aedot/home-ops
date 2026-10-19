@@ -1,0 +1,39 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/toolhive.stacklok.dev/mcpserver_v1beta1.json
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPServer
+metadata:
+  name: flux
+spec:
+  image: ghcr.io/controlplaneio-fluxcd/flux-operator-mcp:v0.61.0@sha256:b253ef07502413bcad89d8fb8f9c01d3cfa070331698323fbd8fe0ae9cfa1cb4
+  telemetryConfigRef:
+    name: prometheus
+    serviceName: flux-mcp
+  transport: streamable-http
+  proxyPort: 8080
+  mcpPort: 8000
+  serviceAccount: flux-mcp
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      memory: 128Mi
+  podTemplateSpec:
+    spec:
+      containers:
+        - name: mcp
+          args:
+            - serve
+            - --transport=http
+            - --port=8000
+            - --read-only
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: { drop: ["ALL"] }
