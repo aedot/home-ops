@@ -5,4 +5,5 @@ kind: Kustomization
 resources:
   - ./grafanadashboard.yaml
   - ./mcptelemetryconfig.yaml
+  - ./networkpolicy.yaml
   - ./scrapeconfig.yaml

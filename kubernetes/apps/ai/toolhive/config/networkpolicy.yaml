@@ -1,0 +1,37 @@
+---
+# The namespace ingress-baseline allows every pod in the namespace to reach every other
+# pod, and Cilium policies are additive, so restricting MCP access needs explicit denies.
+# Each server runs a proxy pod (Open WebUI connects here) and a backend pod that is also
+# reachable on its own Service, bypassing the proxy and any auth it enforces.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: mcp-proxy-ingress
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: mcpserver
+  ingressDeny:
+    - fromEndpoints:
+        - matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: NotIn
+              values: [open-webui, toolhive-operator]
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: mcp-backend-ingress
+spec:
+  endpointSelector:
+    matchExpressions:
+      - key: toolhive-basename
+        operator: Exists
+  ingressDeny:
+    - fromEndpoints:
+        - matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: NotIn
+              values: [mcpserver, toolhive-operator]
