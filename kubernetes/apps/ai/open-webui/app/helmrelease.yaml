@@ -24,7 +24,8 @@ spec:
               PORT: &port 8080
               WEBUI_URL: https://chat.${SECRET_DOMAIN}
               OLLAMA_BASE_URL: http://oshun.internal:11434
-              OAUTH_PROVIDER_NAME: Pocket ID
+              ENABLE_OLLAMA_API: true
+              OAUTH_PROVIDER_NAME: XTM ID
               OPENID_PROVIDER_URL: https://sso.${SECRET_DOMAIN}/.well-known/openid-configuration
               OPENID_REDIRECT_URI: https://chat.${SECRET_DOMAIN}/oauth/oidc/callback
               ENABLE_OAUTH_SIGNUP: "true"
