@@ -10,7 +10,6 @@ spec:
   dependsOn:
     - name: toolhive
     - name: toolhive-config
-    - name: toolhive-auth
   prune: true
   sourceRef:
     kind: GitRepository

@@ -11,15 +11,6 @@ spec:
     serviceName: grafana-mcp
   transport: streamable-http
   proxyPort: 8080
-  oidcConfigRef:
-    name: pocket-id
-    audience: mcp-grafana
-    scopes: [openid, groups]
-  authzConfig:
-    type: inline
-    inline:
-      policies:
-        - permit (principal in THVGroup::"mcp-grafana", action, resource);
   mcpPort: 8000
   env:
     # Grafana allows anonymous (Viewer) access, so no service account token is set.

@@ -11,15 +11,6 @@ spec:
     serviceName: ha-mcp
   transport: streamable-http
   proxyPort: 8080
-  oidcConfigRef:
-    name: pocket-id
-    audience: mcp-ha
-    scopes: [openid, groups]
-  authzConfig:
-    type: inline
-    inline:
-      policies:
-        - permit (principal in THVGroup::"mcp-ha", action, resource);
   mcpPort: 8086
   env:
     - name: HOMEASSISTANT_URL

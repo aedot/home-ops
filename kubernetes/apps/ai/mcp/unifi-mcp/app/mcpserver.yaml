@@ -11,15 +11,6 @@ spec:
     serviceName: unifi-mcp
   transport: streamable-http
   proxyPort: 8080
-  oidcConfigRef:
-    name: pocket-id
-    audience: mcp-unifi
-    scopes: [openid, groups]
-  authzConfig:
-    type: inline
-    inline:
-      policies:
-        - permit (principal in THVGroup::"mcp-unifi", action, resource);
   mcpPort: 3000
   env:
     - name: UNIFI_NETWORK_HOST

@@ -11,15 +11,6 @@ spec:
     serviceName: flux-mcp
   transport: streamable-http
   proxyPort: 8080
-  oidcConfigRef:
-    name: pocket-id
-    audience: mcp-flux
-    scopes: [openid, groups]
-  authzConfig:
-    type: inline
-    inline:
-      policies:
-        - permit (principal in THVGroup::"mcp-flux", action, resource);
   mcpPort: 8000
   serviceAccount: flux-mcp
   resources:
