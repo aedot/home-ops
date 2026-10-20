@@ -11,6 +11,15 @@ spec:
     serviceName: kubectl-mcp
   transport: streamable-http
   proxyPort: 8080
+  oidcConfigRef:
+    name: pocket-id
+    audience: mcp-kubectl
+    scopes: [openid, groups]
+  authzConfig:
+    type: inline
+    inline:
+      policies:
+        - permit (principal in THVGroup::"mcp-kubectl", action, resource);
   mcpPort: 8000
   serviceAccount: kubectl-mcp
   resources:

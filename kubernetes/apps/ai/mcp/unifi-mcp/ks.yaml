@@ -10,6 +10,7 @@ spec:
   dependsOn:
     - name: toolhive
     - name: toolhive-config
+    - name: toolhive-auth
     - name: bitwarden-stores
       namespace: external-secrets
   prune: true
