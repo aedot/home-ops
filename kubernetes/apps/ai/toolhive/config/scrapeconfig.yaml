@@ -17,6 +17,9 @@ spec:
     - action: Keep
       sourceLabels: [__meta_kubernetes_pod_label_toolhive]
       regex: "true"
+    - action: Keep
+      sourceLabels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
+      regex: mcpserver
     - action: Replace
       sourceLabels: [__meta_kubernetes_pod_ip]
       targetLabel: __address__
