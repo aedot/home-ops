@@ -32,6 +32,11 @@ spec:
               # Pocket ID accounts are admin-managed, so its emails are trusted; this links
               # an existing local account to the same email instead of creating a duplicate.
               OAUTH_MERGE_ACCOUNTS_BY_EMAIL: "true"
+              # Sync Pocket ID groups into Open WebUI groups on login; tool-server
+              # access is then granted to those groups in the admin UI.
+              OAUTH_SCOPES: openid email profile groups
+              ENABLE_OAUTH_GROUP_MANAGEMENT: "true"
+              ENABLE_OAUTH_GROUP_CREATION: "true"
               SCARF_NO_ANALYTICS: "true"
               DO_NOT_TRACK: "true"
               ANONYMIZED_TELEMETRY: "false"
