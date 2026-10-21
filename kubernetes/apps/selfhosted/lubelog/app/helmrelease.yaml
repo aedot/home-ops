@@ -23,6 +23,7 @@ spec:
               TZ: America/Los_Angeles
               LC_ALL: en_US.UTF-8
               LOGGING__LOGLEVEL__DEFAULT: debug
+              OIDC USE PKCE: true
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
