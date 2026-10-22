@@ -10,6 +10,6 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.55.2
-    digest: sha256:6309cc7aa649f765a328dd8cd91ba0dd2c179393a96747fe11d353eb130a9763
+    tag: 0.56.0
+    digest: sha256:1cfed3c08953bdde9c5c9ba63a1abdbdac23a1924fead2cb8594a7f1a304cf31
   url: oci://ghcr.io/stacklok/toolhive/toolhive-operator-crds
