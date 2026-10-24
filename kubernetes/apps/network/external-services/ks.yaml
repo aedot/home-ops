@@ -6,7 +6,7 @@ metadata:
   name: technitium
 spec:
   interval: 1h
-  path: ./kubernetes/apps/network/external-services/technitium/kustomization.yaml
+  path: ./kubernetes/apps/network/external-services/technitium
   postBuild:
     substituteFrom:
       - name: cluster-secrets
