@@ -15,7 +15,7 @@ spec:
       namespace: network
       sectionName: https
   hostnames:
-    - technitium.${SECRET_DOMAIN}
+    - dns.${SECRET_DOMAIN}
   rules:
     - matches:
         - path:
