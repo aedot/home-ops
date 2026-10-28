@@ -7,11 +7,11 @@ components:
   - ../../components/sops
   - ../../components/namespace
   - ../../components/netpol
-resources: []
+resources:
   # - ./mcp/flux-mcp/ks.yaml
   # - ./mcp/grafana-mcp/ks.yaml
   # - ./mcp/ha-mcp/ks.yaml
   # - ./mcp/kubectl-mcp/ks.yaml
   # - ./mcp/unifi-mcp/ks.yaml
-  # - ./open-webui/ks.yaml
+  - ./open-webui/ks.yaml
   # - ./toolhive/ks.yaml
