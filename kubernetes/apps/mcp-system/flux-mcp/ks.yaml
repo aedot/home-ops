@@ -6,7 +6,7 @@ metadata:
   name: flux-mcp
 spec:
   interval: 1h
-  path: ./kubernetes/apps/ai/mcp/flux-mcp/app
+  path: ./kubernetes/apps/mcp-system/flux-mcp/app
   dependsOn:
     - name: toolhive
     - name: toolhive-config
@@ -15,6 +15,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: ai
+  targetNamespace: mcp-system
   wait: false
 

@@ -10,7 +10,7 @@ spec:
   kubernetesSDConfigs:
     - role: Pod
       namespaces:
-        names: [ai]
+        names: [mcp-system]
   metricsPath: /metrics
   scrapeInterval: 30s
   relabelings:

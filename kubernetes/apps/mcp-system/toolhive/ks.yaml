@@ -6,13 +6,13 @@ metadata:
   name: toolhive-crds
 spec:
   interval: 1h
-  path: ./kubernetes/apps/ai/toolhive/crds
+  path: ./kubernetes/apps/mcp-system/toolhive/crds
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: ai
+  targetNamespace: mcp-system
   wait: false
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -22,7 +22,7 @@ metadata:
   name: toolhive
 spec:
   interval: 1h
-  path: ./kubernetes/apps/ai/toolhive/app
+  path: ./kubernetes/apps/mcp-system/toolhive/app
   dependsOn:
     - name: toolhive-crds
   prune: true
@@ -30,7 +30,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: ai
+  targetNamespace: mcp-system
   wait: false
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -40,7 +40,7 @@ metadata:
   name: toolhive-config
 spec:
   interval: 1h
-  path: ./kubernetes/apps/ai/toolhive/config
+  path: ./kubernetes/apps/mcp-system/toolhive/config
   dependsOn:
     - name: toolhive-crds
   prune: true
@@ -48,5 +48,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: ai
+  targetNamespace: mcp-system
   wait: false

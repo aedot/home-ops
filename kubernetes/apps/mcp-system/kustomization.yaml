@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: mcp-system
+components:
+  - ../../components/sops
+  - ../../components/namespace
+  - ../../components/netpol
+resources:
+  # - ./flux-mcp/ks.yaml
+  # - ./grafana-mcp/ks.yaml
+  - ./ha-mcp/ks.yaml
+  # - ./kubectl-mcp/ks.yaml
+  # - ./unifi-mcp/ks.yaml
+  # - ./toolhive/ks.yaml

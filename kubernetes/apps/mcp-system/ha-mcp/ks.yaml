@@ -6,7 +6,7 @@ metadata:
   name: ha-mcp
 spec:
   interval: 1h
-  path: ./kubernetes/apps/ai/mcp/ha-mcp/app
+  path: ./kubernetes/apps/mcp-system/ha-mcp/app
   dependsOn:
     - name: toolhive
     - name: toolhive-config
@@ -17,7 +17,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: ai
+  targetNamespace: mcp-system
   wait: false
   postBuild:
     substituteFrom:

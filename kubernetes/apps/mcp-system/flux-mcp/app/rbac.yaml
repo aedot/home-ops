@@ -40,4 +40,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: flux-mcp
-    namespace: ai
+    namespace: mcp-system
