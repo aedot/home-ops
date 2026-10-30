@@ -1,0 +1,17 @@
+---
+# ha-mcp opens connections to Home Assistant (home-automation). Cilium does not treat the
+# replies as part of the connection, so allow them by identity (same as mosquitto-replies).
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: home-assistant-replies
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: ha-mcp
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: home-automation
+            app.kubernetes.io/name: home-assistant

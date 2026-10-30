@@ -8,6 +8,7 @@ components:
   - ../../components/namespace
   - ../../components/netpol
 resources:
+  - ./networkpolicy.yaml
   # - ./flux-mcp/ks.yaml
   # - ./grafana-mcp/ks.yaml
   - ./ha-mcp/ks.yaml
