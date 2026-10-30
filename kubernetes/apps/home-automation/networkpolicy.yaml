@@ -15,3 +15,23 @@ spec:
         - matchLabels:
             io.kubernetes.pod.namespace: dbms
             app.kubernetes.io/name: mosquitto
+---
+# ha-mcp (mcp-system) talks to the Home Assistant REST API and WebSocket.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: ha-mcp
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: home-assistant
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: mcp-system
+            app.kubernetes.io/name: ha-mcp
+      toPorts:
+        - ports:
+            - port: "8123"
+              protocol: TCP
