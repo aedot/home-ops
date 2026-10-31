@@ -18,7 +18,7 @@ spec:
           app:
             image: &image
               repository: ghcr.io/gramps-project/grampsweb
-              tag: 26.10.2@sha256:81291e399390041e9dcb2ffc9f1b67d44c5151b3c3604a9d49a3d8bbe60ee578
+              tag: 26.11.0@sha256:dbd20a8ba954e19ae8ed17e5e1537d55a3d16ccef6adf7a8fe8cb783bab81411
             env: &env
               TZ: America/Los_Angeles
               GUNICORN_NUM_WORKERS: 2
