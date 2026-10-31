@@ -1,0 +1,59 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: arr-mcp
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: arr-mcp
+  values:
+    controllers:
+      arr-mcp:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/aplaceforallmystuff/mcp-arr
+              tag: 1.7.3@sha256:ace72c56448e8695e1d2d060e7437470e3f883fcc9316f1294e3a7f682e1efa1
+            env:
+              MCP_TRANSPORT: http
+              HOST: 0.0.0.0
+              SONARR_URL: http://sonarr.downloads.svc.cluster.local:8989
+              RADARR_URL: http://radarr.downloads.svc.cluster.local:7878
+              PROWLARR_URL: http://prowlarr.downloads.svc.cluster.local:9696
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 256Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+    service:
+      app:
+        controller: arr-mcp
+        ports:
+          http:
+            port: 3000
+
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 404"]
+        hostnames:
+          - "arr-mcp.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network

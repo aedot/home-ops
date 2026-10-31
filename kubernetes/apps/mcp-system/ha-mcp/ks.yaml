@@ -8,8 +8,6 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/mcp-system/ha-mcp/app
   dependsOn:
-    # - name: toolhive
-    # - name: toolhive-config
     - name: bitwarden-stores
       namespace: external-secrets
   prune: true
