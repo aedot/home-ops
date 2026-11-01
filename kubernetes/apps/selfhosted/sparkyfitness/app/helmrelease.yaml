@@ -24,6 +24,10 @@ spec:
               SPARKY_FITNESS_EMAIL_SECURE: false
               SPARKY_FITNESS_FORCE_EMAIL_LOGIN: true
               SPARKY_FITNESS_DISABLE_SIGNUP: true
+              SPARKY_FITNESS_OIDC_AUTH_ENABLED: "true"
+              SPARKY_FITNESS_OIDC_PROVIDER_NAME: XTM ID
+              SPARKY_FITNESS_OIDC_PROVIDER_SLUG: pocket-id
+              SPARKY_FITNESS_OIDC_ISSUER_URL: https://sso.${SECRET_DOMAIN}
               ALLOW_PRIVATE_NETWORK_CORS: true
               NODE_ENV: "production"
               SERVER_UPLOADS_PATH: /uploads
