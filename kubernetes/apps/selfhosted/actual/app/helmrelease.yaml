@@ -21,6 +21,18 @@ spec:
               tag: 26.10.0@sha256:24645e971da6bb1a1f953d6859e307a0b29be1e8b4130a35b3220c209b5b860c
             env:
               ACTUAL_PORT: &port 5006
+              ACTUAL_OPENID_DISCOVERY_URL: https://sso.${SECRET_DOMAIN}/.well-known/openid-configuration
+              ACTUAL_OPENID_SERVER_HOSTNAME: https://actual.${SECRET_DOMAIN}
+              ACTUAL_OPENID_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: actual-oidc-credentials
+                    key: client_id
+              ACTUAL_OPENID_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: actual-oidc-credentials
+                    key: client_secret
             probes:
               liveness:
                 enabled: true
