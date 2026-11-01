@@ -24,6 +24,7 @@ spec:
               LOG_LEVEL: INFO
               PORT: &port 8000
               APP_URL: https://{{ .Release.Name }}.${SECRET_DOMAIN}
+              BAMBUDDY_LOCAL_LOGIN: false
               BAMBUDDY_OIDC_NAME: XTM ID
               BAMBUDDY_OIDC_ISSUER_URL:
                 valueFrom:
