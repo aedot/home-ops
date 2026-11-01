@@ -11,9 +11,9 @@ spec:
 apiVersion: pocketid.internal/v1alpha1
 kind: PocketIDUserGroup
 metadata:
-  name: sso-devs
+  name: sso-dev
 spec:
-  friendlyName: SSO-Devs
+  friendlyName: SSO-Dev
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/pocketid.internal/pocketidusergroup_v1alpha1.json
 apiVersion: pocketid.internal/v1alpha1
