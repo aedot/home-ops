@@ -26,6 +26,10 @@ spec:
               QUI__METRICS_HOST: 0.0.0.0
               QUI__METRICS_PORT: &metricsPort 8080
               TZ: America/Los_Angeles
+              QUI_OIDC__ENABLED: true
+              QUI_OIDC_DISABLE_BUILT_IN_LOGIN: true
+              QUI_OIDC__ISSUER: https://sso.${SECRET_DOMAIN}
+              QUI_OIDC_REDIRECT_URI: https://{{ .Release.Name }}.${SECRET_DOMAIN}/api/auth/oidc/callback
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
