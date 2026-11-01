@@ -7,5 +7,5 @@ components:
   - ../../components/sops
   - ../../components/namespace
   - ../../components/netpol
-resources:
-  - ./open-webui/ks.yaml
+resources: []
+  # - ./open-webui/ks.yaml
