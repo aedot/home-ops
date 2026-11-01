@@ -12,7 +12,6 @@ resources:
   - ./imagemaid/ks.yaml
   - ./plex/ks.yaml
   - ./seerr/ks.yaml
-  - ./tautulli/ks.yaml
   - ./tracearr/ks.yaml
 patches:
   - target:
