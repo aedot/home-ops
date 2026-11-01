@@ -30,6 +30,8 @@ metadata:
 spec:
   dependsOn:
     - name: grafana
+    - name: pocket-id-operator
+      namespace: security
     - name: bitwarden-stores
       namespace: external-secrets
     - name: longhorn

@@ -5,5 +5,7 @@ kind: Kustomization
 resources:
   - ./grafana.yaml
   - ./grafanadatasource.yaml
+  - ./pocketidoidcclient.yaml
+  - ./pushsecret.yaml
   - ./mutatingadmissionpolicy.yaml
   - ./servicemonitor.yaml

@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/pocketid.internal/pocketidoidcclient_v1alpha1.json
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: grafana
+spec:
+  name: Grafana
+  callbackUrls:
+    - https://grafana.${SECRET_DOMAIN}/login/generic_oauth
+  logo:
+    autoGenerate: false
+  allowedUserGroups:
+    - { name: sso-dev, namespace: security }
