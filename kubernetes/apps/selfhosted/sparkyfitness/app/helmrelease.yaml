@@ -28,6 +28,16 @@ spec:
               SPARKY_FITNESS_OIDC_PROVIDER_NAME: XTM ID
               SPARKY_FITNESS_OIDC_PROVIDER_SLUG: pocket-id
               SPARKY_FITNESS_OIDC_ISSUER_URL: https://sso.${SECRET_DOMAIN}
+              SPARKY_FITNESS_OIDC_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: sparkyfitness-oidc-credentials
+                    key: client_id
+              SPARKY_FITNESS_OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: sparkyfitness-oidc-credentials
+                    key: client_secret
               ALLOW_PRIVATE_NETWORK_CORS: true
               NODE_ENV: "production"
               SERVER_UPLOADS_PATH: /uploads

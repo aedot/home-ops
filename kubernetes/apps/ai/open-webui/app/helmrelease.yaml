@@ -28,6 +28,16 @@ spec:
               OAUTH_PROVIDER_NAME: XTM ID
               OPENID_PROVIDER_URL: https://sso.${SECRET_DOMAIN}/.well-known/openid-configuration
               OPENID_REDIRECT_URI: https://chat.${SECRET_DOMAIN}/oauth/oidc/callback
+              OAUTH_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: open-webui-oidc-credentials
+                    key: client_id
+              OAUTH_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: open-webui-oidc-credentials
+                    key: client_secret
               ENABLE_OAUTH_SIGNUP: "true"
               # Pocket ID accounts are admin-managed, so its emails are trusted; this links
               # an existing local account to the same email instead of creating a duplicate.

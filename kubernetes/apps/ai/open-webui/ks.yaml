@@ -8,6 +8,8 @@ spec:
   interval: 30m
   path: ./kubernetes/apps/ai/open-webui/app
   dependsOn:
+    - name: pocket-id-operator
+      namespace: security
     - name: kopiur-repository
       namespace: kopiur-system
     - name: longhorn
