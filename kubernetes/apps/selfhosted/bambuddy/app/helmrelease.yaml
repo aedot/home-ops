@@ -23,6 +23,24 @@ spec:
               TZ: America/Los_Angeles
               LOG_LEVEL: INFO
               PORT: &port 8000
+              APP_URL: https://{{ .Release.Name }}.${SECRET_DOMAIN}
+              BAMBUDDY_OIDC_NAME: XTM ID
+              BAMBUDDY_OIDC_ISSUER_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: bambuddy-oidc-credentials
+                    key: issuer_url
+              BAMBUDDY_OIDC_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: bambuddy-oidc-credentials
+                    key: client_id
+              BAMBUDDY_OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: bambuddy-oidc-credentials
+                    key: client_secret
+              BAMBUDDY_OIDC_AUTO_LINK_EXISTING: true
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
