@@ -1,0 +1,61 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/pocketid.internal/pocketidinstance_v1alpha1.json
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDInstance
+metadata:
+  name: pocketid
+spec:
+  image: ghcr.io/pocket-id/pocket-id:v2.19.1-distroless@sha256:d035c9c229304cfd25f97a79b2da00bde9cf942abbd70430d452a95420e2836b
+  deploymentType: Deployment
+  timezone: America/Los_Angeles
+  appUrl: https://sso.${SECRET_DOMAIN}
+  analyticsDisabled: true
+  versionCheckDisabled: true
+  annotations:
+    reloader.stakater.com/auto: "true"
+  encryptionKey:
+    valueFrom:
+      secretKeyRef:
+        name: &secret pocket-id-secret
+        key: ENCRYPTION_KEY
+  databaseUrl:
+    valueFrom:
+      secretKeyRef:
+        name: *secret
+        key: DB_CONNECTION_STRING
+  geoip:
+    maxmindLicenseKey:
+      valueFrom:
+        secretKeyRef:
+          name: *secret
+          key: MAXMIND_LICENSE_KEY
+  # Set through env rather than spec.smtp, which would also set UI_CONFIG_DISABLED.
+  env:
+    - { name: SMTP_TLS, value: starttls }
+    - { name: SMTP_HOST, valueFrom: { secretKeyRef: { name: *secret, key: SMTP_HOST } } }
+    - { name: SMTP_PORT, valueFrom: { secretKeyRef: { name: *secret, key: SMTP_PORT } } }
+    - { name: SMTP_FROM, valueFrom: { secretKeyRef: { name: *secret, key: SMTP_FROM } } }
+    - { name: SMTP_USER, valueFrom: { secretKeyRef: { name: *secret, key: SMTP_USER } } }
+    - { name: SMTP_PASSWORD, valueFrom: { secretKeyRef: { name: *secret, key: SMTP_PASSWORD } } }
+  # Matches the owner of the existing data on the PVC.
+  podSecurityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    fsGroup: 1000
+    fsGroupChangePolicy: OnRootMismatch
+  persistence:
+    enabled: true
+    existingClaim: ${APP}
+    path: /app/data
+  route:
+    enabled: true
+    hostnames: ["sso.${SECRET_DOMAIN}"]
+    parentRefs:
+      - name: envoy-external
+        namespace: network
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      memory: 256Mi

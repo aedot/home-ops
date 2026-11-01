@@ -3,13 +3,13 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: pocket-id
+  name: pocket-id-operator
 spec:
   interval: 15m
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 5.3.0
-    digest: sha256:0e13b145656490310ada364d8eb708e5f4f6384c7deb60d3f5f0fa56950ff63a
-  url: oci://ghcr.io/bjw-s-labs/helm/app-template
+    tag: 0.16.2
+    digest: sha256:10c0a7ccce7e24ed99f3a309e899ad9d1c9ec29e445fd3f6a3ecb2a2995dc74f
+  url: oci://ghcr.io/aclerici38/charts/pocket-id-operator
