@@ -22,6 +22,40 @@ spec:
             env:
               TZ: America/Los_Angeles
               LC_ALL: en_US.UTF-8
+              OpenIDConfig__Name: XTM ID
+              OpenIDConfig__ClientId:
+                valueFrom:
+                  secretKeyRef:
+                    name: lubelog-oidc-credentials
+                    key: client_id
+              OpenIDConfig__ClientSecret:
+                valueFrom:
+                  secretKeyRef:
+                    name: lubelog-oidc-credentials
+                    key: client_secret
+              OpenIDConfig__AuthURL:
+                valueFrom:
+                  secretKeyRef:
+                    name: lubelog-oidc-credentials
+                    key: authorization_url
+              OpenIDConfig__TokenURL:
+                valueFrom:
+                  secretKeyRef:
+                    name: lubelog-oidc-credentials
+                    key: token_url
+              OpenIDConfig__UserInfoURL:
+                valueFrom:
+                  secretKeyRef:
+                    name: lubelog-oidc-credentials
+                    key: userinfo_url
+              OpenIDConfig__JwksURL:
+                valueFrom:
+                  secretKeyRef:
+                    name: lubelog-oidc-credentials
+                    key: jwks_url
+              OpenIDConfig__RedirectURL: https://{{ .Release.Name }}.${SECRET_DOMAIN}/Login/RemoteAuth
+              OpenIDConfig__Scope: openid email profile
+              OpenIDConfig__ValidateState: true
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
