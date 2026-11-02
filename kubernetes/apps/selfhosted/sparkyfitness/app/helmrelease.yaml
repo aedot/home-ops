@@ -21,7 +21,10 @@ spec:
               tag: v1.11.0@sha256:51a2d7c19bd99b50ea17e579fe8d9d4febed895595356b1ddafe0fa808caf75e
             env:
               TZ: "America/Los_Angeles"
+              SPARKY_FITNESS_EMAIL_HOST: smtp-relay.network.svc.cluster.local
+              SPARKY_FITNESS_EMAIL_PORT: 2525
               SPARKY_FITNESS_EMAIL_SECURE: false
+              SPARKY_FITNESS_EMAIL_FROM: "Sparky Fitness <noreply@${SECRET_DOMAIN}>"
               SPARKY_FITNESS_DISABLE_EMAIL_LOGIN: true
               SPARKY_FITNESS_DISABLE_PASSKEY_LOGIN: true
               SPARKY_FITNESS_DISABLE_SIGNUP: true
@@ -71,9 +74,6 @@ spec:
               SPARKY_FITNESS_SERVER_HOST: sparkyfitness-server.selfhosted.svc.cluster.local
               SPARKY_FITNESS_SERVER_PORT: 3010
               SPARKY_FITNESS_FRONTEND_URL: fitness.${SECRET_DOMAIN}
-              SPARKY_FITNESS_EMAIL_HOST: smtp-relay.network.svc.cluster.local
-              SPARKY_FITNESS_EMAIL_PORT: 2525
-              SPARKY_FITNESS_EMAIL_FROM: "Sparky Fitness <noreply@${SECRET_DOMAIN}>"
             resources:
               requests:
                 cpu: 10m
