@@ -23,6 +23,7 @@ spec:
               tag: 0.9.6@sha256:e1074e92a452b84d1135ebe8ab831c5f541d33dcbd39e38fab740a53bbf2f97c
             env:
               SMTP_RELAY_SMTP_PORT: &port 2525
+              SMTP_RELAY_METRICS_PORT: &metricsPort 8080
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
@@ -55,18 +56,33 @@ spec:
         annotations:
           external-dns.kubernetes.io/hostname: smtp-relay.${SECRET_DOMAIN}
           lbipam.cilium.io/ips: 172.24.30.22
-        externalTrafficPolicy: Cluster
         ports:
+          http:
+            primary: true
+            port: *metricsPort
           smtp:
             port: *port
+    serviceMonitor:
+      app:
+        serviceName: smtp-relay
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
     configMaps:
       config:
         data:
           maddy.conf: |-
             state_dir /cache/state
             runtime_dir /cache/run
+
+            openmetrics tcp://0.0.0.0:{env:SMTP_RELAY_METRICS_PORT} { }
+
             tls off
             hostname {env:SMTP_RELAY_HOSTNAME}
+
             smtp tcp://0.0.0.0:{env:SMTP_RELAY_SMTP_PORT} {
                 default_source {
                     deliver_to &remote_queue
