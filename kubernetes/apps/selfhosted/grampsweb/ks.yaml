@@ -11,6 +11,8 @@ spec:
     - ../../../../components/kopiur
     - ../../../../components/dragonfly
   dependsOn:
+    - name: pocket-id-operator
+      namespace: security
     - name: kopiur-repository
       namespace: kopiur-system
     - name: longhorn

@@ -28,6 +28,26 @@ spec:
               GRAMPSWEB_MEDIA_PREFIX_TREE: "true"
               GRAMPSWEB_NEW_DB_BACKEND: sharedpostgresql
               GRAMPSWEB_BASE_URL: https://gramps.${SECRET_DOMAIN}
+              GRAMPSWEB_OIDC_ENABLED: "true"
+              GRAMPSWEB_OIDC_NAME: XTM ID
+              GRAMPSWEB_OIDC_ISSUER:
+                valueFrom:
+                  secretKeyRef:
+                    name: grampsweb-oidc-credentials
+                    key: issuer_url
+              GRAMPSWEB_OIDC_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: grampsweb-oidc-credentials
+                    key: client_id
+              GRAMPSWEB_OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: grampsweb-oidc-credentials
+                    key: client_secret
+              GRAMPSWEB_OIDC_GROUP_OWNER: sso-admin
+              GRAMPSWEB_OIDC_GROUP_EDITOR: sso-dev
+              GRAMPSWEB_OIDC_GROUP_MEMBER: sso-family
               GRAMPSWEB_EMAIL_HOST: smtp-relay.network.svc.cluster.local
               GRAMPSWEB_EMAIL_PORT: 2525
               GRAMPSWEB_DEFAULT_FROM_EMAIL: "Gramps Web <noreply@${SECRET_DOMAIN}>"
