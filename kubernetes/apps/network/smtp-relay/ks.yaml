@@ -8,21 +8,14 @@ spec:
   interval: 30m
   path: ./kubernetes/apps/network/smtp-relay/app
   dependsOn:
-    - name: kopiur-repository
-      namespace: kopiur-system
-    - name: longhorn
-      namespace: longhorn-system
     - name: bitwarden-stores
       namespace: external-secrets
-  components:
-    - ../../../../components/kopiur
   postBuild:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
     substitute:
       APP: smtp-relay
-      KOPIUR_CAPACITY: 1Gi
   prune: true
   sourceRef:
     kind: GitRepository

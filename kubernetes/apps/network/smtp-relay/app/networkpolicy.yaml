@@ -21,6 +21,14 @@ spec:
         - ports:
             - port: "2525"
               protocol: TCP
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: observability
+            app.kubernetes.io/name: prometheus
+      toPorts:
+        - ports:
+            - port: "8080"
+              protocol: TCP
     - fromEntities:
         - host
         - remote-node
