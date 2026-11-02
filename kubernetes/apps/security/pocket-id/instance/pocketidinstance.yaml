@@ -26,7 +26,7 @@ spec:
   smtp:
     host: smtp-relay.network.svc.cluster.local
     port: 2525
-    from: "Pocket ID <noreply@${SECRET_DOMAIN}>"
+    from: "noreply@${SECRET_DOMAIN}"
   geoip:
     maxmindLicenseKey:
       valueFrom:
