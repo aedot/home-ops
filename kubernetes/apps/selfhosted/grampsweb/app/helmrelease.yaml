@@ -28,6 +28,9 @@ spec:
               GRAMPSWEB_MEDIA_PREFIX_TREE: "true"
               GRAMPSWEB_NEW_DB_BACKEND: sharedpostgresql
               GRAMPSWEB_BASE_URL: https://gramps.${SECRET_DOMAIN}
+              GRAMPSWEB_EMAIL_HOST: smtp-relay.network.svc.cluster.local
+              GRAMPSWEB_EMAIL_PORT: 2525
+              GRAMPSWEB_DEFAULT_FROM_EMAIL: "Gramps Web <noreply@${SECRET_DOMAIN}>"
               GRAMPSWEB_EMAIL_USE_SSL: "false"
               GRAMPSWEB_EMAIL_USE_STARTTLS: "true"
               GRAMPSWEB_CELERY_CONFIG__broker_url: redis://{{ .Release.Name }}-dragonfly.selfhosted.svc.cluster.local:6379/0

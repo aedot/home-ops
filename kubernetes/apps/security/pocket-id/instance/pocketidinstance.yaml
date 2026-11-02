@@ -23,20 +23,16 @@ spec:
       secretKeyRef:
         name: *secret
         key: DB_CONNECTION_STRING
+  smtp:
+    host: smtp-relay.network.svc.cluster.local
+    port: 2525
+    from: "Pocket ID <noreply@${SECRET_DOMAIN}>"
   geoip:
     maxmindLicenseKey:
       valueFrom:
         secretKeyRef:
           name: *secret
           key: MAXMIND_LICENSE_KEY
-  # Set through env rather than spec.smtp, which would also set UI_CONFIG_DISABLED.
-  env:
-    - { name: SMTP_TLS, value: starttls }
-    - { name: SMTP_HOST, valueFrom: { secretKeyRef: { name: *secret, key: SMTP_HOST } } }
-    - { name: SMTP_PORT, valueFrom: { secretKeyRef: { name: *secret, key: SMTP_PORT } } }
-    - { name: SMTP_FROM, valueFrom: { secretKeyRef: { name: *secret, key: SMTP_FROM } } }
-    - { name: SMTP_USER, valueFrom: { secretKeyRef: { name: *secret, key: SMTP_USER } } }
-    - { name: SMTP_PASSWORD, valueFrom: { secretKeyRef: { name: *secret, key: SMTP_PASSWORD } } }
   # Matches the owner of the existing data on the PVC.
   podSecurityContext:
     runAsUser: 1000

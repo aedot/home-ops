@@ -22,6 +22,9 @@ spec:
             env:
               TZ: America/Los_Angeles
               LC_ALL: en_US.UTF-8
+              MailConfig__EmailServer: smtp-relay.network.svc.cluster.local
+              MailConfig__EmailFrom: "LubeLog <noreply@${SECRET_DOMAIN}>"
+              MailConfig__Port: 2525
               OpenIDConfig__Name: XTM ID
               OpenIDConfig__ClientId:
                 valueFrom:

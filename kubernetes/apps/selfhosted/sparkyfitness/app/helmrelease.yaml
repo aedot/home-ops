@@ -71,6 +71,9 @@ spec:
               SPARKY_FITNESS_SERVER_HOST: sparkyfitness-server.selfhosted.svc.cluster.local
               SPARKY_FITNESS_SERVER_PORT: 3010
               SPARKY_FITNESS_FRONTEND_URL: fitness.${SECRET_DOMAIN}
+              SPARKY_FITNESS_EMAIL_HOST: smtp-relay.network.svc.cluster.local
+              SPARKY_FITNESS_EMAIL_PORT: 2525
+              SPARKY_FITNESS_EMAIL_FROM: "Sparky Fitness <noreply@${SECRET_DOMAIN}>"
             resources:
               requests:
                 cpu: 10m
