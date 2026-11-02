@@ -1,0 +1,31 @@
+# Only the namespaces that send mail may reach the relay. A CiliumNetworkPolicy that
+# selects a pod switches it to default-deny for ingress, so the baseline (probes, DNS
+# replies) is repeated here, same as components/netpol.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: smtp-relay-ingress
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: smtp-relay
+  ingress:
+    - fromEndpoints:
+        - matchExpressions:
+            - key: io.kubernetes.pod.namespace
+              operator: In
+              values: [security, selfhosted]
+      toPorts:
+        - ports:
+            - port: "2525"
+              protocol: TCP
+    - fromEntities:
+        - host
+        - remote-node
+        - kube-apiserver
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
