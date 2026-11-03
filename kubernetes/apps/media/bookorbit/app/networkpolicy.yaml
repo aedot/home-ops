@@ -17,7 +17,6 @@ spec:
             io.kubernetes.pod.namespace: network
             app.kubernetes.io/name: smtp-relay
 ---
-# Same as above for Prowlarr (downloads), which BookOrbit connects to.
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
@@ -29,38 +28,14 @@ spec:
       app.kubernetes.io/name: bookorbit
   ingress:
     - fromEndpoints:
-        - matchLabels:
-            io.kubernetes.pod.namespace: downloads
-            app.kubernetes.io/name: prowlarr
----
-# Same as above for qBittorrent (downloads), which BookOrbit connects to.
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: bookorbit-qbittorrent-replies
-spec:
-  endpointSelector:
-    matchLabels:
-      app.kubernetes.io/name: bookorbit
-  ingress:
-    - fromEndpoints:
-        - matchLabels:
-            io.kubernetes.pod.namespace: downloads
-            app.kubernetes.io/name: qbittorrent
----
-# Same as above for Sabnzbd (downloads), which BookOrbit connects to.
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: bookorbit-sabnzbd-replies
-spec:
-  endpointSelector:
-    matchLabels:
-      app.kubernetes.io/name: bookorbit
-  ingress:
-    - fromEndpoints:
-        - matchLabels:
-            io.kubernetes.pod.namespace: downloads
-            app.kubernetes.io/name: sabnzbd
+        - matchExpressions:
+            - key: io.kubernetes.pod.namespace
+              operator: In
+              values:
+                - downloads
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+                - prowlarr
+                - qbittorrent
+                - sabnzbd
