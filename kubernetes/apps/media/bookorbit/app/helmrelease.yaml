@@ -26,6 +26,7 @@ spec:
               APP_URL: https://bookorbit.${SECRET_DOMAIN}
               # sso resolves to the internal gateway address, which production mode otherwise rejects
               OIDC_ALLOW_LOCAL_ISSUERS: "true"
+              DISABLE_LOCAL_AUTH: true
               BOOKORBIT_FIX_PERMISSIONS: "false"
               DATABASE_URL:
                 valueFrom:
@@ -94,6 +95,13 @@ spec:
         globalMounts:
           - path: /books
             subPath: media/books
+      audiobooks:
+        type: nfs
+        server: yemoja.internal
+        path: /mnt/alaafin/data
+        globalMounts:
+          - path: /audiobooks
+            subPath: media/audiobooks
       tmp:
         type: emptyDir
         globalMounts:
