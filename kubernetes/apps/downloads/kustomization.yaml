@@ -10,7 +10,6 @@ components:
 
 resources:
   - ./networkpolicy.yaml
-  - ./listenarr/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./qui/ks.yaml
