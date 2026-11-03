@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/pocketid.internal/pocketidoidcclient_v1alpha1.json
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: bookorbit
+spec:
+  name: BookOrbit
+  callbackUrls:
+    - https://bookorbit.${SECRET_DOMAIN}/oauth2-callback
+  logo:
+    autoGenerate: false
+  allowedUserGroups:
+    - { name: sso-admin, namespace: security }
+    - { name: sso-dev, namespace: security }
+    - { name: sso-family, namespace: security }
