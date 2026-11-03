@@ -24,6 +24,8 @@ spec:
               NODE_ENV: production
               PORT: &port 3000
               APP_URL: https://bookorbit.${SECRET_DOMAIN}
+              # sso resolves to the internal gateway address, which production mode otherwise rejects
+              OIDC_ALLOW_LOCAL_ISSUERS: "true"
               BOOKORBIT_FIX_PERMISSIONS: "false"
               DATABASE_URL:
                 valueFrom:
