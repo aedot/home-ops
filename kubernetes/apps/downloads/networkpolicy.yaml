@@ -22,3 +22,23 @@ spec:
         - ports:
             - port: "80"
               protocol: TCP
+---
+# BookOrbit (media) queries Prowlarr for indexers and searches.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-bookorbit
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: prowlarr
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: media
+            app.kubernetes.io/name: bookorbit
+      toPorts:
+        - ports:
+            - port: "80"
+              protocol: TCP
