@@ -19,13 +19,14 @@ spec:
           app:
             image:
               repository: ghcr.io/aedot/auto-m4b
-              tag: 0.5.2
+              tag: 0.5.2@sha256:f30fac71d8d1f192592e7a7d141e6e82e9d7f727a88336a72fc27ea5c568f95a
             env:
               TZ: America/Los_Angeles
               CPU_CORES: "2"
-              SLEEPTIME: 1m
+              # passed to sleep, so any GNU duration works; only applies when no books are waiting
+              SLEEPTIME: 8h
               # books are moved out of the qBittorrent save path; set "Y" to keep a copy in /temp/backup first
-              MAKE_BACKUP: "N"
+              MAKE_BACKUP: "Y"
               # the script concatenates folder and book name, so the trailing slash is required
               ORIGINAL_FOLDER: /inbox/
             securityContext:

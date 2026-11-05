@@ -47,3 +47,23 @@ spec:
               values:
                 - sonarr
                 - radarr
+---
+# beets-audible (downloads) asks Plex to rescan the audiobook library after each import.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-beets-audible
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: plex
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: downloads
+            app.kubernetes.io/name: beets-audible
+      toPorts:
+        - ports:
+            - port: "32400"
+              protocol: TCP
