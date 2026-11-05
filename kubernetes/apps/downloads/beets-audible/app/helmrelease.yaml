@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: ghcr.io/aedot/beets-audible
-              tag: 1.7.1@sha256:047b3d9f7814d385ef2bb08abed54e5fc4dbd2fd2682c8e6320470e2ac6705b3
+              tag: 1.7.1@sha256:df6e805cd5483731c6841a098d0bf163bd1e67790689d66f6908099177900004
             env:
               TZ: America/Los_Angeles
               IMPORT_INTERVAL: "300"
