@@ -1,0 +1,66 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: beets-audible
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: beets-audible
+  values:
+    controllers:
+      beets-audible:
+        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/aedot/beets-audible
+              tag: 1.7.1
+            env:
+              TZ: America/Los_Angeles
+              IMPORT_INTERVAL: "300"
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /config
+      # auto-m4b's output; books are moved out of here once imported
+      input:
+        type: nfs
+        server: yemoja.internal
+        path: /mnt/alaafin/data
+        globalMounts:
+          - path: /input
+            subPath: media/audiobook-pipeline/untagged
+      audiobooks:
+        type: nfs
+        server: yemoja.internal
+        path: /mnt/alaafin/data
+        globalMounts:
+          - path: /audiobooks
+            subPath: media/audiobooks
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp

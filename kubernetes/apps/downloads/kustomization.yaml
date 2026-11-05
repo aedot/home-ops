@@ -10,6 +10,8 @@ components:
 
 resources:
   - ./networkpolicy.yaml
+  - ./auto-m4b/ks.yaml
+  - ./beets-audible/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./qui/ks.yaml
