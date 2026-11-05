@@ -1,0 +1,68 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: auto-m4b
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: auto-m4b
+  values:
+    controllers:
+      auto-m4b:
+        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/aedot/auto-m4b
+              tag: 0.5.2
+            env:
+              TZ: America/Los_Angeles
+              CPU_CORES: "2"
+              SLEEPTIME: 1m
+              # books are moved out of the qBittorrent save path; set "Y" to keep a copy in /temp/backup first
+              MAKE_BACKUP: "N"
+              # the script concatenates folder and book name, so the trailing slash is required
+              ORIGINAL_FOLDER: /inbox/
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      # merge, untagged, delete, fix and backup are created here by the script
+      pipeline:
+        type: nfs
+        server: yemoja.internal
+        path: /mnt/alaafin/data
+        globalMounts:
+          - path: /temp
+            subPath: media/audiobook-pipeline
+      # qBittorrent's audiobook save path; keep incomplete downloads in a separate temp path
+      inbox:
+        type: nfs
+        server: yemoja.internal
+        path: /mnt/alaafin/data
+        globalMounts:
+          - path: /inbox
+            subPath: torrents/audiobooks
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
