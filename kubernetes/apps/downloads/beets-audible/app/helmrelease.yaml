@@ -19,10 +19,14 @@ spec:
           app:
             image:
               repository: ghcr.io/aedot/beets-audible
-              tag: 1.7.1
+              tag: 1.7.1@sha256:047b3d9f7814d385ef2bb08abed54e5fc4dbd2fd2682c8e6320470e2ac6705b3
             env:
               TZ: America/Los_Angeles
               IMPORT_INTERVAL: "300"
+              # overrides the plex section of /config/config.yaml
+              PLEX_HOST: plex.media.svc.cluster.local
+              PLEX_PORT: "32400"
+              PLEX_LIBRARY_NAME: Audiobooks
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true

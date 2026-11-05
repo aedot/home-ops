@@ -47,3 +47,20 @@ spec:
         - ports:
             - port: "80"
               protocol: TCP
+---
+# beets-audible opens connections to Plex (media). Cilium does not treat the replies as
+# part of the connection, so they have to be allowed by identity.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: plex-replies
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: beets-audible
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: media
+            app.kubernetes.io/name: plex
