@@ -22,6 +22,7 @@ spec:
             env:
               TZ: America/Los_Angeles
               NODE_ENV: production
+              LOG_LEVEL: debug
               PORT: &port 3000
               APP_URL: https://bookorbit.${SECRET_DOMAIN}
               # sso resolves to the internal gateway address, which production mode otherwise rejects

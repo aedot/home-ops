@@ -9,7 +9,7 @@ components:
 resources:
   - ./networkpolicy.yaml
   - ./agregarr/ks.yaml
-  - ./bookorbit/ks.yaml
+  # - ./bookorbit/ks.yaml
   - ./imagemaid/ks.yaml
   - ./plex/ks.yaml
   - ./seerr/ks.yaml
