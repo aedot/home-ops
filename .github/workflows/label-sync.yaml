@@ -10,15 +10,15 @@ on:
     paths:
       - .github/labels.yaml
   schedule:
-    - cron: 0 0 * * * # Every day at midnight
+    - cron: 0 0 * * *
 
 permissions:
   contents: read
 
 jobs:
-  sync:
-    name: Label Sync
-    runs-on: ubuntu-latest
+  main:
+    name: Label Sync - Sync Labels
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
       issues: write
