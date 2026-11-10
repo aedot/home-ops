@@ -12,7 +12,7 @@ mise install
 
 1. Branch from `main` (`feat/...`, `fix/...`, `chore/...`, `docs/...`).
 2. Make the change and run `scripts/validate-manifests.sh`.
-3. Open a PR. `validate` and `flate` must pass; `flate` comments the rendered diff.
+3. Open a PR. `Build Success` must pass.
 4. Merge. Flux applies `main`.
 
 Commits use Conventional Commits (`type(scope): summary`) and are signed off (`git commit -s`).

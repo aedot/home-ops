@@ -15,14 +15,14 @@ How the pieces fit together. For day-to-day commands and conventions see [AGENTS
 | Backups | kopiur (PVCs to a Kopia repo on the NAS), Barman to Cloudflare R2 (Postgres), logical dumps to NFS | `kubernetes/apps/kopiur-system`, `kubernetes/components` |
 | Observability | kube-prometheus-stack, Grafana (operator), VictoriaLogs, Fluent Bit, Gatus, exporters | `kubernetes/apps/observability` |
 | Upgrades | Renovate PRs; `tuppr` rolls Talos and Kubernetes upgrades gated on Longhorn and kopiur health | `kubernetes/apps/system-upgrade` |
-| CI | GitHub Actions (validate, flate, image-pull) with an in-cluster runner scale set | `.github/workflows`, `kubernetes/apps/actions-runner-system` |
+| CI | GitHub Actions (zizmor, image-pull) with an in-cluster runner scale set | `.github/workflows`, `kubernetes/apps/actions-runner-system` |
 
 Tool versions are pinned in [.mise.toml](.mise.toml); chart and image versions live next to each app.
 
 ## Deployment flow
 
 1. A change is pushed to a branch and a PR is opened against `main`.
-2. `validate` builds every Flux Kustomization path and runs `kubeconform`; `flate` comments the rendered diff; `image-pull` pre-pulls new images on a node for same-repo PRs.
+2. `zizmor` lints workflows; `image-pull` pre-pulls new images on a node for same-repo PRs; `Build Success` aggregates them and is the required check.
 3. After merge, the GitHub webhook (or the interval) makes Flux pull `main`.
 4. `cluster-apps` applies `kubernetes/apps`. Each app's Flux Kustomization decrypts SOPS files, substitutes `${VAR}`s from the `cluster-secrets` Secret, and applies its `HelmRelease`. Helm install and upgrade remediation defaults are patched in from `kubernetes/flux/cluster/ks.yaml`.
 5. `dependsOn` orders apps behind Longhorn, `bitwarden-stores` (so ExternalSecrets resolve) and `kopiur-repository` (so PVC restores resolve). CRDs for the bootstrap-time operators are installed out of band by `bootstrap/helmfile/crds.yaml`, so most apps do not depend on the operator that owns a CRD.

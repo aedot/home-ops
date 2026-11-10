@@ -16,7 +16,7 @@ just kube reconcile                       # force Flux to pull the repo
 just talos render-config <node-ip>        # render merged Talos machine config
 just talos validate-config <node-ip>      # validate it
 
-# Validate manifests (same check CI runs)
+# Validate manifests (also run by the pre-push hook)
 scripts/validate-manifests.sh
 
 # Flux
@@ -102,9 +102,7 @@ Node OS config lives in `talos/` as Jinja templates (`cluster.yaml.j2`, `control
 
 ## CI (GitHub Actions)
 
-- **validate** - on PRs: builds every Flux Kustomization path and runs `kubeconform` (`scripts/validate-manifests.sh`), and runs `zizmor` on workflows
-- **flate** - on PRs touching `kubernetes/**`: posts HelmRelease and Kustomization diffs as PR comments
-- **image-pull** - on same-repo PRs: pre-pulls changed images onto a node using the in-cluster runner. Never run fork code on that runner; it holds Talos credentials.
+- **CI** (`ci.yaml`) - on PRs: `zizmor` on workflows; `image-pull` extracts changed images with `flate` and pre-pulls them onto a node using the in-cluster runner on same-repo PRs (never run fork code on that runner; it holds Talos credentials). The `Build Success` job aggregates these and is the required status check in the `protect-main` ruleset.
 - **renovate**, **label-sync**, **tag** - maintenance
 
 ## Adding a New Application
