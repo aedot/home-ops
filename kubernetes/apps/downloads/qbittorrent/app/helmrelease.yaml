@@ -95,6 +95,3 @@ spec:
         type: nfs
         server: yemoja.internal
         path: /mnt/alaafin/data
-        globalMounts:
-          - path: /torrents
-            subPath: torrents
