@@ -68,8 +68,6 @@ spec:
         type: nfs
         server: yemoja.internal
         path: /mnt/alaafin/data
-        globalMounts:
-          - path: /data
       tmp:
         type: emptyDir
     route:
