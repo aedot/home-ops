@@ -10,6 +10,6 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.16.2
-    digest: sha256:10c0a7ccce7e24ed99f3a309e899ad9d1c9ec29e445fd3f6a3ecb2a2995dc74f
+    tag: 0.16.3
+    digest: sha256:ff6d96cdd8d7990e62d0d24c8930e96b02b111e98193ce67a3a08cb8792feccf
   url: oci://ghcr.io/aclerici38/charts/pocket-id-operator
