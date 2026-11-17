@@ -26,4 +26,4 @@ patches:
         value:
           - name: timescaledb
             image:
-              reference: ghcr.io/inomotech-foss/timescaledb-cnpg:2.31.0-pg18@sha256:04ab31744e1c4a08b3ace91631a85625f64db50b18e9d2e9602c61c6aabd3a68
+              reference: ghcr.io/inomotech-foss/timescaledb-cnpg:2.32.0-pg18@sha256:a06496be4b57ad4f8a4e9e03526cd0570669fc8e9a956461fadc1d07234c7329
