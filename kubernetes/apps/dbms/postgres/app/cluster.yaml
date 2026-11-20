@@ -6,7 +6,7 @@ metadata:
   name: postgres
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:18.7-system-trixie@sha256:705c19a78ccf8a412c81ac71b0c2c3e6cbe656c67c13375c4db12aa96d4058eb
+  imageName: ghcr.io/cloudnative-pg/postgresql:19.0-system-trixie@sha256:ef469b929962262d562b8f2bdeea2912c57a4bd2e4b4e3f56edeb9f76a20557f
   primaryUpdateStrategy: unsupervised
   enableSuperuserAccess: false
   affinity:
