@@ -41,5 +41,4 @@ spec:
     substitute:
       APP: tracearr
       PG_MEMORY_REQUEST: 384Mi
-      PG_IMAGE_NAME: ghcr.io/cloudnative-pg/postgresql:18.7-system-trixie@sha256:252807135e4e824d105f7c8195d675bcec4d2da4f68bbc9aabe72f6a44743d97
 
