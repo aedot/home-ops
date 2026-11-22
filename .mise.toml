@@ -24,7 +24,7 @@ shellcheck = "0.11.0"
 sops = "3.13.3"
 talosctl = "1.14.6"
 yq = "4.54.3"
-zizmor = "1.33.0"
+zizmor = "1.33.1"
 
 [hooks]
 postinstall = "lefthook install"
