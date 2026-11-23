@@ -49,7 +49,7 @@ spec:
       isWALArchiver: true
       parameters:
         barmanObjectName: cloudflare-r2
-        serverName: postgres
+        serverName: postgres-v18
   bootstrap:
     recovery:
       source: &archive postgres-backup-archive
@@ -64,4 +64,4 @@ spec:
         name: *plugin
         parameters:
           barmanObjectName: cloudflare-r2
-          serverName: postgres-v18
+          serverName: postgres
