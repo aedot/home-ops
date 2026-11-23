@@ -6,7 +6,7 @@ metadata:
   name: postgres
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:19.0-system-trixie@sha256:c474afa025e2456208a1b9b4407daac259fe6143748d0b664a799ff5fa0020a9
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.7-system-trixie@sha256:6ebbabac7feb9da3490278b77cbbe2c412ebcf1ecde8278a156e1b86d554feb5
   primaryUpdateStrategy: unsupervised
   enableSuperuserAccess: false
   affinity:
@@ -45,8 +45,25 @@ spec:
   monitoring:
     enablePodMonitor: true
   plugins:
-    - name: barman-cloud.cloudnative-pg.io
+    - name: &plugin barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters:
         barmanObjectName: cloudflare-r2
-        serverName: postgres
+        serverName: ${APP}
+  bootstrap:
+    recovery:
+      source: &archive ${APP}-backup-archive
+      recoveryTarget:
+        backupID: 20261122T115000
+      database: ${APP}
+      owner: ${APP}
+  # Recovery source for bootstrap.recovery: resolve ${APP}-backup-archive via the
+  # barman-cloud CNPG-i plugin against the cloudflare-r2 ObjectStore. serverName
+  # must match the name the source archived under (same-name rebuild => ${APP}).
+  externalClusters:
+    - name: *archive
+      plugin:
+        name: *plugin
+        parameters:
+          barmanObjectName: cloudflare-r2
+          serverName: ${APP}-v18
