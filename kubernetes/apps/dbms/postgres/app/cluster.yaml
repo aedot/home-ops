@@ -49,14 +49,12 @@ spec:
       isWALArchiver: true
       parameters:
         barmanObjectName: cloudflare-r2
-        serverName: ${APP}
+        serverName: postgres
   bootstrap:
     recovery:
-      source: &archive ${APP}-backup-archive
+      source: &archive postgres-backup-archive
       recoveryTarget:
         backupID: 20261122T115000
-      database: ${APP}
-      owner: ${APP}
   # Recovery source for bootstrap.recovery: resolve ${APP}-backup-archive via the
   # barman-cloud CNPG-i plugin against the cloudflare-r2 ObjectStore. serverName
   # must match the name the source archived under (same-name rebuild => ${APP}).
@@ -66,4 +64,4 @@ spec:
         name: *plugin
         parameters:
           barmanObjectName: cloudflare-r2
-          serverName: ${APP}-v18
+          serverName: postgres-v18
