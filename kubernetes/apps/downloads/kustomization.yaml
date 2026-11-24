@@ -8,14 +8,14 @@ components:
   - ../../components/namespace
   - ../../components/netpol
 
-resources:
-  - ./networkpolicy.yaml
-  - ./auto-m4b/ks.yaml
-  - ./beets-audible/ks.yaml
-  - ./prowlarr/ks.yaml
-  - ./qbittorrent/ks.yaml
-  - ./qui/ks.yaml
-  - ./radarr/ks.yaml
-  - ./recyclarr/ks.yaml
-  - ./sabnzbd/ks.yaml
-  - ./sonarr/ks.yaml
+resources: []
+  # - ./networkpolicy.yaml
+  # - ./auto-m4b/ks.yaml
+  # - ./beets-audible/ks.yaml
+  # - ./prowlarr/ks.yaml
+  # - ./qbittorrent/ks.yaml
+  # - ./qui/ks.yaml
+  # - ./radarr/ks.yaml
+  # - ./recyclarr/ks.yaml
+  # - ./sabnzbd/ks.yaml
+  # - ./sonarr/ks.yaml

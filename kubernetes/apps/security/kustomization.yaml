@@ -7,5 +7,5 @@ components:
   - ../../components/sops
   - ../../components/namespace
 
-resources:
-  - ./pocket-id/ks.yaml
+resources: []
+  # - ./pocket-id/ks.yaml

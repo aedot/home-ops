@@ -9,7 +9,7 @@ machine:
     diskQuotaSupport: true
     rbac: true
 cluster:
-  clusterName: main
+  clusterName: k8s
   controlPlane:
     endpoint: https://k8s.internal:6443
   ca:
@@ -41,7 +41,7 @@ clusterSecret: sops://cluster.secret
 apiVersion: v1alpha1
 kind: UnattendedInstallConfig
 installer:
-  image: factory.talos.dev/metal-installer/{{ ENV.SCHEMATIC }}:v1.14.7
+  image: factory.talos.dev/metal-installer/{{ ENV.SCHEMATIC }}:v1.14.6
 provisioning:
   wipe: false
 ---
