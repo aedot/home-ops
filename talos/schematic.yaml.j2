@@ -6,9 +6,7 @@ customization:
     - intel_iommu=on                      # PCI Passthrough
     - iommu=pt                            # PCI Passthrough
     - mitigations=off                     # Less security, faster puter
-    - security=none                       # Less security, faster puter
     - talos.auditd.disabled=1             # Less security, faster puter
-    - i915.enable_guc=3                   # Intel iGPU
     - i915.force_probe=!46a6              # Disable iGPU deviceID for i915
     - xe.force_probe=46a6                 # Enable iGPU deviceID for xe
   systemExtensions:
