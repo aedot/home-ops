@@ -57,13 +57,11 @@ spec:
   bootstrap:
     recovery:
       source: &archive postgres-backup-archive
-      database: ${APP}
-      owner: ${APP}
       # recoveryTarget:
       #   backupID: 20261124T115000
-  # Recovery source for bootstrap.recovery: resolve ${APP}-backup-archive via the
+  # Recovery source for bootstrap.recovery: resolve postgres-backup-archive via the
   # barman-cloud CNPG-i plugin against the cloudflare-r2 ObjectStore. serverName
-  # must match the name the source archived under (same-name rebuild => ${APP}).
+  # must match the name the source archived under.
   externalClusters:
     - name: *archive
       plugin:
