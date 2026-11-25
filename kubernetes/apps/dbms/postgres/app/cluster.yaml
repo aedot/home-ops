@@ -4,6 +4,10 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: postgres
+  annotations:
+    # The rebuilt cluster archives to the same serverName it recovers from; the default
+    # empty-archive check would block that. The recovered cluster writes a new timeline.
+    cnpg.io/skipEmptyWalArchiveCheck: enabled
 spec:
   instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:18.7-system-trixie@sha256:6ebbabac7feb9da3490278b77cbbe2c412ebcf1ecde8278a156e1b86d554feb5
@@ -50,18 +54,18 @@ spec:
       parameters:
         barmanObjectName: cloudflare-r2
         serverName: postgres-v18
-  # bootstrap:
-    # recovery:
-    #   source: &archive postgres-backup-archive
-    #   recoveryTarget:
-    #     backupID: 20261120T115000
+  bootstrap:
+    recovery:
+      source: &archive postgres-backup-archive
+      recoveryTarget:
+        backupID: 20261124T115000
   # Recovery source for bootstrap.recovery: resolve ${APP}-backup-archive via the
   # barman-cloud CNPG-i plugin against the cloudflare-r2 ObjectStore. serverName
   # must match the name the source archived under (same-name rebuild => ${APP}).
-  # externalClusters:
-  #   - name: *archive
-  #     plugin:
-  #       name: *plugin
-  #       parameters:
-  #         barmanObjectName: cloudflare-r2
-  #         serverName: postgres-v18
+  externalClusters:
+    - name: *archive
+      plugin:
+        name: *plugin
+        parameters:
+          barmanObjectName: cloudflare-r2
+          serverName: postgres-v18

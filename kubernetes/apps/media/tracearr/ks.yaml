@@ -27,6 +27,16 @@ spec:
       namespace: external-secrets
     - name: cnpg-barman-cloud
       namespace: cnpg-system
+  patches:
+    - target:
+        group: postgresql.cnpg.io
+        version: v1
+        kind: Cluster
+      patch: |-
+        - op: add
+          path: /spec/bootstrap/recovery/recoveryTarget
+          value:
+            backupID: 20261124T115000
   prune: true
   sourceRef:
     kind: GitRepository
