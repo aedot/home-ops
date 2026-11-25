@@ -6,14 +6,14 @@ components:
   - ../../components/sops
   - ../../components/namespace
   - ../../components/netpol
-resources: []
-  # - ./networkpolicy.yaml
-  # - ./agregarr/ks.yaml
-  # # - ./bookorbit/ks.yaml
-  # - ./imagemaid/ks.yaml
-  # - ./plex/ks.yaml
-  # - ./seerr/ks.yaml
-  # - ./tracearr/ks.yaml
+resources:
+  - ./networkpolicy.yaml
+  - ./agregarr/ks.yaml
+  # - ./bookorbit/ks.yaml
+  - ./imagemaid/ks.yaml
+  - ./plex/ks.yaml
+  - ./seerr/ks.yaml
+  - ./tracearr/ks.yaml
 patches:
   - target:
       kind: Namespace
