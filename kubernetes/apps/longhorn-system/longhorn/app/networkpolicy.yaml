@@ -28,3 +28,26 @@ spec:
       ports:
         - protocol: TCP
           port: 9500
+---
+# The chart netpol on app=longhorn-manager denies ingress from everything but
+# Longhorn pods. On a node that also hosts CoreDNS, Cilium evaluates the DNS
+# reply as new ingress from the CoreDNS identity and drops it, so the manager
+# cannot resolve longhorn-admission-webhook and crash-loops on startup.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-coredns-to-longhorn-manager
+spec:
+  podSelector:
+    matchLabels:
+      app: longhorn-manager
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
