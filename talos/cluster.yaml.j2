@@ -106,7 +106,7 @@ nodeIP:
 labels:
   node.longhorn.io/create-default-disk: "config"
   node.kubernetes.io/gpu: "true"
-  topology.kubernetes.io/region: main
+  topology.kubernetes.io/region: k8s
 annotations:
   node.longhorn.io/default-disks-config: '[{"path":"/dev/disk/by-partlabel/r-longhornv2","allowScheduling":true,"diskType":"block","diskDriver":"aio"}]'
 ---

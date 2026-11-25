@@ -58,6 +58,25 @@ reset-node-wipe-data node *args:
         --user-disks-to-wipe /dev/nvme0n1 --user-disks-to-wipe /dev/nvme1n1 \
         --reboot --graceful=false --wait=false {{ args }}
 
+[doc('Reset a single node AND wipe ALL its disks, including the system disk (DESTRUCTIVE)')]
+[group('talos')]
+reset-node-wipe-all node *args:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    SYSDISK="$(talosctl -n {{ node }} get systemdisk -o json | jq -r '.spec.devPath')"
+    mapfile -t DISKS < <(talosctl -n {{ node }} get disks -o json \
+        | jq -r --arg sys "$SYSDISK" 'select(.spec.transport == "nvme" and .spec.dev_path != $sys) | .spec.dev_path')
+    echo "Node:        {{ node }}"
+    echo "System disk: $SYSDISK (WHOLE DISK wiped, node will NOT boot afterwards)"
+    echo "Data disks:  ${DISKS[*]:-none}"
+    read -r -p "This DESTROYS EVERYTHING on {{ node }}. Continue? [y/N] " ans
+    [[ "$ans" == [yY] ]] || exit 1
+    ARGS=()
+    for d in "${DISKS[@]}"; do ARGS+=(--user-disks-to-wipe "$d"); done
+    talosctl -n {{ node }} reset \
+        --wipe-mode all "${ARGS[@]}" \
+        --reboot --graceful=false --wait=false {{ args }}
+
 [confirm('Upgrade Kubernetes on the cluster — continue? [y/N]')]
 [doc('Upgrade Kubernetes to the kubelet version in cluster.yaml.j2')]
 [group('talos')]

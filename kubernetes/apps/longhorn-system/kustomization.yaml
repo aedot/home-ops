@@ -8,5 +8,5 @@ components:
   - ../../components/sops
   - ../../components/namespace
 
-resources:
-  - ./longhorn/ks.yaml
+resources: []
+  # - ./longhorn/ks.yaml

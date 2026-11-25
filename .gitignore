@@ -22,6 +22,7 @@ talosconfig
 .venv/
 .DS_Store
 Thumbs.db
+*.OLD
 
 # Local review notes
 REVIEW.md
