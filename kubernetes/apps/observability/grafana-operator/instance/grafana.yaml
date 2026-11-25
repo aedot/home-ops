@@ -32,6 +32,9 @@ spec:
       news_feed_enabled: "false"
     plugins:
       plugin_admin_enabled: "false"
+      # The bundled plugins live on a read-only filesystem. The preinstall auto-update stops
+      # them, then fails to delete the old copy, leaving them unregistered.
+      preinstall_auto_update: "false"
     security:
       angular_support_enabled: "true"
     server:
