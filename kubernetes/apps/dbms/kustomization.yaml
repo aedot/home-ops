@@ -7,8 +7,8 @@ components:
   - ../../components/sops
   - ../../components/namespace
   - ../../components/netpol
-resources: []
-  # - ./networkpolicy.yaml
-  # - ./dragonfly/ks.yaml
-  # - ./mosquitto/ks.yaml
-  # - ./postgres/ks.yaml
+resources:
+  - ./networkpolicy.yaml
+  - ./dragonfly/ks.yaml
+  - ./mosquitto/ks.yaml
+  - ./postgres/ks.yaml

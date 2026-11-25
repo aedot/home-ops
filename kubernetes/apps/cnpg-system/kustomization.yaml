@@ -6,5 +6,5 @@ namespace: cnpg-system
 components:
   - ../../components/sops
   - ../../components/namespace
-resources: []
-  # - ./cnpg/ks.yaml
+resources: 
+  - ./cnpg/ks.yaml
